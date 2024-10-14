@@ -1,14 +1,14 @@
-// src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import LoginPage from './components/login';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// import LoginPage from './components/login';
+import WelcomePage from './components/welcome';
 
-// App Component
 const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
+        {/* <Route path="/components/login" element={<LoginPage />} /> */}
+        <Route path="/" element={<WelcomePage />} />
       </Routes>
     </Router>
   );
