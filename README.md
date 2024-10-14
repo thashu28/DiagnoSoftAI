@@ -5,6 +5,7 @@ MERN STACK - MongoDB database, Express Js, React Js, Node.js
 
 # BACKEND
 cd backend
+
 node server.js
 
 # FRONTEND
