@@ -9,6 +9,8 @@ cd backend
 node server.js
 
 # FRONTEND
+cd frontend
+
 npm start
 
 
