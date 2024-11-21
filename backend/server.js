@@ -27,7 +27,6 @@ app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/doctors", doctorRoute);
 
-
 // Database connection
 mongoose.set("strictQuery", false);
 const connectDB = async () => {
