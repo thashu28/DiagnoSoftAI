@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import HTTPCommon from '../../helpers/httpcommon';
 import { useNavigate } from 'react-router-dom'; // For redirecting after successful signup
+import { signup } from '../../services/authservice';
 
 const SignupPage = () => {
   const [formData, setFormData] = useState({
@@ -22,21 +22,45 @@ const SignupPage = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   // Check if passwords match
+  //   if (formData.password !== formData.confirmPassword) {
+  //     setMessage("Passwords do not match.");
+  //     return;
+  //   }
+
+  //   try {
+  //     const response = await HTTPCommon.post("api/auth/signup", formData); // Call your signup API
+  //     if (response.status === 201) {
+  //       setMessage("Signup successful!");
+  //       // Redirect to login page or dashboard after successful signup
+  //       navigate('/login'); // Adjust the path as necessary
+  //     } else {
+  //       setMessage("Signup failed! Please try again.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error during signup:", error);
+  //     setMessage("Signup failed! Ensure all fields are correct.");
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     // Check if passwords match
     if (formData.password !== formData.confirmPassword) {
       setMessage("Passwords do not match.");
       return;
     }
-
+  
     try {
-      const response = await HTTPCommon.post("/auth/signup", formData); // Call your signup API
-      if (response.status === 201) {
+      const response = await signup(formData); // Call the signup function from authService
+
+      if (response && response.success) {
         setMessage("Signup successful!");
-        // Redirect to login page or dashboard after successful signup
-        navigate('/login'); // Adjust the path as necessary
+        navigate('/login'); // Redirect to the login page after successful signup
       } else {
         setMessage("Signup failed! Please try again.");
       }
@@ -45,7 +69,7 @@ const SignupPage = () => {
       setMessage("Signup failed! Ensure all fields are correct.");
     }
   };
-
+  
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white shadow-md rounded-lg p-8 max-w-md w-full">

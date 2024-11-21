@@ -1,216 +1,69 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // For redirecting after successful signup
-import { signup } from '../../services/authService'; // Import signup function from authService
-
-const SignupPage = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    phone: "",
-    role: "patient", // Default to patient
-    age: "",
-    gender: "male", // Default to male
-    bloodType: "",
-  });
-  const [message, setMessage] = useState("");
-  const navigate = useNavigate(); // Hook for navigation after signup
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Check if passwords match
-    if (formData.password !== formData.confirmPassword) {
-      setMessage("Passwords do not match.");
-      return;
-    }
-
-    try {
-      const response = await signup(formData); // Call signup from authService
-      if (response) {
-        setMessage("Signup successful!");
-        // Redirect to login page after successful signup
-        navigate('/login');
-      } else {
-        setMessage("Signup failed! Please try again.");
-      }
-    } catch (error) {
-      console.error("Error during signup:", error);
-      setMessage("Signup failed! Ensure all fields are correct.");
-    }
-  };
-
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white shadow-md rounded-lg p-8 max-w-md w-full">
-        <h2 className="text-2xl font-bold mb-4 text-center">Sign Up</h2>
-        <form onSubmit={handleSubmit}>
-          {/* Name */}
-          <div className="mb-4">
-            <label htmlFor="name" className="block text-sm font-medium mb-2">
-              Name
-            </label>
-            <input
-              type="text"
-              name="name"
-              id="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
-              required
-            />
-          </div>
-          {/* Email */}
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
-              required
-            />
-          </div>
-          {/* Password */}
-          <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-medium mb-2">
-              Password
-            </label>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              value={formData.password}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
-              required
-            />
-          </div>
-          {/* Confirm Password */}
-          <div className="mb-4">
-            <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2">
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              name="confirmPassword"
-              id="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
-              required
-            />
-          </div>
-          {/* Phone */}
-          <div className="mb-4">
-            <label htmlFor="phone" className="block text-sm font-medium mb-2">
-              Phone
-            </label>
-            <input
-              type="text"
-              name="phone"
-              id="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
-              required
-            />
-          </div>
-          {/* Role */}
-          <div className="mb-4">
-            <label htmlFor="role" className="block text-sm font-medium mb-2">
-              Role
-            </label>
-            <select
-              name="role"
-              id="role"
-              value={formData.role}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
-            >
-              <option value="patient">Patient</option>
-              <option value="admin">Admin</option>
-              <option value="doctor">Doctor</option>
-              <option value="labtech">Lab Tech</option>
-            </select>
-          </div>
-          {/* Age */}
-          <div className="mb-4">
-            <label htmlFor="age" className="block text-sm font-medium mb-2">
-              Age
-            </label>
-            <input
-              type="number"
-              name="age"
-              id="age"
-              value={formData.age}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
-              required
-            />
-          </div>
-          {/* Gender */}
-          <div className="mb-4">
-            <label htmlFor="gender" className="block text-sm font-medium mb-2">
-              Gender
-            </label>
-            <select
-              name="gender"
-              id="gender"
-              value={formData.gender}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
-              required
-            >
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </select>
-          </div>
-          {/* Blood Type */}
-          <div className="mb-4">
-            <label htmlFor="bloodType" className="block text-sm font-medium mb-2">
-              Blood Type
-            </label>
-            <select
-              name="bloodType"
-              id="bloodType"
-              value={formData.bloodType}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
-              required
-            >
-              <option value="A+">A+</option>
-              <option value="A-">A-</option>
-              <option value="B+">B+</option>
-              <option value="B-">B-</option>
-              <option value="O+">O+</option>
-              <option value="O-">O-</option>
-              <option value="AB+">AB+</option>
-              <option value="AB-">AB-</option>
-            </select>
-          </div>
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="w-full bg-yellow-500 text-white py-2 px-4 rounded-lg hover:bg-yellow-400 transition ease-in-out duration-300"
-          >
-            Sign Up
-          </button>
-        </form>
-        {message && <p className="mt-4 text-center text-red-500">{message}</p>}
-      </div>
-    </div>
-  );
+import HTTPCommon from "../helpers/httpcommon";
+// Helper to store token in localStorage or sessionStorage
+const storeToken = (token) => {
+  localStorage.setItem("authToken", token); // Or sessionStorage, based on your preference
 };
 
-export default SignupPage;
+// Helper to get the stored token
+const getToken = () => {
+  return localStorage.getItem("authToken");
+};
+
+// Helper to remove the stored token (logout)
+const removeToken = () => {
+  localStorage.removeItem("authToken");
+};
+
+// Signup function
+export const signup = async (userData) => {
+  try {
+    const response = await HTTPCommon.post('/api/auth/signup', userData); // Use HTTPCommon instance
+    if (response.data.success) {
+      storeToken(response.data.token); // Store the token after successful signup
+      return response.data; // Return the response from the server
+    }
+  } catch (error) {
+    console.error("Signup Error:", error.response ? error.response.data : error.message);
+    throw error; // Propagate error to be handled by calling function
+  }
+};
+
+export const login = async (credentials) => {
+  try {
+    console.log("Logging in with credentials:", credentials);
+    const response = await HTTPCommon.post('/api/auth/login', credentials);
+    console.log("Login response:", response);
+    if (response.data.success) {
+      storeToken(response.data.token);
+      return response.data;
+    } else {
+      console.error("Login failed, no success flag");
+      throw new Error('Login failed');
+    }
+  } catch (error) {
+    console.error("Login Error:", error.response ? error.response.data : error.message);
+    throw error;
+  }
+};
+
+
+// Function to check if user is authenticated (i.e., if token exists)
+export const isAuthenticated = () => {
+  const token = getToken();
+  return token ? true : false;
+};
+
+// Function to get the current logged-in user (decode the JWT token if necessary)
+export const getCurrentUser = () => {
+  const token = getToken();
+  if (!token) return null;
+
+  // Decode the JWT token (assuming it follows the JWT structure)
+  const decodedToken = JSON.parse(atob(token.split('.')[1])); // Decode JWT payload
+  return decodedToken;
+};
+
+// Logout function
+export const logout = () => {
+  removeToken(); // Remove token to log the user out
+};

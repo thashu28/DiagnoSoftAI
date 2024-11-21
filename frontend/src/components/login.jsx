@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { login } from '../../services/authservice';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -19,14 +19,14 @@ const LoginPage = () => {
     setMessage('');
 
     try {
-      // Send the login request to the backend API
-      const response = await axios.post('http://localhost:5000/api/auth/login', formData);
+      // Call the login function from authService
+      const response = await login(formData); 
 
-      if (response.data.success) {
+      if (response && response.success) {
         setMessage('Login successful!');
-        const { token, user } = response.data;
+        const { token, user } = response;
         
-        // Store the token in localStorage (or any other method)
+        // Store the token in localStorage (or sessionStorage)
         localStorage.setItem('authToken', token);
 
         // Redirect to the appropriate dashboard based on the user's role
