@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import HTTPCommon from '../../helpers/httpcommon';
 import { useNavigate } from 'react-router-dom'; // For redirecting after successful signup
+import { signup } from '../../services/authService'; // Import signup function from authService
 
 const SignupPage = () => {
   const [formData, setFormData] = useState({
@@ -32,11 +32,11 @@ const SignupPage = () => {
     }
 
     try {
-      const response = await HTTPCommon.post("/auth/signup", formData); // Call your signup API
-      if (response.status === 201) {
+      const response = await signup(formData); // Call signup from authService
+      if (response) {
         setMessage("Signup successful!");
-        // Redirect to login page or dashboard after successful signup
-        navigate('/login'); // Adjust the path as necessary
+        // Redirect to login page after successful signup
+        navigate('/login');
       } else {
         setMessage("Signup failed! Please try again.");
       }
