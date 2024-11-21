@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema({
-  
   email: { 
     type: String, 
     required: true, 
@@ -11,34 +10,27 @@ const UserSchema = new mongoose.Schema({
     type: String, 
     required: true 
   },
-  name: {
-     type: String, 
-     required: true 
+  name: { 
+    type: String, 
+    required: true 
   },
   phone: { 
-    type: Number 
-  },
-  photo: { 
-    type: String 
-  },
-  role: {
     type: String,
-    enum: ["patient", "admin","doctor","labtech"],
-    default: "patient",
+    validate: {
+      validator: (v) => 
+        /^(\+1\s?)?(\(\d{3}\)|\d{3})[-.\s]?\d{3}[-.\s]?\d{4}$/.test(v),
+      message: (props) => `${props.value} is not a valid USA phone number!`,
+    },
+    required: [true, "Phone number is required"],
   },
-  usertype:{
+  role: { 
     type: String,
-    enum: ["patient", "admin","doctor","labtech"],
-    default:"patient",
-
+    enum: ["patient", "admin", "doctor", "labtech"],
+    default: "patient" 
   },
-  age:{
-    type: Number,
-   
-  },
+  age: { type: Number },
   gender: { type: String, enum: ["male", "female"] },
-  bloodType: { type: String },
-  appointments: [{ type: mongoose.Types.ObjectId, ref: "Appointment" }],
+  bloodType: { type: String }
 });
 
 export default mongoose.model("User", UserSchema);

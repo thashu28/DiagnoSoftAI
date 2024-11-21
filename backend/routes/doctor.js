@@ -7,6 +7,8 @@ import {
 } from "../Controllers/doctorController.js";
 import { authenticate, restrict } from "../auth/verifyToken.js";
 
+const router= express.Router();
+
 router.get("/:id", getSingleDoctor);
 router.get("/", getAllDoctor);
 router.put("/:id", authenticate, restrict(["doctor"]), updateDoctor);
