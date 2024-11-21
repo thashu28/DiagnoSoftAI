@@ -38,7 +38,7 @@ const DoctorsDashboard = () => {
               to="/doctor_dashboard/chatbot"
               className="block px-4 py-2 text-gray-600 hover:bg-blue-100 hover:text-blue-500 rounded-md"
             >
-              Messages
+              Chat System
             </Link>
           </li>
           <li>

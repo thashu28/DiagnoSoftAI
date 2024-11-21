@@ -73,10 +73,14 @@ export const login = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    console.log("Stored Hashed Password:", user.password);  // This will log the hashed password
 
     // Compare passwords
-    if (password !== user.password) {
+    // if (password !== user.password) {
+    //   return res.status(400).json({ message: "Invalid credentials" });
+    // }
+    // Compare the plain password with the hashed password in the database
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 

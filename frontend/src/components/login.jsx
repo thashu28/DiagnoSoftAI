@@ -33,9 +33,9 @@ const LoginPage = () => {
         if (user.role === 'doctor') {
           navigate('/doctors_dashboard');
         } else if (user.role === 'patient') {
-          navigate('/patients');
-        } else if (user.role === 'labTechnician') {
-          navigate('/lab_technician');
+          navigate("/patients_dashboard");
+        } else if (user.role === 'labtech') {
+          navigate("/lab_technician");
         }
       } else {
         setMessage('Invalid username or password.');
