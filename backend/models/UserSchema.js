@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema({
+  
   email: { 
     type: String, 
     required: true, 
@@ -22,8 +23,18 @@ const UserSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["patient", "admin"],
+    enum: ["patient", "admin","doctor","labtech"],
     default: "patient",
+  },
+  usertype:{
+    type: String,
+    enum: ["patient", "admin","doctor","labtech"],
+    default:"patient",
+
+  },
+  age:{
+    type: Number,
+   
   },
   gender: { type: String, enum: ["male", "female"] },
   bloodType: { type: String },

@@ -8,7 +8,6 @@ import dotenv from "dotenv";
 import authRoute from "./routes/auth.js";
 import userRoute from "./routes/user.js";
 import doctorRoute from "./routes/doctor.js";
-import reviewRoute from "./routes/review.js";
 
 // Config
 dotenv.config();
@@ -27,7 +26,7 @@ app.use(cors(corsOptions)); // Handles CORS
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/doctors", doctorRoute);
-app.use("/api/reviews", reviewRoute);
+
 
 // Database connection
 mongoose.set("strictQuery", false);
