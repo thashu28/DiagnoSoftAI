@@ -1,17 +1,22 @@
 import express from "express";
 import {
+  createDoctor,
   updateDoctor,
   deleteDoctor,
-  getAllDoctor,
-  getSingleDoctor,
+  getAllDoctors,
+  getDoctorById
 } from "../Controllers/doctorController.js";
-import { authenticate, restrict } from "../auth/verifyToken.js";
 
-const router= express.Router();
+const router = express.Router();
 
-router.get("/:id", getSingleDoctor);
-router.get("/", getAllDoctor);
-router.put("/:id", authenticate, restrict(["doctor"]), updateDoctor);
-router.delete("/:id", authenticate, restrict(["doctor"]), deleteDoctor);
+router.post("/", createDoctor);
+router.get("/", getAllDoctors);
+router.get("/:id", getDoctorById);
+router.put("/:id", updateDoctor);
+router.delete("/:id", deleteDoctor);
 
 export default router;
+
+
+
+
