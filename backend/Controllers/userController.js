@@ -1,89 +1,54 @@
 import User from "../models/UserSchema.js";
 
+// Create a new user
+export const createUser = async (req, res) => {
+  try {
+    const newUser = await User.create(req.body);
+    res.status(201).json({ success: true, message: "User created", data: newUser });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+// Get all users
+export const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).json({ success: true, data: users });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Get a single user by ID
+export const getUserById = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ success: false, message: "User not found" });
+    res.status(200).json({ success: true, data: user });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Update a user
 export const updateUser = async (req, res) => {
-  const id = req.params.id;
-
   try {
-    const updatedUser = await User.findByIdAndUpdate(
-      id,
-      { $set: req.body },
-      { new: true }
-    );
-
-    res.status(200).json({
-      success: true,
-      message: "Successfully updated",
-      data: updatedUser,
-    });
+    const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updatedUser) return res.status(404).json({ success: false, message: "User not found" });
+    res.status(200).json({ success: true, data: updatedUser });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to update!",
-      data: updateUser,
-    });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
+// Delete a user
 export const deleteUser = async (req, res) => {
-  const id = req.params.id;
-
   try {
-    await User.findByIdAndDelete(id);
-
-    res.status(200).json({
-      success: true,
-      message: "Successfully deleted",
-    });
+    const deletedUser = await User.findByIdAndDelete(req.params.id);
+    if (!deletedUser) return res.status(404).json({ success: false, message: "User not found" });
+    res.status(200).json({ success: true, message: "User deleted" });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to delete!",
-      data: updateUser,
-    });
-  }
-};
-
-export const getSingleUser = async (req, res) => {
-  const id = req.params.id;
-
-  try {
-    const user = await User.findById(id).select("-password"); // Query the user by ID
-
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "No User Found!",
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      message: "User Found",
-      data: user,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to retrieve user!",
-      data: error,
-    });
-  }
-};
-
-export const getAllUser = async (req, res) => {
-  try {
-    const users = await User.find().select("-password");
-
-    res.status(200).json({
-      success: true,
-      message: "Users Found",
-      data: users,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to retrieve users!",
-      data: error.message, // Corrected error handling
-    });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
