@@ -1,67 +1,95 @@
-import axios from 'axios';
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import User from "../models/UserSchema.js";
 
-// API endpoint for backend (adjust based on your server setup)
-const API_URL = "http://localhost:5000/api/auth"; // Change this to your actual backend URL
-
-// Helper to store token in localStorage or sessionStorage
-const storeToken = (token) => {
-  localStorage.setItem("authToken", token); // Or sessionStorage, based on your preference
+const generateToken = (user) => {
+  return jwt.sign(
+    { id: user._id, role: user.role },
+    process.env.JWT_SECRET_KEY,
+    { expiresIn: "15d" }
+  );
 };
 
-// Helper to get the stored token
-const getToken = () => {
-  return localStorage.getItem("authToken");
-};
+// Signup Controller
+export const signup = async (req, res) => {
+  const { email, password, name, phone, role, age, gender, bloodType } = req.body;
 
-// Helper to remove the stored token (logout)
-const removeToken = () => {
-  localStorage.removeItem("authToken");
-};
-
-// Signup function
-export const signup = async (userData) => {
   try {
-    const response = await axios.post(`${API_URL}/signup`, userData);
-    if (response.data.success) {
-      storeToken(response.data.token); // Store the token after successful signup
-      return response.data; // Return the response from the server
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
     }
+
+    // Hash the password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // Create and save the user
+    const newUser = new User({
+      email,
+      password: hashedPassword,
+      name,
+      phone,
+      role,
+      age,
+      gender,
+      bloodType,
+    });
+
+    await newUser.save();
+
+    // Generate a token
+    const token = generateToken(newUser);
+
+    res.status(201).json({
+      success: true,
+      message: "User registered successfully",
+      token,
+      user: {
+        id: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role,
+      },
+    });
   } catch (error) {
-    console.error("Signup Error:", error.response ? error.response.data : error.message);
-    throw error; // Propagate error to be handled by calling function
+    res.status(500).json({ success: false, message: "Signup failed", error });
   }
 };
 
-// Login function
-export const login = async (credentials) => {
+// Login Controller
+export const login = async (req, res) => {
+  const { email, password } = req.body;
+
   try {
-    const response = await axios.post(`${API_URL}/login`, credentials);
-    if (response.data.success) {
-      storeToken(response.data.token); // Store the token after successful login
-      return response.data; // Return the response from the server
+    // Find user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
+
+    // Compare passwords
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    // Generate a token
+    const token = generateToken(user);
+
+    res.status(200).json({
+      success: true,
+      message: "Login successful",
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
   } catch (error) {
-    console.error("Login Error:", error.response ? error.response.data : error.message);
-    throw error; // Propagate error to be handled by calling function
+    res.status(500).json({ success: false, message: "Login failed", error });
   }
-};
-
-// Function to check if user is authenticated (i.e., if token exists)
-export const isAuthenticated = () => {
-  const token = getToken();
-  return token ? true : false;
-};
-
-// Function to get the current logged-in user (decode the JWT token if necessary)
-export const getCurrentUser = () => {
-  const token = getToken();
-  if (!token) return null;
-
-  const decodedToken = JSON.parse(atob(token.split('.')[1])); // Decode JWT payload
-  return decodedToken;
-};
-
-// Logout function
-export const logout = () => {
-  removeToken(); // Remove token to log the user out
 };
