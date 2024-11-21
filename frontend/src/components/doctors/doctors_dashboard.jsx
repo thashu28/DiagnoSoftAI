@@ -1,91 +1,172 @@
-
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-// Emergency Cases & Reminders (Static Data)
-const emergencyCases = [
-  { caseId: "EC123", patient: "Alice Johnson", status: "Critical", condition: "Severe Asthma Attack" },
-  { caseId: "EC124", patient: "Bob Brown", status: "Urgent", condition: "Heart Failure" },
-  { caseId: "EC125", patient: "Mary Wilson", status: "Critical", condition: "Stroke" },
-  { caseId: "EC126", patient: "James Miller", status: "Urgent", condition: "Severe Blood Loss" },
-  { caseId: "EC127", patient: "Linda Harris", status: "Critical", condition: "Acute Respiratory Distress" },
-  { caseId: "EC128", patient: "Thomas Lee", status: "Urgent", condition: "Fractured Leg" },
-  { caseId: "EC129", patient: "Rachel Green", status: "Critical", condition: "Pneumonia" },
-];
-const reminders = [
-  "Update patient medical records by 5:00 PM.",
-  "Complete all pending prescriptions for the day.",
-  "Prepare patient discharge summaries before the evening shift.",
-  "Review all patient scan results before the end of the day.",
-  "Consult with specialists for patient Olivia Martinez’s case.",
-  "Verify patient vaccination schedules.",
-  "Call back patient John Doe for follow-up.",
-];
-// Doctor Dashboard Component
-const DoctorDashboard = () => (
-  <div className="min-h-screen bg-gray-100 flex flex-col">
-    {/* Header */}
-    <header className="bg-blue-800 text-white py-4 px-8">
-      <h1 className="text-2xl font-bold">Doctor Dashboard</h1>
-    </header>
-    {/* Main Content */}
-    <div className="flex flex-col lg:flex-row flex-grow">
-      {/* Left Sidebar (Quick Actions) */}
-      <aside className="w-full lg:w-1/3 bg-blue-50 p-6 border-b lg:border-r">
-        <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
-        <ul className="space-y-4">
-          {["Appointments", "View Scans", "Chatbot", "Patient Results"].map((action, index) => (
-            <li key={index}>
-              <Link
-                to={`/doctor_dashboard/${action.toLowerCase().replace(" ", "_")}`}
-                className="w-full block bg-blue-500 text-white py-3 px-4 text-center rounded-lg hover:bg-blue-400"
-              >
-                {action}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </aside>
-      {/* Placeholder for Main Content */}
-      <main className="w-full lg:w-2/3 p-6">
-        <h2 className="text-xl font-semibold mb-4">Welcome to the Doctor Dashboard</h2>
-        <p className="text-gray-600">
-          Use the links on the left sidebar to navigate through various sections such as Appointments, Scans, and more.
-        </p>
-      </main>
-      {/* Right Sidebar with Modals */}
-      <aside className="w-full lg:w-1/3 bg-blue-50 p-6 border-t lg:border-l flex flex-col">
-        {/* Emergency Cases Modal */}
-        <section className="h-1/4 bg-white shadow-md rounded-lg p-4 overflow-y-auto">
-          <h2 className="text-xl font-semibold mb-4">Emergency Cases</h2>
-          <ul className="divide-y">
-            {emergencyCases.map((emergency, index) => (
-              <li key={index} className="py-2">
-                <p className="font-semibold">{emergency.patient}</p>
-                <p className="text-sm text-gray-600">
-                  Case ID: {emergency.caseId} - {emergency.condition} ({emergency.status})
-                </p>
-              </li>
-            ))}
-          </ul>
-        </section>
-        {/* Reminders Modal */}
-        <section className="h-1/4 bg-white shadow-md rounded-lg p-4 overflow-y-auto mt-4">
-          <h2 className="text-xl font-semibold mb-4">Reminders</h2>
-          <ul>
-            {reminders.map((reminder, index) => (
-              <li key={index} className="mb-2 text-sm">
-                {reminder}
-              </li>
-            ))}
-          </ul>
-        </section>
-      </aside>
-    </div>
-    {/* Footer */}
-    <footer className="bg-blue-800 text-white py-4 text-center">
-      <p>&copy; 2024 DiagnoSoftAI. All Rights Reserved.</p>
-    </footer>
-  </div>
-);
-export default DoctorDashboard;
 
+const DoctorsDashboard = () => {
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
+  const toggleChat = () => {
+    setIsChatOpen((prev) => !prev);
+  };
+
+  return (
+    <div className="flex h-screen bg-gray-100">
+      {/* Sidebar */}
+      <aside className="w-64 bg-white shadow-lg">
+        <div className="h-16 flex items-center justify-center font-bold text-blue-500 text-xl border-b">
+          DiagnoSoftAI
+        </div>
+        <nav className="mt-4">
+        <ul className="space-y-2">
+          <li>
+            <Link
+              to="/patients"
+              className="block px-4 py-2 text-gray-600 hover:bg-blue-100 hover:text-blue-500 rounded-md"
+            >
+              Patients
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/doctor_dashboard/appointments"
+              className="block px-4 py-2 text-gray-600 hover:bg-blue-100 hover:text-blue-500 rounded-md"
+            >
+              Appointments
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/doctor_dashboard/chatbot"
+              className="block px-4 py-2 text-gray-600 hover:bg-blue-100 hover:text-blue-500 rounded-md"
+            >
+              Messages
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/doctor_dashboard/view_scans"
+              className="block px-4 py-2 text-gray-600 hover:bg-blue-100 hover:text-blue-500 rounded-md"
+            >
+              View Scan Reports
+            </Link>
+          </li>
+        </ul>
+
+        </nav>
+      </aside>
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col">
+        {/* Top Navigation */}
+        <header className="h-16 flex items-center justify-between bg-white px-6 shadow-sm">
+          <div className="text-lg font-semibold text-gray-700">Welcome, Doctor!</div>
+          <div className="flex items-center space-x-4">
+            <button className="text-gray-500 hover:text-blue-500">
+              <i className="fas fa-bell"></i>
+            </button>
+            <img
+              src="https://via.placeholder.com/40"
+              alt="Profile"
+              className="w-10 h-10 rounded-full border"
+            />
+          </div>
+        </header>
+
+        {/* Dashboard Content */}
+        <main className="flex-grow p-6">
+          {/* Overview Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="p-4 bg-white shadow-md rounded-lg">
+              <h3 className="text-lg font-semibold text-gray-700">Emergency Cases</h3>
+              <p className="text-3xl font-bold text-blue-500 mt-2">5</p>
+            </div>
+            <div className="p-4 bg-white shadow-md rounded-lg">
+              <h3 className="text-lg font-semibold text-gray-700">Pending Reports</h3>
+              <p className="text-3xl font-bold text-blue-500 mt-2">12</p>
+            </div>
+            <div className="p-4 bg-white shadow-md rounded-lg">
+              <h3 className="text-lg font-semibold text-gray-700">New Messages</h3>
+              <p className="text-3xl font-bold text-blue-500 mt-2">3</p>
+            </div>
+            <div className="p-4 bg-white shadow-md rounded-lg">
+              <h3 className="text-lg font-semibold text-gray-700">AI-Analyzed Scans</h3>
+              <p className="text-3xl font-bold text-blue-500 mt-2">8</p>
+            </div>
+          </div>
+
+          {/* Detailed View */}
+          <div className="mt-8">
+            <h2 className="text-xl font-semibold text-gray-700">Assigned Scans</h2>
+            <table className="w-full mt-4 bg-white shadow-md rounded-lg overflow-hidden">
+              <thead className="bg-blue-100">
+                <tr>
+                  <th className="text-left px-4 py-2">Patient</th>
+                  <th className="text-left px-4 py-2">Scan Type</th>
+                  <th className="text-left px-4 py-2">Date</th>
+                  <th className="text-left px-4 py-2">Status</th>
+                  <th className="text-center px-4 py-2">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="px-4 py-2">John Doe</td>
+                  <td className="px-4 py-2">CT Scan</td>
+                  <td className="px-4 py-2">2024-11-20</td>
+                  <td className="px-4 py-2 text-blue-500">Pending</td>
+                  <td className="px-4 py-2 text-center">
+                    <button className="text-blue-500 hover:underline">View</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2">Jane Smith</td>
+                  <td className="px-4 py-2">MRI</td>
+                  <td className="px-4 py-2">2024-11-18</td>
+                  <td className="px-4 py-2 text-green-500">Completed</td>
+                  <td className="px-4 py-2 text-center">
+                    <button className="text-blue-500 hover:underline">View</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </main>
+      </div>
+
+      {/* Chatbot */}
+      <div className="fixed bottom-6 right-6">
+        <button
+          onClick={toggleChat}
+          className="p-4 bg-blue-500 rounded-full shadow-lg text-white hover:bg-blue-600 focus:outline-none"
+        >
+          <i className="fas fa-comments"></i>
+        </button>
+
+        {isChatOpen && (
+          <div className="fixed bottom-20 right-6 w-80 h-96 bg-white shadow-lg rounded-lg p-4">
+            <div className="flex justify-between items-center border-b pb-2">
+              <h3 className="text-lg font-semibold text-gray-700">Chatbot</h3>
+              <button
+                onClick={toggleChat}
+                className="text-gray-500 hover:text-red-500"
+              >
+                &times;
+              </button>
+            </div>
+            <div className="mt-4 flex flex-col space-y-2 overflow-y-auto h-64">
+              {/* Chat messages here */}
+              <p className="text-gray-600">Hello! How can I assist you?</p>
+            </div>
+            <div className="mt-4">
+              <input
+                type="text"
+                className="w-full p-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
+                placeholder="Type a message..."
+              />
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default DoctorsDashboard;

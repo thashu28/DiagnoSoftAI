@@ -1,137 +1,109 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 
-// Publicly available medical scan images (these are placeholder URLs, replace with real ones)
-const publicScans = [
+// Static data for demonstration
+const staticPatients = [
   {
-    id: "P123",
-    name: "Alice Johnson",
-    age: 45,
-    gender: "Female",
-    diagnosis: "Severe Asthma Attack",
-    scanStatus: "Pending",
-    scanUrl: "https://www.example.com/scan1.jpg", // Replace with real public scan URL
-    scanDate: "2024-11-20",
+    id: 1,
+    name: "John Doe",
+    condition: "Critical",
+    scanImage: "https://via.placeholder.com/600x400?text=John+Doe+Scan",
+    aiSegmentedImage: "https://via.placeholder.com/600x400?text=Segmented+John+Doe",
+    aiAnalysis: "The scan indicates a high likelihood of glioblastoma in the left frontal lobe.",
+    report: "John Doe Report.pdf",
   },
   {
-    id: "P124",
-    name: "Bob Brown",
-    age: 56,
-    gender: "Male",
-    diagnosis: "Heart Failure",
-    scanStatus: "In Progress",
-    scanUrl: "https://www.example.com/scan2.jpg", // Replace with real public scan URL
-    scanDate: "2024-11-19",
-  },
-  {
-    id: "P125",
-    name: "Mary Wilson",
-    age: 32,
-    gender: "Female",
-    diagnosis: "Stroke",
-    scanStatus: "Completed",
-    scanUrl: "https://www.example.com/scan3.jpg", // Replace with real public scan URL
-    scanDate: "2024-11-18",
-  },
-  {
-    id: "P126",
-    name: "James Miller",
-    age: 67,
-    gender: "Male",
-    diagnosis: "Fractured Leg",
-    scanStatus: "Pending",
-    scanUrl: "https://www.example.com/scan4.jpg", // Replace with real public scan URL
-    scanDate: "2024-11-21",
+    id: 2,
+    name: "Jane Smith",
+    condition: "Stable",
+    scanImage: "https://via.placeholder.com/600x400?text=Jane+Smith+Scan",
+    aiSegmentedImage: "https://via.placeholder.com/600x400?text=Segmented+Jane+Smith",
+    aiAnalysis: "No significant anomalies detected. Regular follow-up advised.",
+    report: "Jane Smith Report.pdf",
   },
 ];
 
-// Search Functionality
-const ViewScans = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const filteredPatients = publicScans.filter((patient) =>
-    patient.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+const ViewScanReportsForDoctors = () => {
+  const [selectedPatient, setSelectedPatient] = useState(staticPatients[0]); // Default patient
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
-      {/* Header */}
-      <header className="bg-blue-800 text-white py-4 px-8">
-        <h1 className="text-2xl font-bold">View Patient Scans</h1>
-      </header>
+    <div className="flex min-h-screen bg-gray-100">
+      {/* Left Sidebar (Assigned Scans - 1/4th Width) */}
+      <aside className="w-1/4 bg-white shadow-lg p-4">
+        <h2 className="text-lg font-semibold text-gray-700">Assigned Scans</h2>
+        <ul className="mt-4 space-y-4">
+          {staticPatients.map((patient) => (
+            <li
+              key={patient.id}
+              onClick={() => setSelectedPatient(patient)}
+              className={`p-4 border rounded-lg cursor-pointer ${
+                selectedPatient.id === patient.id
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-50 text-gray-700 hover:bg-gray-100"
+              }`}
+            >
+              <h3 className="text-md font-semibold">{patient.name}</h3>
+              <p className="text-sm">Condition: {patient.condition}</p>
+            </li>
+          ))}
+        </ul>
+      </aside>
 
-      {/* Main Content */}
-      <div className="flex flex-col lg:flex-row flex-grow">
-        {/* Left Sidebar (Notes and AI Analysis) */}
-        <aside className="w-full lg:w-1/3 bg-blue-50 p-6 border-b lg:border-r">
-          <h2 className="text-xl font-semibold mb-4">Notes & AI Scan Analysis</h2>
-          <div className="mb-4">
-            <h3 className="text-lg font-medium">Notes</h3>
-            <textarea
-              rows="5"
-              className="w-full p-3 mt-2 border rounded-lg"
-              placeholder="Add your notes here..."
+      {/* Middle Content (Scan & AI Analysis - 1/2 Width) */}
+      <main className="flex-1 p-6">
+        <header className="bg-white p-4 rounded shadow-md">
+          <h1 className="text-2xl font-semibold text-gray-700">
+            Patient: {selectedPatient.name}
+          </h1>
+          <p className="text-gray-500">Condition: {selectedPatient.condition}</p>
+        </header>
+
+        <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Scan Details */}
+          <div className="bg-white p-6 rounded shadow-md">
+            <h2 className="text-lg font-semibold text-gray-700">Scan Details</h2>
+            <img
+              src={selectedPatient.scanImage}
+              alt={`${selectedPatient.name}'s Scan`}
+              className="mt-4 w-full rounded shadow"
             />
           </div>
-          <div>
-            <h3 className="text-lg font-medium">Analyze Scans Using AI Models</h3>
-            <button className="w-full mt-2 bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-400">
-              Start AI Scan Analysis
-            </button>
-          </div>
-        </aside>
 
-        {/* Main Section with Patient Blocks */}
-        <main className="w-full lg:w-2/3 p-6">
-          <h2 className="text-xl font-semibold mb-4">Patient Scan Blocks</h2>
-
-          {/* Search Bar */}
-          <div className="mb-6">
-            <input
-              type="text"
-              className="w-full p-3 border rounded-lg"
-              placeholder="Search for a patient..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+          {/* AI Analysis Results */}
+          <div className="bg-white p-6 rounded shadow-md">
+            <h2 className="text-lg font-semibold text-gray-700">AI Analysis</h2>
+            <img
+              src={selectedPatient.aiSegmentedImage}
+              alt={`${selectedPatient.name}'s AI Segmentation`}
+              className="mt-4 w-full rounded shadow"
             />
+            <p className="mt-4 text-gray-700">{selectedPatient.aiAnalysis}</p>
           </div>
+        </div>
+      </main>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {filteredPatients.map((patient, index) => (
-              <div
-                key={index}
-                className="bg-white p-4 shadow-md rounded-lg flex flex-col items-center"
-              >
-                <h3 className="text-lg font-semibold">{patient.name}</h3>
-                <p className="text-sm text-gray-600">ID: {patient.id}</p>
-                <p className="text-sm text-gray-600">Age: {patient.age}</p>
-                <p className="text-sm text-gray-600">Gender: {patient.gender}</p>
-                <p className="text-sm text-gray-600">Diagnosis: {patient.diagnosis}</p>
-                <p className="text-sm text-gray-600">Scan Status: {patient.scanStatus}</p>
-                <p className="text-sm text-gray-600">Scan Date: {patient.scanDate}</p>
-                <img
-                  src={patient.scanUrl}
-                  alt={`Scan for ${patient.name}`}
-                  className="mt-4 w-full h-auto rounded-lg"
-                />
-                <Link
-                  to={patient.scanUrl}
-                  className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400"
-                >
-                  View Scan
-                </Link>
-              </div>
-            ))}
-          </div>
-        </main>
-      </div>
-
-      {/* Footer */}
-      <footer className="bg-blue-800 text-white py-4 text-center">
-        <p>&copy; 2024 DiagnoSoftAI. All Rights Reserved.</p>
-      </footer>
+      {/* Right Sidebar (Doctor's Notes - 1/4th Width) */}
+      <aside className="w-1/4 bg-white shadow-lg p-4">
+        <h2 className="text-lg font-semibold text-gray-700">Doctor's Notes</h2>
+        <textarea
+          rows="6"
+          className="w-full mt-4 p-3 border border-gray-300 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none"
+          placeholder={`Write your observations for ${selectedPatient.name} here...`}
+        ></textarea>
+        <div className="mt-4 flex justify-between">
+          <button className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+            Save Notes
+          </button>
+          <a
+            href={`#`}
+            download={selectedPatient.report}
+            className="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+          >
+            Download Report
+          </a>
+        </div>
+      </aside>
     </div>
   );
 };
 
-export default ViewScans;
+export default ViewScanReportsForDoctors;
