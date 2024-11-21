@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-// Static Data
-const staticUserData = {
-  username: "testuser",
-  password: "password123",
-};
+// Static User Data
+const staticUserData = [
+  { username: "doctorUser", password: "password123", role: "doctor" },
+  { username: "patientUser", password: "password123", role: "patient" },
+  { username: "labUser", password: "password123", role: "labTechnician" },
+];
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,12 +20,23 @@ const LoginPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Simulate login check using static data
-    if (
-      formData.username === staticUserData.username &&
-      formData.password === staticUserData.password
-    ) {
+
+    // Check if user credentials match the static data
+    const user = staticUserData.find(
+      (user) =>
+        user.username === formData.username && user.password === formData.password
+    );
+
+    if (user) {
       setMessage("Login successful!");
+      // Navigate to the appropriate dashboard based on the user's role
+      if (user.role === "doctor") {
+        navigate("/doctors_dashboard");
+      } else if (user.role === "patient") {
+        navigate("/patients");
+      } else if (user.role === "labTechnician") {
+        navigate("/lab_technician");
+      }
     } else {
       setMessage("Invalid username or password.");
     }
