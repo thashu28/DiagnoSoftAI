@@ -8,6 +8,8 @@ import dotenv from "dotenv";
 import authRoute from "./routes/auth.js";
 import userRoute from "./routes/user.js";
 import doctorRoute from "./routes/doctor.js";
+import patientRoute from "./routes/patient.js";
+import labtechRoute from "./routes/labtech.js";
 
 // Config
 dotenv.config();
@@ -26,6 +28,8 @@ app.use(cors(corsOptions)); // Handles CORS
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/doctors", doctorRoute);
+app.use("/api/patient",patientRoute);
+app.use("/api/labtech",labtechRoute);
 
 // Database connection
 mongoose.set("strictQuery", false);

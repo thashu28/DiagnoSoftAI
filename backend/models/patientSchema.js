@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const DoctorSchema = new mongoose.Schema({
+const PatientSchema = new mongoose.Schema({
   name: { 
     type: String, 
     required: true 
@@ -27,10 +27,6 @@ const DoctorSchema = new mongoose.Schema({
     type: String, 
     required: true 
   },
-  specialization: { 
-    type: String, 
-    required: true 
-  },
   phone: { 
     type: String, 
     required: true, 
@@ -43,27 +39,36 @@ const DoctorSchema = new mongoose.Schema({
   role: { 
     type: String, 
     required: true, 
-    enum: ["doctor", "admin", "patient"] 
+    enum: ["patient", "doctor", "admin"] 
   },
-  experience: { 
-    type: Array, 
-    of: String, 
+  bloodType: { 
+    type: String, 
+    enum: ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"],
     required: true 
+  },
+  medicalHistory: { 
+    type: [String], 
+    default: [] 
+  },
+  allergies: { 
+    type: [String], 
+    default: [] 
+  },
+  currentMedication: { 
+    type: [String], 
+    default: [] 
   },
   appointments: [{ 
     type: mongoose.Types.ObjectId, 
     ref: "Appointment" 
   }],
-  // New fields
-  qualifications: {
-    type: Array, 
-    of: String, 
-    required: true 
-  },
-  department: {
-    type: String,
-    required: true,
-  },
+  testTaken: [{ 
+    type: [String], required: true 
+  }],
+  reports: [{ 
+    type: mongoose.Types.ObjectId, 
+    ref: "Report" 
+  }],
 });
 
-export default mongoose.model("Doctor", DoctorSchema);
+export default mongoose.model("Patient", PatientSchema);

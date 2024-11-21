@@ -1,111 +1,54 @@
-import Doctor from "../models/DoctorSchema.js"; // Import the Doctor model
+import Doctor from "../models/DoctorSchema.js";
 
+// Create a new doctor
+export const createDoctor = async (req, res) => {
+  try {
+    const newDoctor = await Doctor.create(req.body);
+    res.status(201).json({ success: true, message: "Doctor created", data: newDoctor });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+// Get all doctors
+export const getAllDoctors = async (req, res) => {
+  try {
+    const doctors = await Doctor.find();
+    res.status(200).json({ success: true, data: doctors });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Get a single doctor by ID
+export const getDoctorById = async (req, res) => {
+  try {
+    const doctor = await Doctor.findById(req.params.id);
+    if (!doctor) return res.status(404).json({ success: false, message: "Doctor not found" });
+    res.status(200).json({ success: true, data: doctor });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Update a doctor
 export const updateDoctor = async (req, res) => {
-  // Rename the function to updateDoctor
-  const id = req.params.id;
-
   try {
-    const updatedDoctor = await Doctor.findByIdAndUpdate(
-      // Use the Doctor model
-      id,
-      { $set: req.body },
-      { new: true }
-    );
-
-    res.status(200).json({
-      success: true,
-      message: "Successfully updated",
-      data: updatedDoctor, // Use updatedDoctor
-    });
+    const updatedDoctor = await Doctor.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updatedDoctor) return res.status(404).json({ success: false, message: "Doctor not found" });
+    res.status(200).json({ success: true, data: updatedDoctor });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to update!",
-      data: error,
-    });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
+// Delete a doctor
 export const deleteDoctor = async (req, res) => {
-  // Rename the function to deleteDoctor
-  const id = req.params.id;
-
   try {
-    await Doctor.findByIdAndDelete(id); // Use the Doctor model
-
-    res.status(200).json({
-      success: true,
-      message: "Successfully deleted",
-    });
+    const deletedDoctor = await Doctor.findByIdAndDelete(req.params.id);
+    if (!deletedDoctor) return res.status(404).json({ success: false, message: "Doctor not found" });
+    res.status(200).json({ success: true, message: "Doctor deleted" });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to delete!",
-      data: error,
-    });
-  }
-};
-
-export const getSingleDoctor = async (req, res) => {
-  // Rename the function to getSingleDoctor
-  const id = req.params.id;
-
-  try {
-    const doctor = await Doctor.findById(id)
-      .populate("reviews")
-      .select("-password"); // Use the Doctor model
-
-    if (!doctor) {
-      return res.status(404).json({
-        success: false,
-        message: "No Doctor Found!",
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      message: "Doctor Found",
-      data: doctor, // Use doctor
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to retrieve doctor!",
-      data: error,
-    });
-  }
-};
-
-export const getAllDoctor = async (req, res) => {
-  // Rename the function to getAllDoctors
-  try {
-    const { query } = req.query;
-    let doctors;
-
-    if (query) {
-      doctors = await Doctor.find({
-        isApproved: "approved",
-        $or: [
-          { name: { $regex: query, $options: "i" } },
-          { specialization: { $regex: query, $options: "i" } },
-        ],
-      }).select("-password");
-    } else {
-      doctors = await Doctor.find({ isApproved: "approved" }).select(
-        "-password"
-      ); // Use the Doctor model
-    }
-
-    res.status(200).json({
-      success: true,
-      message: "Doctors Found",
-      data: doctors, // Use doctors
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to retrieve doctors!",
-      data: error.message,
-    });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
