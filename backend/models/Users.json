@@ -1,0 +1,51 @@
+[
+    {
+      "email": "john.doe@example.com",
+      "password": "$2b$10$eW5LJ3RyKf5cBbQDg0/fEOX.6tWJ7CvVzqhv9R1z9uZL3USvv4cK6",
+      "name": "John Doe",
+      "phone": "+1234567890",
+      "photo": "https://example.com/photos/john.jpg",
+      "role": "patient",
+      "age": 30,
+      "gender": "male",
+      "bloodType": "O+",
+      "appointments": []
+    },
+    {
+      "email": "jane.smith@example.com",
+      "password": "$2b$10$7tDlJmVjQl96E58QU6PlAu6SnzAaCT.lnVE5f2VijMkSTsIUwnhF2",
+      "name": "Jane Smith",
+      "phone": "+1987654321",
+      "photo": "https://example.com/photos/jane.jpg",
+      "role": "doctor",
+      "age": 45,
+      "gender": "female",
+      "bloodType": "A+",
+      "appointments": []
+    },
+    {
+      "email": "admin@example.com",
+      "password": "$2b$10$e3kLt/WW.MTJn.YMzYrUrePiWcHRdEd9m3SK.NJ7CI8u5qvjjc5G6",
+      "name": "Admin User",
+      "phone": "+11234567890",
+      "photo": "https://example.com/photos/admin.jpg",
+      "role": "admin",
+      "age": 35,
+      "gender": "prefer not to say",
+      "bloodType": null,
+      "appointments": []
+    },
+    {
+      "email": "lab.tech@example.com",
+      "password": "$2b$10$4NQm.B0rD2GnEJ3o2FiNOej41RPdhO4kHx10ouFgfEdxzUIU/7TeW",
+      "name": "Lab Technician",
+      "phone": "+17123456789",
+      "photo": "https://example.com/photos/labtech.jpg",
+      "role": "labtech",
+      "age": 28,
+      "gender": "other",
+      "bloodType": "B-",
+      "appointments": []
+    }
+  ]
+  
