@@ -11,6 +11,6 @@ node server.js
 # FRONTEND
 cd frontend
 
-npm start
+npm run dev
 
 
