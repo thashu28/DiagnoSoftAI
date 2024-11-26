@@ -43,7 +43,7 @@ const WelcomePage = () => {
 
           {/* Navigation */}
           <nav className="flex space-x-6">
-            {["home", "about", "services", "what doctors say about us"].map((section) => (
+            {["home", "about", "services", "what users say"].map((section) => (
               <button
                 key={section}
                 onClick={() => scrollToSection(section)}
@@ -137,7 +137,7 @@ const WelcomePage = () => {
 
       {/* Testimonials Section */}
       <section
-        id="what doctors say about us"
+        id="what users say"
         className="py-40 bg-blue-50 w-full flex flex-col items-center"
       >
         <h2 className="text-3xl font-bold text-center mb-10 text-gray-800">
@@ -151,11 +151,11 @@ const WelcomePage = () => {
             },
             {
               quote: "The platform is incredibly accurate and fast.",
-              name: "Dr. John Smith",
+              name: "Patient John Smith",
             },
             {
               quote: "Highly recommend for healthcare professionals!",
-              name: "Dr. Emily Clark",
+              name: "Lab Technician Emily Clark",
             },
           ].map((testimonial, index) => (
             <div
