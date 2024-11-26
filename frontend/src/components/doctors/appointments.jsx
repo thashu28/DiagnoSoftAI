@@ -35,7 +35,6 @@ const AppointmentSystem = () => {
   const [chatMessage, setChatMessage] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
 
-  // Handle rescheduling the appointment
   const handleReschedule = () => {
     if (rescheduledDate && rescheduledTime) {
       setSelectedAppointment({
@@ -49,7 +48,6 @@ const AppointmentSystem = () => {
     }
   };
 
-  // Handle sending chat messages
   const handleSendMessage = () => {
     if (chatMessage.trim()) {
       setChatMessages((prevMessages) => [
@@ -63,7 +61,7 @@ const AppointmentSystem = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       {/* Appointment Header */}
-      <header className="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-4 rounded shadow-md">
+      <header className="bg-gradient-to-r from-blue-100 to-white text-gray-800 p-4 rounded shadow-md">
         <h1 className="text-3xl font-semibold">Appointments</h1>
       </header>
 
@@ -73,9 +71,9 @@ const AppointmentSystem = () => {
           <div
             key={appointment.id}
             onClick={() => setSelectedAppointment(appointment)}
-            className={`p-6 shadow-lg rounded-lg cursor-pointer hover:shadow-xl transition-transform transform ${
+            className={`p-6 shadow-md rounded-lg cursor-pointer hover:shadow-lg transition-transform transform ${
               selectedAppointment.id === appointment.id
-                ? "border-4 border-blue-500 bg-blue-50 scale-105"
+                ? "border-2 border-blue-300 bg-blue-50"
                 : "bg-white"
             }`}
           >
@@ -121,7 +119,7 @@ const AppointmentSystem = () => {
           </div>
 
           {/* Reschedule Form */}
-          <div className="bg-gray-100 p-4 rounded-lg shadow-inner">
+          <div className="bg-blue-50 p-4 rounded-lg shadow-inner">
             <h3 className="text-lg font-semibold text-gray-800 mb-3">
               Reschedule Appointment
             </h3>
@@ -151,14 +149,13 @@ const AppointmentSystem = () => {
       <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
         <h3 className="text-2xl font-bold text-gray-800 mb-4">Chat with Patient</h3>
         <div className="h-64 bg-gray-100 p-4 rounded-lg overflow-y-auto mb-4">
-          {/* Display chat messages */}
           {chatMessages.length > 0 ? (
             chatMessages.map((msg, index) => (
               <div
                 key={index}
                 className={`mb-2 p-3 rounded-lg ${
                   msg.sender === "You"
-                    ? "bg-blue-500 text-white self-end ml-auto"
+                    ? "bg-blue-100 text-gray-800 self-end ml-auto"
                     : "bg-gray-200 text-gray-800"
                 } max-w-md`}
               >
