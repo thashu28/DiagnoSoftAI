@@ -11,7 +11,7 @@ const LabTechSchema = new mongoose.Schema({
   },
   dob: { 
     type: Date, 
-    required: true 
+    // required: true 
   },
   gender: { 
     type: String, 
@@ -29,7 +29,7 @@ const LabTechSchema = new mongoose.Schema({
   },
   phone: { 
     type: String, 
-    required: true, 
+    // required: true, 
     validate: {
       validator: (v) => 
         /^(\+1\s?)?(\(\d{3}\)|\d{3})[-.\s]?\d{3}[-.\s]?\d{4}$/.test(v),
@@ -43,20 +43,19 @@ const LabTechSchema = new mongoose.Schema({
   },
   experience: { 
     type: Number, 
-    required: true 
+    // required: true 
   },
   qualification: { 
     type: String, 
-    required: true 
+    // required: true 
   },
   testConducted: [{ 
     type: String, 
-    required: true 
   }],
   specializedIn: [{ 
     type: String, 
-    required: true 
-  }],
+   }],
+   bloodType: { type: String }
 });
 
 export default mongoose.model("LabTech", LabTechSchema);

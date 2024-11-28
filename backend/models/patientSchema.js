@@ -105,7 +105,7 @@ const PatientSchema = new mongoose.Schema({
   },
   dob: { 
     type: Date, 
-    required: true 
+    // required: true 
   },
   gender: { 
     type: String, 
@@ -123,7 +123,7 @@ const PatientSchema = new mongoose.Schema({
   },
   phone: { 
     type: String, 
-    required: true, 
+    // required: true, 
     validate: {
       validator: (v) => 
         /^(\+1\s?)?(\(\d{3}\)|\d{3})[-.\s]?\d{3}[-.\s]?\d{4}$/.test(v),
@@ -137,8 +137,6 @@ const PatientSchema = new mongoose.Schema({
   },
   bloodType: { 
     type: String, 
-    enum: ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"],
-    required: true 
   },
   medicalHistory: { 
     type: [String], 

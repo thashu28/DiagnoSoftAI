@@ -21,7 +21,6 @@ const UserSchema = new mongoose.Schema({
         /^(\+1\s?)?(\(\d{3}\)|\d{3})[-.\s]?\d{3}[-.\s]?\d{4}$/.test(v),
       message: (props) => `${props.value} is not a valid USA phone number!`,
     },
-    required: [true, "Phone number is required"],
   },
   role: { 
     type: String,

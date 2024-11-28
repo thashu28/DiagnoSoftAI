@@ -11,7 +11,7 @@ const DoctorSchema = new mongoose.Schema({
   },
   dob: { 
     type: Date, 
-    required: true 
+    // required: true 
   },
   gender: { 
     type: String, 
@@ -29,11 +29,11 @@ const DoctorSchema = new mongoose.Schema({
   },
   specialization: { 
     type: String, 
-    required: true 
+    // required: true 
   },
   phone: { 
     type: String, 
-    required: true, 
+    // required: true, 
     validate: {
       validator: (v) => 
         /^(\+1\s?)?(\(\d{3}\)|\d{3})[-.\s]?\d{3}[-.\s]?\d{4}$/.test(v),
@@ -48,7 +48,7 @@ const DoctorSchema = new mongoose.Schema({
   experience: { 
     type: Array, 
     of: String, 
-    required: true 
+    // required: true 
   },
   appointments: [{ 
     type: mongoose.Types.ObjectId, 
@@ -58,11 +58,12 @@ const DoctorSchema = new mongoose.Schema({
   qualifications: {
     type: Array, 
     of: String, 
-    required: true 
+    // required: true 
   },
+  bloodType: { type: String },
   department: {
     type: String,
-    required: true,
+    // required: true,
   },
 });
 
