@@ -117,14 +117,14 @@ export const login = async (req, res) => {
     }
 
     // Compare passwords
-    // if (password !== user.password) {
-    //   return res.status(400).json({ message: "Invalid credentials" });
-    // }
-    // Compare the plain password with the hashed password in the database
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
+    if (password !== user.password) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
+    // Compare the plain password with the hashed password in the database
+    // #const isMatch = await bcrypt.compare(password, user.password);
+    // if (!isMatch) {
+    //   return res.status(400).json({ message: "Invalid credentials" });
+    // }
 
     // Generate a token
     const token = generateToken(user);
