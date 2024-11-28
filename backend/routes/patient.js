@@ -5,6 +5,9 @@ import {
   deletePatient,
   getAllPatients,
   getPatientById,
+  addAppointment,
+  addTestReport,
+  addMRIScan,
   deleteAppointment,
   deleteTestReport,
   deleteMRIScan
@@ -19,9 +22,14 @@ router.get("/:id", getPatientById);
 router.put("/:id", updatePatient);
 router.delete("/:id", deletePatient);
 
-// Delete routes for appointments, test reports, and MRI scans
-router.delete("/:patientId/appointment/:appointmentId", deleteAppointment);
-router.delete("/:patientId/testReport/:testReportId", deleteTestReport);
-router.delete("/:patientId/mriScan/:mriScanId", deleteMRIScan);
+// Add routes
+router.post("/:patientId/appointments", addAppointment);
+router.post("/:patientId/testReports", addTestReport);
+router.post("/:patientId/mriScans", addMRIScan);
+
+// Delete routes
+router.delete("/:patientId/appointments/:appointmentId", deleteAppointment);
+router.delete("/:patientId/testReports/:testReportId", deleteTestReport);
+router.delete("/:patientId/mriScans/:mriScanId", deleteMRIScan);
 
 export default router;
