@@ -1,6 +1,9 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import User from "../models/UserSchema.js";
+import Doctor from "../models/DoctorSchema.js";
+import Patient from "../models/patientSchema.js";
+import LabTech from "../models/LabTechSchema.js";
 
 const generateToken = (user) => {
   return jwt.sign(
@@ -40,6 +43,45 @@ export const signup = async (req, res) => {
     // Save the new user
     await newUser.save();
 
+    // Save user in role-specific schema
+    if (role === "doctor") {
+      const doctor = new Doctor({
+        email,
+        password: hashedPassword,
+        name,
+        phone,
+        role,
+        age,
+        gender,
+        bloodType,
+      });
+      await doctor.save();
+    } else if (role === "labtech") {
+      const labTech = new LabTech({
+        email,
+        password: hashedPassword,
+        name,
+        phone,
+        role,
+        age,
+        gender,
+        bloodType,
+      });
+      await labTech.save();
+    } else if (role === "patient") {
+      const patient = new Patient({
+        email,
+        password: hashedPassword,
+        name,
+        phone,
+        role,
+        age,
+        gender,
+        bloodType,
+      });
+      await patient.save();
+    }
+    
     // Generate a token
     const token = generateToken(newUser);
 
