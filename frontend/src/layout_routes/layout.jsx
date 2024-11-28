@@ -26,7 +26,7 @@ const Layout = () => {
           {/* Dashboard Routes */}
           <Route path="/doctors_dashboard" element={<DoctorDashboard />} />
           <Route path="/lab_technician" element={<LabTechnicianDashboard />} />
-          <Route path="/patients" element={<PatientDashboard />} />
+          <Route path="/patients_dashboard" element={<PatientDashboard />} />
 
           {/* Doctor Dashboard Feature Routes */}
           <Route path="/doctor_dashboard/appointments" element={<Appointments />} />
