@@ -61,7 +61,7 @@ const PatientDashboard = () => {
         <main className="w-3/4 p-6">
           {/* Welcome Section */}
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">Welcome, Patient</h2>
+            <h2 className="text-2xl font-semibold mb-4">Welcome, Patient !</h2>
             <div className="bg-white p-6 shadow-md rounded-lg">
               <p className="text-gray-700">
                 Access your appointments, medical scans, reports, and chat with
