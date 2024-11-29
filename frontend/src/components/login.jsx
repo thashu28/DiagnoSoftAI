@@ -28,14 +28,14 @@ const LoginPage = () => {
         
         // Store the token in localStorage (or sessionStorage)
         localStorage.setItem('authToken', token);
-
+        
         // Redirect to the appropriate dashboard based on the user's role
         if (user.role === 'doctor') {
-          navigate('/doctors_dashboard');
+          navigate('/doctors_dashboard',{ state: { user } } );
         } else if (user.role === 'patient') {
-          navigate("/patients_dashboard");
+          navigate("/patients_dashboard",{ state: { user } });
         } else if (user.role === 'labtech') {
-          navigate("/lab_technician");
+          navigate("/lab_technician",{ state: { user } });
         }
       } else {
         setMessage('Invalid username or password.');
