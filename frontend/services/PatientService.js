@@ -1,4 +1,5 @@
-import httpCommon from './httpCommon'; // Assuming you have a common axios instance
+import httpCommon from "./../helpers/httpcommon";
+
 
 // Create a new patient
 export const createPatient = async (patientData) => {
@@ -53,7 +54,7 @@ export const deletePatient = async (patientId) => {
 // Add a new appointment to the patient
 export const addAppointment = async (patientId, appointmentData) => {
   try {
-    const response = await httpCommon.post(`/patients/${patientId}/appointments`, appointmentData);
+    const response = await httpCommon.put(`/api/patients/${patientId}/appointments`, appointmentData);
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : error.message;
