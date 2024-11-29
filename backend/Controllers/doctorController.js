@@ -1,5 +1,5 @@
 import Doctor from "../models/DoctorSchema.js";
-
+import Patient from "../models/patientSchema.js";
 // Create a new doctor
 export const createDoctor = async (req, res) => {
   try {
@@ -19,7 +19,7 @@ export const getAllDoctors = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
+ 
 // Get a single doctor by ID
 export const getDoctorById = async (req, res) => {
   try {
@@ -52,3 +52,37 @@ export const deleteDoctor = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+export const getAppointmentsByDoctorId = async (req, res) => {
+  try {
+    const { doctorId } = req.params; // Extract doctorId from request params
+
+    // Find patients with appointments linked to the specific doctor
+    const patientsWithAppointments = await Patient.find({
+      "appointments.doctor": doctorId, // Match appointments by doctor ID
+    })
+      .populate({
+        path: "appointments.doctor",
+        select: "name email specialization", // Select specific doctor fields
+      })
+      .exec();
+
+    // Structure the response for each patient's relevant appointments
+    const appointments = patientsWithAppointments.map((patient) => ({
+      patientName: patient.name,
+      patientEmail: patient.email,
+      appointments: patient.appointments.filter(
+        (appointment) => appointment.doctor.toString() === doctorId // Filter relevant appointments
+      ),
+    }));
+
+    if (appointments.length === 0) {
+      return res.status(404).json({ success: false, message: "No appointments found for this doctor" });
+    }
+
+    res.status(200).json({ success: true, data: appointments });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
