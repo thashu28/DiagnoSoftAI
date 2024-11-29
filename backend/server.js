@@ -28,7 +28,7 @@ app.use(cors(corsOptions)); // Handles CORS
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/doctors", doctorRoute);
-app.use("/api/patient",patientRoute);
+app.use("/api/patients",patientRoute);
 app.use("/api/labtech",labtechRoute);
 
 // Database connection
