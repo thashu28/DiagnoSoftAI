@@ -30,7 +30,7 @@ const ScheduleAppointments = ({ patientId }) => {
 
   const handleScheduleClick = (doctor) => {
     setSelectedDoctor(doctor); // Set selected doctor when scheduling an appointment
-    setIsModalOpen(true); // Open modal
+    setIsModalOpen(true); // Open modal 
   };
 
   const handleModalClose = () => {
