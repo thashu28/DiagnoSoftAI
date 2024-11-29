@@ -1,183 +1,173 @@
-import React, { useState, useEffect } from "react";
-import { getAllDoctors } from "../../../services/DoctorService"; // assuming your service is in a services file
-import ReactDatePicker from "react-datepicker"; // Import date picker
-import "react-datepicker/dist/react-datepicker.css"; // Import date picker styles
-import { addAppointment } from "../../../services/PatientService"; // assuming you have this service for making API calls
+import React, { useState } from "react";
 
-const ScheduleAppointments = ({ patientId }) => {
-  const [doctors, setDoctors] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
-  const [selectedDoctor, setSelectedDoctor] = useState(null); // Selected doctor
-  const [appointmentDate, setAppointmentDate] = useState(null); // Selected date
-  const [appointmentTime, setAppointmentTime] = useState(""); // Selected time
-  const [condition, setCondition] = useState(""); // Selected condition
-  const [description, setDescription] = useState(""); // Appointment description
-  const [isLoading, setIsLoading] = useState(false); // For loading state
-  const [error, setError] = useState(null); // For handling errors
+const ScheduleAppointments = () => {
+  // Static data for appointment scheduling
+  const availableAppointments = [
+    { id: 1, doctor: "Dr. Sarah Lee", date: "2024-11-22", time: "11:00" },
+    { id: 2, doctor: "Dr. John Doe", date: "2024-11-23", time: "09:00" },
+    { id: 3, doctor: "Dr. Emily Stone", date: "2024-11-24", time: "13:00" },
+  ];
 
-  // Fetch the doctors' data when the component mounts
-  useEffect(() => {
-    const fetchDoctors = async () => {
-      try {
-        const response = await getAllDoctors(); // Get all doctors
-        setDoctors(response.data); // Update state with doctor data
-      } catch (error) {
-        console.error("Error fetching doctors:", error);
-      }
+  // State for handling modal visibility and selected appointment
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
+  // State for form fields
+  const [condition, setCondition] = useState("");
+  const [description, setDescription] = useState("");
+  const [appointmentDate, setAppointmentDate] = useState("");
+  const [appointmentTime, setAppointmentTime] = useState("");
+
+  // Function to handle scheduling (open modal)
+  const handleSchedule = (appointment) => {
+    setSelectedAppointment(appointment); // Set the selected appointment
+    setCondition(""); // Reset condition and description
+    setDescription(""); // Reset description
+    setAppointmentDate(appointment.date); // Set default date
+    setAppointmentTime(appointment.time); // Set default time
+    setShowModal(true); // Show the modal
+  };
+
+  // Function to close modal
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedAppointment(null); // Reset selected appointment
+  };
+
+  // Function to handle form submission (simulating appointment creation)
+  const handleConfirm = () => {
+    const appointmentData = {
+      doctor: selectedAppointment.id, // or selectedAppointment.doctor if you're storing doctor name
+      date: appointmentDate,
+      time: appointmentTime,
+      condition,
+      description,
     };
-    fetchDoctors();
-  }, []);
-
-  const handleScheduleClick = (doctor) => {
-    setSelectedDoctor(doctor); // Set selected doctor when scheduling an appointment
-    setIsModalOpen(true); // Open modal 
-  };
-
-  const handleModalClose = () => {
-    setIsModalOpen(false); // Close modal
-    setError(null); // Reset error state on modal close
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!appointmentDate || !appointmentTime || !condition || !description) {
-      setError("Please fill in all fields.");
-      return;
-    }
-
-    try {
-      setIsLoading(true); // Show loading indicator
-      const appointmentData = {
-        doctor: selectedDoctor._id, // doctor ID from the selected doctor
-        date: appointmentDate,
-        time: appointmentTime,
-        condition,
-        description,
-      };
-
-      // PUT request to confirm the appointment
-      const response = await addAppointment(patientId, appointmentData);
-      console.log("response",response);
-      console.log("Appointment scheduled:", response);
-      setIsModalOpen(false); // Close modal after successful submission
-      setIsLoading(false); // Hide loading indicator
-    } catch (error) {
-      console.error("Error scheduling appointment:", error);
-      setError("Failed to schedule appointment. Please try again.");
-      setIsLoading(false); // Hide loading indicator
-    }
+    console.log("Appointment scheduled:", appointmentData);
+    alert("Appointment Scheduled!");
+    closeModal();
   };
 
   return (
     <div className="min-h-screen flex flex-col">
+      {/* Header */}
       <header className="bg-yellow-800 text-white py-4 px-6">
         <h1 className="text-3xl font-bold">Patient Dashboard</h1>
       </header>
 
+      {/* Main Content */}
       <main className="flex-grow p-6">
         <h2 className="text-2xl font-semibold mb-4">Available Appointments</h2>
         <div className="bg-white p-6 shadow-md rounded-lg">
           <ul>
-            {doctors.length > 0 ? (
-              doctors.map((doctor, index) => (
-                <li
-                  key={index}
-                  className="flex justify-between items-center border-b pb-2 mb-2"
+            {availableAppointments.map((appointment, index) => (
+              <li
+                key={index}
+                className="flex justify-between items-center border-b pb-2 mb-2"
+              >
+                <div>
+                  <p className="font-semibold">{appointment.doctor}</p>
+                  <p className="text-sm text-gray-600">
+                    {appointment.date} at {appointment.time}
+                  </p>
+                </div>
+                <button
+                  className="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-yellow-400"
+                  onClick={() => handleSchedule(appointment)} // Trigger modal open
                 >
-                  <div>
-                    <p className="font-semibold">{doctor.name}</p> {/* Display doctor name */}
-                  </div>
-                  <button
-                    className="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-yellow-400"
-                    onClick={() => handleScheduleClick(doctor)} // Open modal on click
-                  >
-                    Schedule
-                  </button>
-                </li>
-              ))
-            ) : (
-              <p>No doctors available</p> // Show message if no doctors are available
-            )}
+                  Schedule
+                </button>
+              </li>
+            ))}
           </ul>
         </div>
       </main>
 
-      {/* Modal for scheduling appointment */}
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg w-1/3">
-            <h3 className="text-2xl mb-4">Schedule Appointment with {selectedDoctor.name}</h3>
-            <form onSubmit={handleSubmit}>
-              {error && (
-                <div className="text-red-500 mb-4">{error}</div> // Display error message
-              )}
-              <div className="mb-4">
-                <label htmlFor="appointmentDate" className="block mb-2">Select Date</label>
-                <ReactDatePicker
-                  selected={appointmentDate}
-                  onChange={setAppointmentDate}
-                  dateFormat="yyyy-MM-dd"
-                  className="border p-2 w-full"
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="appointmentTime" className="block mb-2">Select Time</label>
-                <select
-                  id="appointmentTime"
-                  value={appointmentTime}
-                  onChange={(e) => setAppointmentTime(e.target.value)}
-                  className="border p-2 w-full"
-                >
-                  <option value="">Select Time</option>
-                  <option value="9:00 AM">9:00 AM</option>
-                  <option value="10:00 AM">10:00 AM</option>
-                  <option value="11:00 AM">11:00 AM</option>
-                  <option value="1:00 PM">1:00 PM</option>
-                  <option value="2:00 PM">2:00 PM</option>
-                  <option value="3:00 PM">3:00 PM</option>
-                </select>
-              </div>
-              <div className="mb-4">
-                <label htmlFor="condition" className="block mb-2">Condition</label>
-                <select
-                  id="condition"
-                  value={condition}
-                  onChange={(e) => setCondition(e.target.value)}
-                  className="border p-2 w-full"
-                >
-                  <option value="">Select Condition</option>
-                  <option value="Critical">Critical</option>
-                  <option value="Stable">Stable</option>
-                  <option value="Routine">Routine</option>
-                </select>
-              </div>
-              <div className="mb-4">
-                <label htmlFor="description" className="block mb-2">Description</label>
-                <textarea
-                  id="description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  className="border p-2 w-full"
-                  rows="4"
-                />
-              </div>
-              <div className="flex justify-between">
-                <button
-                  type="button"
-                  onClick={handleModalClose}
-                  className="bg-gray-500 text-white px-4 py-2 rounded-lg"
-                >
-                  Close
-                </button>
-                <button
-                  type="submit"
-                  className="bg-yellow-500 text-white px-4 py-2 rounded-lg"
-                  disabled={isLoading} // Disable button when loading
-                >
-                  {isLoading ? "Confirming..." : "Confirm Appointment"}
-                </button>
-              </div>
-            </form>
+      {/* Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-96 shadow-lg relative">
+            <h3 className="text-xl font-bold mb-4">Schedule Appointment</h3>
+            <p>
+              <strong>Doctor:</strong> {selectedAppointment.doctor}
+            </p>
+            <p>
+              <strong>Date:</strong> {selectedAppointment.date}
+            </p>
+            <p>
+              <strong>Time:</strong> {selectedAppointment.time}
+            </p>
+
+            {/* Date Input */}
+            <div className="mt-4">
+              <label className="block text-sm font-medium">Select Date</label>
+              <input
+                type="date"
+                className="w-full px-3 py-2 mt-1 border rounded"
+                value={appointmentDate}
+                onChange={(e) => setAppointmentDate(e.target.value)}
+              />
+            </div>
+
+            {/* Time Input */}
+            <div className="mt-4">
+              <label className="block text-sm font-medium">Select Time</label>
+              <input
+                type="time"
+                className="w-full px-3 py-2 mt-1 border rounded"
+                value={appointmentTime}
+                onChange={(e) => setAppointmentTime(e.target.value)}
+              />
+            </div>
+
+            {/* Condition Input */}
+            <div className="mt-4">
+              <label className="block text-sm font-medium">Condition</label>
+              <select
+                className="w-full px-3 py-2 mt-1 border rounded"
+                value={condition}
+                onChange={(e) => setCondition(e.target.value)}
+              >
+                <option value="">Select condition</option>
+                <option value="critical">Critical</option>
+                <option value="stable">Stable</option>
+                <option value="routine">Routine</option>
+              </select>
+            </div>
+
+            {/* Description Input */}
+            <div className="mt-4">
+              <label className="block text-sm font-medium">Description</label>
+              <textarea
+                className="w-full px-3 py-2 mt-1 border rounded"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Additional details (optional)"
+              ></textarea>
+            </div>
+
+            <div className="mt-4 flex justify-end space-x-4">
+              <button
+                className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
+                onClick={closeModal} // Close modal
+              >
+                Cancel
+              </button>
+              <button
+                className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-400"
+                onClick={handleConfirm} // Confirm appointment
+              >
+                Confirm
+              </button>
+            </div>
+
+            {/* Close Icon */}
+            <button
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
+              onClick={closeModal}
+            >
+              &times;
+            </button>
           </div>
         </div>
       )}

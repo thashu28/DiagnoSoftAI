@@ -1,9 +1,9 @@
-import HTTPCommon from "./../helpers/httpcommon";
+import HTTPCommon from "./HTTPCommon";
 
 // Create a new doctor
 export const createDoctor = async (doctorData) => {
   try {
-    const response = await HTTPCommon.post("/api/doctors/", doctorData);
+    const response = await HTTPCommon.post("/doctors", doctorData);
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : error.message;
@@ -13,7 +13,7 @@ export const createDoctor = async (doctorData) => {
 // Get all doctors
 export const getAllDoctors = async () => {
   try {
-    const response = await HTTPCommon.get("/api/doctors/");
+    const response = await HTTPCommon.get("/doctors");
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : error.message;
