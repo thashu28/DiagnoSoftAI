@@ -117,4 +117,19 @@ describe('SignupPage', () => {
     expect(bloodTypeSelect).toHaveValue('A+');
   });
 
+  it('renders signup form with all fields', () => {
+    renderSignupPage();
+    
+    expect(screen.getByLabelText(/name/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/^password$/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/confirm password/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/phone/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/role/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/age/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/gender/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/blood type/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /sign up/i })).toBeInTheDocument();
+  });
+
 });
