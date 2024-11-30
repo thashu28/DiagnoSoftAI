@@ -4,7 +4,6 @@ import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { addAppointment } from "../../../services/PatientService";
 import { useLocation } from "react-router-dom";
-import { getPatientById } from "../../../services/PatientService";
 
 const ScheduleAppointments = () => {
   const location = useLocation();
@@ -25,19 +24,6 @@ const ScheduleAppointments = () => {
 
   const [isLoading, setIsLoading] = useState(false); // Loading state for API call
   const [error, setError] = useState(null); // Error state for validation or API errors
-  const {upcomingAppointments,setUpcomingAppointments} = useState([]);
-
-  useEffect(() => {
-    const AppointmentDetails = async () => {
-      try {
-        const response = await getPatientById(user.id);
-        setUpcomingAppointments(response.data);
-      } catch (error) {
-        console.error("Error fetching doctors:", error);
-      }
-    };
-    AppointmentDetails();
-  }, [user]);
 
   // Fetch the doctors' data when the component mounts
   useEffect(() => {
