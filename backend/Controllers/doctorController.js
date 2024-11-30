@@ -23,7 +23,7 @@ export const getAllDoctors = async (req, res) => {
 // Get a single doctor by ID
 export const getDoctorById = async (req, res) => {
   try {
-    const doctor = await Doctor.findById(req.params.id);
+    const doctor = await Doctor.findById(req.params._id);
     if (!doctor) return res.status(404).json({ success: false, message: "Doctor not found" });
     res.status(200).json({ success: true, data: doctor });
   } catch (error) {

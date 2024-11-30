@@ -4,20 +4,20 @@ const AppointmentSchema = new mongoose.Schema({
   doctor: { 
     type: mongoose.Types.ObjectId, 
     ref: "Doctor", 
-    required: true 
+    // required: true 
   },
   date: { 
     type: Date, 
-    required: true 
+    // required: true 
   },
   time: { 
     type: String, 
-    required: true 
+    // required: true 
   },
   condition: { 
     type: String, 
-    enum: ["critical", "stable", "routine"], 
-    required: true 
+    enum: ["Critical", "Stable", "Routine"], 
+    // required: true 
   },
   description: { 
     type: String, 

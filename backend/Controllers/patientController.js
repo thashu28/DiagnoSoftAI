@@ -58,11 +58,10 @@ export const addAppointment = async (req, res) => {
   try {
     const { patientId } = req.params;
     const { doctor, date, time, condition, description } = req.body;
-
     // Find the patient by ID
     const patient = await Patient.findById(patientId);
     if (!patient) return res.status(404).json({ success: false, message: "Patient not found" });
-
+    
     // Create a new appointment object
     const newAppointment = {
       doctor,
@@ -77,7 +76,6 @@ export const addAppointment = async (req, res) => {
 
     // Save the patient with the new appointment
     await patient.save();
-
     res.status(201).json({ success: true, message: "Appointment added", data: newAppointment });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
