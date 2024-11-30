@@ -7,6 +7,25 @@ const PatientDashboard = () => {
   // Static Data
   const location = useLocation();
   const { user } = location.state || {}; 
+  const [upcomingAppointments, setUpcomingAppointments] = useState([]);
+
+  // Fetch patient appointments
+  useEffect(() => {
+    const fetchAppointmentDetails = async () => {
+      try {
+        if (user?.id) {
+          const response = await getPatientById(user.id);
+          console.log("Appointments Response:", response.data.appointments);
+          setUpcomingAppointments(response.data.appointments || []);
+        }
+      } catch (error) {
+        console.error("Error fetching doctors:", error);
+      }
+    };
+
+    fetchAppointmentDetails();
+  }, [user]);
+
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -75,24 +94,21 @@ const PatientDashboard = () => {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">Upcoming Appointments</h2>
             <div className="bg-white p-4 shadow-md rounded-lg">
+            {upcomingAppointments.length > 0 ? (
               <ul>
-                {upcomingAppointments.map((appointment, index) => (
-                  <li
-                    key={index}
-                    className="flex justify-between items-center border-b pb-2 mb-2"
-                  >
-                    <div>
-                      <p className="font-semibold">{appointment.doctor}</p>
-                      <p className="text-sm text-gray-600">
-                        {appointment.date} at {appointment.time}
-                      </p>
-                    </div>
-                    <button className="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-yellow-400">
-                      Reschedule
-                    </button>
+                {upcomingAppointments.map((appointment) => (
+                  <li key={appointment._id}>
+                    <p>Doctor: {appointment.doctor}</p>
+                    <p>Date: {new Date(appointment.date).toLocaleDateString()}</p>
+                    <p>Time: {appointment.time}</p>
+                    <p>Condition: {appointment.condition}</p>
+                    <p>Description: {appointment.description || "N/A"}</p>
                   </li>
                 ))}
               </ul>
+            ) : (
+              <p>No upcoming appointments.</p>
+            )}
             </div>
           </section>
         </main>
