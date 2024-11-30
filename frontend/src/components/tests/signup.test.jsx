@@ -132,4 +132,26 @@ describe('SignupPage', () => {
     expect(screen.getByRole('button', { name: /sign up/i })).toBeInTheDocument();
   });
 
+  it('handles signup failure', async () => {
+    const errorMessage = 'Email already exists';
+    signup.mockRejectedValueOnce(new Error(errorMessage));
+    renderSignupPage();
+
+    fireEvent.change(screen.getByLabelText(/name/i), { target: { value: 'John Doe' } });
+    fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'existing@example.com' } });
+    fireEvent.change(screen.getByLabelText(/^password$/i), { target: { value: 'password123' } });
+    fireEvent.change(screen.getByLabelText(/confirm password/i), { target: { value: 'password123' } });
+    fireEvent.change(screen.getByLabelText(/phone/i), { target: { value: '1234567890' } });
+    fireEvent.change(screen.getByLabelText(/role/i), { target: { value: 'patient' } });
+    fireEvent.change(screen.getByLabelText(/age/i), { target: { value: '30' } });
+    fireEvent.change(screen.getByLabelText(/gender/i), { target: { value: 'male' } });
+    fireEvent.change(screen.getByLabelText(/blood type/i), { target: { value: 'A+' } });
+
+    fireEvent.submit(screen.getByRole('button', { name: /sign up/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText('Signup failed! Ensure all fields are correct.')).toBeInTheDocument();
+    });
+  });
+
 });
