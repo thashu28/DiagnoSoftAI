@@ -1,16 +1,31 @@
-import React from "react";
+import React, { useState,useEffect } from "react";
 import { Link } from "react-router-dom"; // Import Link for navigation
 import { useLocation } from "react-router-dom";
+import { getPatientById } from "../../../services/PatientService";
 
 const PatientDashboard = () => {
   // Static Data
   const location = useLocation();
   const { user } = location.state || {}; 
-  console.log('user',user)
-  const upcomingAppointments = [
-    { doctor: "Dr. Sarah Lee", date: "20th Nov", time: "2:00 PM" },
-    { doctor: "Dr. John Doe", date: "25th Nov", time: "10:00 AM" },
-  ];
+  const [upcomingAppointments, setUpcomingAppointments] = useState([]);
+
+  // Fetch patient appointments
+  useEffect(() => {
+    const fetchAppointmentDetails = async () => {
+      try {
+        if (user?.id) {
+          const response = await getPatientById(user.id);
+          console.log("Appointments Response:", response.data.appointments);
+          setUpcomingAppointments(response.data.appointments || []);
+        }
+      } catch (error) {
+        console.error("Error fetching doctors:", error);
+      }
+    };
+
+    fetchAppointmentDetails();
+  }, [user]);
+
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -28,6 +43,7 @@ const PatientDashboard = () => {
               <li>
                 <Link
                   to="/patients_dashboard/schedule_appointments" // Redirect to Schedule Appointments Page
+                  state={{ user }}
                   className="w-full text-left px-4 py-2 bg-yellow-700 rounded-lg hover:bg-yellow-600"
                 >
                   Schedule Appointment
@@ -37,6 +53,7 @@ const PatientDashboard = () => {
                 <Link
                   to="/patients_dashboard/view_scans" // Redirect to View Scans Page
                   className="w-full text-left px-4 py-2 bg-yellow-700 rounded-lg hover:bg-yellow-600"
+                  state={{ user }}
                 >
                   View Scans
                 </Link>
@@ -45,6 +62,7 @@ const PatientDashboard = () => {
                 <Link
                   to="/patients_dashboard/view_reports"
                   className="w-full text-left px-4 py-2 bg-yellow-700 rounded-lg hover:bg-yellow-600"
+                  state={{ user }}
                 >
                   View Reports
                 </Link>
@@ -78,24 +96,21 @@ const PatientDashboard = () => {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">Upcoming Appointments</h2>
             <div className="bg-white p-4 shadow-md rounded-lg">
+            {upcomingAppointments.length > 0 ? (
               <ul>
-                {upcomingAppointments.map((appointment, index) => (
-                  <li
-                    key={index}
-                    className="flex justify-between items-center border-b pb-2 mb-2"
-                  >
-                    <div>
-                      <p className="font-semibold">{appointment.doctor}</p>
-                      <p className="text-sm text-gray-600">
-                        {appointment.date} at {appointment.time}
-                      </p>
-                    </div>
-                    <button className="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-yellow-400">
-                      Reschedule
-                    </button>
+                {upcomingAppointments.map((appointment) => (
+                  <li key={appointment._id}>
+                    <p>Doctor: {appointment.doctor}</p>
+                    <p>Date: {new Date(appointment.date).toLocaleDateString()}</p>
+                    <p>Time: {appointment.time}</p>
+                    <p>Condition: {appointment.condition}</p>
+                    <p>Description: {appointment.description || "N/A"}</p>
                   </li>
                 ))}
               </ul>
+            ) : (
+              <p>No upcoming appointments.</p>
+            )}
             </div>
           </section>
         </main>

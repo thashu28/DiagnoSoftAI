@@ -23,7 +23,7 @@ router.put("/:id", updatePatient);
 router.delete("/:id", deletePatient);
 
 // Add routes
-router.put("/:patientId/appointments", addAppointment);
+router.post("/:patientId/appointments", addAppointment);
 router.post("/:patientId/testReports", addTestReport);
 router.post("/:patientId/mriScans", addMRIScan);
 
