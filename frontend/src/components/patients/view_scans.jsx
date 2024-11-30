@@ -1,46 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
-// Static data for the logged-in patient's scans based on MRIScanSchema
-const patientScans = [
-  {
-    id: "S001",
-    scanType: "Brain MRI",
-    fileUrl: "https://via.placeholder.com/300", // Replace with real scan URL
-    description: "Brain MRI shows minor abnormalities.",
-    requestedBy: "Dr. Sarah Lee", // Replace with actual doctor's name
-    uploadDate: "2024-11-20",
-    scanStatus: "Completed",
-    comments: "Brain MRI shows minor abnormalities.",
-  },
-  {
-    id: "S002",
-    scanType: "Spine MRI",
-    fileUrl: "https://via.placeholder.com/300", // Replace with real scan URL
-    description: "Scheduled for review next week.",
-    requestedBy: "Dr. John Doe", // Replace with actual doctor's name
-    uploadDate: "2024-11-18",
-    scanStatus: "Pending",
-    comments: "Scheduled for review next week.",
-  },
-  {
-    id: "S003",
-    scanType: "Abdomen MRI",
-    fileUrl: "https://via.placeholder.com/300", // Replace with real scan URL
-    description: "No abnormalities detected in the abdomen.",
-    requestedBy: "Dr. Emma Brown", // Replace with actual doctor's name
-    uploadDate: "2024-11-15",
-    scanStatus: "Completed",
-    comments: "No abnormalities detected in the abdomen.",
-  },
-];
+import { getPatientById } from "../../../services/PatientService";
+import { useLocation } from "react-router-dom";
 
 const PatientViewScans = () => {
+  const location = useLocation();
+  const { user } = location.state || {};
+
+  const [scans, setScans] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Filter scans based on search input
-  const filteredScans = patientScans.filter((scan) =>
-    scan.scanType.toLowerCase().includes(searchQuery.toLowerCase())
+  // Fetch patient scans
+  useEffect(() => {
+    const fetchReportDetails = async () => {
+      try {
+        if (user?.id) {
+          const response = await getPatientById(user.id);
+          console.log("Scans Response:", response.data.mriScans);
+          setScans(response.data.mriScans || []);
+        }
+      } catch (error) {
+        console.error("Error fetching scans:", error);
+      }
+    };
+
+    fetchReportDetails();
+  }, [user]);
+
+  // Filter scans based on search query
+  const filteredScans = scans.filter((scan) =>
+    scan.scanType.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    scan.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -59,46 +49,77 @@ const PatientViewScans = () => {
           <input
             type="text"
             className="w-full p-3 border rounded-lg"
-            placeholder="Search by scan type (e.g., MRI)..."
+            placeholder="Search by scan type or description..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
 
         {/* Scan Blocks */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredScans.map((scan) => (
-            <div
-              key={scan.id}
-              className="bg-white p-4 shadow-md rounded-lg flex flex-col items-center"
-            >
-              <h3 className="text-lg font-semibold">{scan.scanType}</h3>
-              <p className="text-sm text-gray-600">ID: {scan.id}</p>
-              <p className="text-sm text-gray-600">Requested By: {scan.requestedBy}</p>
-              <p className="text-sm text-gray-600">Upload Date: {new Date(scan.uploadDate).toLocaleDateString()}</p>
-              <p className="text-sm text-gray-600">Status: {scan.scanStatus}</p>
-              <p className="text-sm text-gray-600 text-center">{scan.description}</p>
-              <p className="text-sm text-gray-600 text-center">{scan.comments}</p>
-              <img
-                src={scan.fileUrl}
-                alt={`Scan for ${scan.scanType}`}
-                className="mt-4 w-full h-auto rounded-lg"
-              />
-              {scan.scanStatus === "Completed" ? (
-                <Link
-                  to={scan.fileUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-4 bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-400"
-                >
-                  View Full Scan
-                </Link>
-              ) : (
-                <span className="mt-4 text-red-500 font-semibold">Pending</span>
-              )}
-            </div>
-          ))}
-        </div>
+        {filteredScans.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredScans.map((scan) => (
+              <div
+                key={scan.id}
+                className="bg-white p-4 shadow-md rounded-lg flex flex-col"
+              >
+                {/* Scan Header */}
+                <div className="flex justify-between items-center">
+                  <h3 className="text-lg font-semibold">{scan.scanType}</h3>
+                  <span
+                    className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                      scan.status === "Completed"
+                        ? "bg-green-100 text-green-800"
+                        : "bg-red-100 text-red-800"
+                    }`}
+                  >
+                    {scan.status}
+                  </span>
+                </div>
+                <p className="text-sm text-gray-600 mt-2">{scan.description}</p>
+
+                {/* Additional Details */}
+                <div className="mt-4">
+                  <p className="text-sm text-gray-600">
+                    <strong>Requested By:</strong> {scan.requestedBy}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    <strong>Upload Date:</strong>{" "}
+                    {new Date(scan.uploadDate).toLocaleDateString()}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    <strong>Comments:</strong> {scan.comments || "N/A"}
+                  </p>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="mt-4">
+                  {scan.status === "Completed" ? (
+                    <Link
+                      to={scan.fileUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block bg-green-500 text-white text-center py-2 px-4 rounded-lg hover:bg-green-400"
+                    >
+                      View Full Scan
+                    </Link>
+                  ) : (
+                    <button
+                      disabled
+                      className="block bg-gray-300 text-gray-500 text-center py-2 px-4 rounded-lg cursor-not-allowed"
+                    >
+                      Pending
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-gray-600">
+            No scans found. Please adjust your search query.
+          </p>
+        )}
       </main>
 
       {/* Footer */}

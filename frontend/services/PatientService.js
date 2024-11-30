@@ -95,7 +95,7 @@ export const deleteTestReport = async (patientId, testReportId) => {
 // Add an MRI scan to the patient
 export const addMRIScan = async (patientId, mriScanData) => {
   try {
-    const response = await httpCommon.post(`/patients/${patientId}/mri-scans`, mriScanData);
+    const response = await httpCommon.post(`/patients/${patientId}/mriScans`, mriScanData);
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : error.message;

@@ -53,6 +53,7 @@ const PatientDashboard = () => {
                 <Link
                   to="/patients_dashboard/view_scans" // Redirect to View Scans Page
                   className="w-full text-left px-4 py-2 bg-yellow-700 rounded-lg hover:bg-yellow-600"
+                  state={{ user }}
                 >
                   View Scans
                 </Link>
@@ -61,6 +62,7 @@ const PatientDashboard = () => {
                 <Link
                   to="/patients_dashboard/view_reports"
                   className="w-full text-left px-4 py-2 bg-yellow-700 rounded-lg hover:bg-yellow-600"
+                  state={{ user }}
                 >
                   View Reports
                 </Link>
