@@ -1,31 +1,37 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-// Static data for the logged-in patient's scans
+// Static data for the logged-in patient's scans based on MRIScanSchema
 const patientScans = [
   {
     id: "S001",
-    scanType: "MRI",
+    scanType: "Brain MRI",
+    fileUrl: "https://via.placeholder.com/300", // Replace with real scan URL
+    description: "Brain MRI shows minor abnormalities.",
+    requestedBy: "Dr. Sarah Lee", // Replace with actual doctor's name
+    uploadDate: "2024-11-20",
     scanStatus: "Completed",
-    scanUrl: "https://via.placeholder.com/300", // Replace with real scan URL
-    scanDate: "2024-11-20",
     comments: "Brain MRI shows minor abnormalities.",
   },
   {
     id: "S002",
-    scanType: "CT Scan",
+    scanType: "Spine MRI",
+    fileUrl: "https://via.placeholder.com/300", // Replace with real scan URL
+    description: "Scheduled for review next week.",
+    requestedBy: "Dr. John Doe", // Replace with actual doctor's name
+    uploadDate: "2024-11-18",
     scanStatus: "Pending",
-    scanUrl: "https://via.placeholder.com/300", // Replace with real scan URL
-    scanDate: "2024-11-18",
     comments: "Scheduled for review next week.",
   },
   {
     id: "S003",
-    scanType: "X-Ray",
+    scanType: "Abdomen MRI",
+    fileUrl: "https://via.placeholder.com/300", // Replace with real scan URL
+    description: "No abnormalities detected in the abdomen.",
+    requestedBy: "Dr. Emma Brown", // Replace with actual doctor's name
+    uploadDate: "2024-11-15",
     scanStatus: "Completed",
-    scanUrl: "https://via.placeholder.com/300", // Replace with real scan URL
-    scanDate: "2024-11-15",
-    comments: "No fractures detected.",
+    comments: "No abnormalities detected in the abdomen.",
   },
 ];
 
@@ -39,11 +45,10 @@ const PatientViewScans = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
-       {/* Header */}
+      {/* Header */}
       <header className="bg-yellow-800 text-white p-4">
         <h1 className="text-3xl font-bold">Patient Dashboard</h1>
       </header>
-      
 
       {/* Main Content */}
       <main className="flex-grow p-6">
@@ -69,22 +74,28 @@ const PatientViewScans = () => {
             >
               <h3 className="text-lg font-semibold">{scan.scanType}</h3>
               <p className="text-sm text-gray-600">ID: {scan.id}</p>
-              <p className="text-sm text-gray-600">Scan Status: {scan.scanStatus}</p>
-              <p className="text-sm text-gray-600">Scan Date: {scan.scanDate}</p>
+              <p className="text-sm text-gray-600">Requested By: {scan.requestedBy}</p>
+              <p className="text-sm text-gray-600">Upload Date: {new Date(scan.uploadDate).toLocaleDateString()}</p>
+              <p className="text-sm text-gray-600">Status: {scan.scanStatus}</p>
+              <p className="text-sm text-gray-600 text-center">{scan.description}</p>
               <p className="text-sm text-gray-600 text-center">{scan.comments}</p>
               <img
-                src={scan.scanUrl}
+                src={scan.fileUrl}
                 alt={`Scan for ${scan.scanType}`}
                 className="mt-4 w-full h-auto rounded-lg"
               />
-              <Link
-                to={scan.scanUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-400"
-              >
-                View Full Scan
-              </Link>
+              {scan.scanStatus === "Completed" ? (
+                <Link
+                  to={scan.fileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-400"
+                >
+                  View Full Scan
+                </Link>
+              ) : (
+                <span className="mt-4 text-red-500 font-semibold">Pending</span>
+              )}
             </div>
           ))}
         </div>
