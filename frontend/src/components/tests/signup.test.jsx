@@ -83,4 +83,38 @@ describe('SignupPage', () => {
     });
   });
 
+  it('handles input changes', () => {
+    renderSignupPage();
+    
+    const nameInput = screen.getByLabelText(/name/i);
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByLabelText(/^password$/i);
+    const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
+    const phoneInput = screen.getByLabelText(/phone/i);
+    const roleSelect = screen.getByLabelText(/role/i);
+    const ageInput = screen.getByLabelText(/age/i);
+    const genderSelect = screen.getByLabelText(/gender/i);
+    const bloodTypeSelect = screen.getByLabelText(/blood type/i);
+
+    fireEvent.change(nameInput, { target: { value: 'John Doe' } });
+    fireEvent.change(emailInput, { target: { value: 'john@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'password123' } });
+    fireEvent.change(confirmPasswordInput, { target: { value: 'password123' } });
+    fireEvent.change(phoneInput, { target: { value: '1234567890' } });
+    fireEvent.change(roleSelect, { target: { value: 'patient' } });
+    fireEvent.change(ageInput, { target: { value: '30' } });
+    fireEvent.change(genderSelect, { target: { value: 'male' } });
+    fireEvent.change(bloodTypeSelect, { target: { value: 'A+' } });
+
+    expect(nameInput).toHaveValue('John Doe');
+    expect(emailInput).toHaveValue('john@example.com');
+    expect(passwordInput).toHaveValue('password123');
+    expect(confirmPasswordInput).toHaveValue('password123');
+    expect(phoneInput).toHaveValue('1234567890');
+    expect(roleSelect).toHaveValue('patient');
+    expect(ageInput).toHaveValue(30);
+    expect(genderSelect).toHaveValue('male');
+    expect(bloodTypeSelect).toHaveValue('A+');
+  });
+
 });
