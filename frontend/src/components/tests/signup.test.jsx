@@ -70,4 +70,17 @@ describe('SignupPage', () => {
     expect(screen.getByText('Signup successful!')).toBeInTheDocument();
   });
 
+  it('validates required fields', async () => {
+    renderSignupPage();
+    
+    fireEvent.submit(screen.getByRole('button', { name: /sign up/i }));
+
+    await waitFor(() => {
+      const requiredFields = screen.getAllByRole('textbox');
+      requiredFields.forEach(field => {
+        expect(field).toBeInvalid();
+      });
+    });
+  });
+
 });
