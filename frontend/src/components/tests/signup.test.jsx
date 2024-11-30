@@ -154,4 +154,48 @@ describe('SignupPage', () => {
     });
   });
 
+  it('handles successful doctor signup', async () => {
+    const mockResponse = {
+      success: true,
+      token: 'mock-token',
+      user: {
+        role: 'doctor',
+        id: '456',
+        name: 'Dr. Smith',
+        email: 'doctor@example.com'
+      }
+    };
+
+    signup.mockResolvedValueOnce(mockResponse);
+    renderSignupPage();
+
+    fireEvent.change(screen.getByLabelText(/name/i), { target: { value: 'Dr. Smith' } });
+    fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'doctor@example.com' } });
+    fireEvent.change(screen.getByLabelText(/^password$/i), { target: { value: 'password123' } });
+    fireEvent.change(screen.getByLabelText(/confirm password/i), { target: { value: 'password123' } });
+    fireEvent.change(screen.getByLabelText(/phone/i), { target: { value: '1234567890' } });
+    fireEvent.change(screen.getByLabelText(/role/i), { target: { value: 'doctor' } });
+    fireEvent.change(screen.getByLabelText(/age/i), { target: { value: '30' } });
+    fireEvent.change(screen.getByLabelText(/gender/i), { target: { value: 'male' } });
+    fireEvent.change(screen.getByLabelText(/blood type/i), { target: { value: 'A+' } });
+
+    fireEvent.submit(screen.getByRole('button', { name: /sign up/i }));
+
+    await waitFor(() => {
+      expect(signup).toHaveBeenCalledWith({
+        name: 'Dr. Smith',
+        email: 'doctor@example.com',
+        password: 'password123',
+        confirmPassword: 'password123',
+        phone: '1234567890',
+        role: 'doctor',
+        age: '30',
+        gender: 'male',
+        bloodType: 'A+'
+      });
+    });
+
+    expect(screen.getByText('Signup successful!')).toBeInTheDocument();
+  });
+
 });
