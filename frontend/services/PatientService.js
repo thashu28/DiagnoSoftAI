@@ -14,7 +14,7 @@ export const createPatient = async (patientData) => {
 // Get all patients
 export const getAllPatients = async () => {
   try {
-    const response = await httpCommon.get('/patients');
+    const response = await httpCommon.get('/api/patients');
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : error.message;
@@ -24,7 +24,7 @@ export const getAllPatients = async () => {
 // Get a single patient by ID
 export const getPatientById = async (patientId) => {
   try {
-    const response = await httpCommon.get(`/patients/${patientId}`);
+    const response = await httpCommon.get(`/api/patients/${patientId}`);
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : error.message;
@@ -34,7 +34,7 @@ export const getPatientById = async (patientId) => {
 // Update a patient
 export const updatePatient = async (patientId, patientData) => {
   try {
-    const response = await httpCommon.put(`/patients/${patientId}`, patientData);
+    const response = await httpCommon.put(`/api/patients/${patientId}`, patientData);
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : error.message;
@@ -44,7 +44,7 @@ export const updatePatient = async (patientId, patientData) => {
 // Delete a patient
 export const deletePatient = async (patientId) => {
   try {
-    const response = await httpCommon.delete(`/patients/${patientId}`);
+    const response = await httpCommon.delete(`/api/patients/${patientId}`);
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : error.message;
@@ -54,12 +54,13 @@ export const deletePatient = async (patientId) => {
 // Add a new appointment to the patient
 export const addAppointment = async (patientId, appointmentData) => {
   try {
-    const response = await httpCommon.put(`/api/patients/${patientId}/appointments`, appointmentData);
+    const response = await httpCommon.post(`/api/patients/${patientId}/appointments`, appointmentData);
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : error.message;
   }
 };
+
 
 // Delete an appointment
 export const deleteAppointment = async (patientId, appointmentId) => {

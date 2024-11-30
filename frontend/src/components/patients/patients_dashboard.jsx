@@ -1,16 +1,12 @@
-import React from "react";
+import React, { useState,useEffect } from "react";
 import { Link } from "react-router-dom"; // Import Link for navigation
 import { useLocation } from "react-router-dom";
+import { getPatientById } from "../../../services/PatientService";
 
 const PatientDashboard = () => {
   // Static Data
   const location = useLocation();
   const { user } = location.state || {}; 
-  console.log('user',user)
-  const upcomingAppointments = [
-    { doctor: "Dr. Sarah Lee", date: "20th Nov", time: "2:00 PM" },
-    { doctor: "Dr. John Doe", date: "25th Nov", time: "10:00 AM" },
-  ];
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -28,6 +24,7 @@ const PatientDashboard = () => {
               <li>
                 <Link
                   to="/patients_dashboard/schedule_appointments" // Redirect to Schedule Appointments Page
+                  state={{ user }}
                   className="w-full text-left px-4 py-2 bg-yellow-700 rounded-lg hover:bg-yellow-600"
                 >
                   Schedule Appointment

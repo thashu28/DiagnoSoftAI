@@ -1,26 +1,50 @@
 import React, { useState, useEffect } from "react";
-import { getAllDoctors } from "../../../services/DoctorService"; // assuming your service is in a services file
-import ReactDatePicker from "react-datepicker"; // Import date picker
-import "react-datepicker/dist/react-datepicker.css"; // Import date picker styles
-import { addAppointment } from "../../../services/PatientService"; // assuming you have this service for making API calls
+import { getAllDoctors } from "../../../services/DoctorService";
+import ReactDatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { addAppointment } from "../../../services/PatientService";
+import { useLocation } from "react-router-dom";
+import { getPatientById } from "../../../services/PatientService";
 
-const ScheduleAppointments = ({ patientId }) => {
+const ScheduleAppointments = () => {
+  const location = useLocation();
+  const { user } = location.state || {};
+
+  // State for managing doctors and modal visibility
   const [doctors, setDoctors] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
-  const [selectedDoctor, setSelectedDoctor] = useState(null); // Selected doctor
-  const [appointmentDate, setAppointmentDate] = useState(null); // Selected date
-  const [appointmentTime, setAppointmentTime] = useState(""); // Selected time
-  const [condition, setCondition] = useState(""); // Selected condition
-  const [description, setDescription] = useState(""); // Appointment description
-  const [isLoading, setIsLoading] = useState(false); // For loading state
-  const [error, setError] = useState(null); // For handling errors
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Consolidated state for form inputs
+  const [formState, setFormState] = useState({
+    selectedDoctor: null,
+    appointmentDate: null,
+    appointmentTime: "",
+    condition: "",
+    description: "",
+  });
+
+  const [isLoading, setIsLoading] = useState(false); // Loading state for API call
+  const [error, setError] = useState(null); // Error state for validation or API errors
+  const {upcomingAppointments,setUpcomingAppointments} = useState([]);
+
+  useEffect(() => {
+    const AppointmentDetails = async () => {
+      try {
+        const response = await getPatientById(user.id);
+        setUpcomingAppointments(response.data);
+      } catch (error) {
+        console.error("Error fetching doctors:", error);
+      }
+    };
+    AppointmentDetails();
+  }, [user]);
 
   // Fetch the doctors' data when the component mounts
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const response = await getAllDoctors(); // Get all doctors
-        setDoctors(response.data); // Update state with doctor data
+        const response = await getAllDoctors();
+        setDoctors(response.data);
       } catch (error) {
         console.error("Error fetching doctors:", error);
       }
@@ -29,42 +53,65 @@ const ScheduleAppointments = ({ patientId }) => {
   }, []);
 
   const handleScheduleClick = (doctor) => {
-    setSelectedDoctor(doctor); // Set selected doctor when scheduling an appointment
-    setIsModalOpen(true); // Open modal 
+    setFormState((prev) => ({
+      ...prev,
+      selectedDoctor: doctor,
+    }));
+    setIsModalOpen(true);
   };
 
   const handleModalClose = () => {
-    setIsModalOpen(false); // Close modal
-    setError(null); // Reset error state on modal close
+    setIsModalOpen(false);
+    setError(null);
+    setFormState({
+      selectedDoctor: null,
+      appointmentDate: null,
+      appointmentTime: "",
+      condition: "",
+      description: "",
+    });
+  };
+
+  const handleFormChange = (field, value) => {
+    setFormState((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!appointmentDate || !appointmentTime || !condition || !description) {
+    setError(null);
+
+    const { appointmentDate, appointmentTime, condition, description, selectedDoctor } =
+      formState;
+
+    if (!appointmentDate || !appointmentTime || !condition ) {
       setError("Please fill in all fields.");
       return;
     }
 
     try {
-      setIsLoading(true); // Show loading indicator
+      setIsLoading(true);
+
       const appointmentData = {
-        doctor: selectedDoctor._id, // doctor ID from the selected doctor
-        date: appointmentDate,
+        doctor: selectedDoctor._id,
+        date: appointmentDate.toISOString().split("T")[0],
         time: appointmentTime,
         condition,
         description,
       };
-
-      // PUT request to confirm the appointment
-      const response = await addAppointment(patientId, appointmentData);
-      console.log("response",response);
+      console.log('appoint',appointmentData)
+      const response = await addAppointment(user.id, appointmentData);
       console.log("Appointment scheduled:", response);
-      setIsModalOpen(false); // Close modal after successful submission
-      setIsLoading(false); // Hide loading indicator
+      setIsModalOpen(false);
     } catch (error) {
       console.error("Error scheduling appointment:", error);
-      setError("Failed to schedule appointment. Please try again.");
-      setIsLoading(false); // Hide loading indicator
+      setError(
+        error.message || "Failed to schedule appointment. Please try again."
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -85,47 +132,54 @@ const ScheduleAppointments = ({ patientId }) => {
                   className="flex justify-between items-center border-b pb-2 mb-2"
                 >
                   <div>
-                    <p className="font-semibold">{doctor.name}</p> {/* Display doctor name */}
+                    <p className="font-semibold">{doctor.name}</p>
                   </div>
                   <button
                     className="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-yellow-400"
-                    onClick={() => handleScheduleClick(doctor)} // Open modal on click
+                    onClick={() => handleScheduleClick(doctor)}
                   >
                     Schedule
                   </button>
                 </li>
               ))
             ) : (
-              <p>No doctors available</p> // Show message if no doctors are available
+              <p>No doctors available</p>
             )}
           </ul>
         </div>
       </main>
 
-      {/* Modal for scheduling appointment */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg w-1/3">
-            <h3 className="text-2xl mb-4">Schedule Appointment with {selectedDoctor.name}</h3>
+            <h3 className="text-2xl mb-4">
+              Schedule Appointment with {formState.selectedDoctor.name}
+            </h3>
             <form onSubmit={handleSubmit}>
               {error && (
-                <div className="text-red-500 mb-4">{error}</div> // Display error message
+                <div className="text-red-500 mb-4">{error}</div>
               )}
               <div className="mb-4">
-                <label htmlFor="appointmentDate" className="block mb-2">Select Date</label>
+                <label htmlFor="appointmentDate" className="block mb-2">
+                  Select Date
+                </label>
                 <ReactDatePicker
-                  selected={appointmentDate}
-                  onChange={setAppointmentDate}
+                  selected={formState.appointmentDate}
+                  onChange={(date) => handleFormChange("appointmentDate", date)}
                   dateFormat="yyyy-MM-dd"
                   className="border p-2 w-full"
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="appointmentTime" className="block mb-2">Select Time</label>
+                <label htmlFor="appointmentTime" className="block mb-2">
+                  Select Time
+                </label>
                 <select
                   id="appointmentTime"
-                  value={appointmentTime}
-                  onChange={(e) => setAppointmentTime(e.target.value)}
+                  value={formState.appointmentTime}
+                  onChange={(e) =>
+                    handleFormChange("appointmentTime", e.target.value)
+                  }
                   className="border p-2 w-full"
                 >
                   <option value="">Select Time</option>
@@ -138,11 +192,15 @@ const ScheduleAppointments = ({ patientId }) => {
                 </select>
               </div>
               <div className="mb-4">
-                <label htmlFor="condition" className="block mb-2">Condition</label>
+                <label htmlFor="condition" className="block mb-2">
+                  Condition
+                </label>
                 <select
                   id="condition"
-                  value={condition}
-                  onChange={(e) => setCondition(e.target.value)}
+                  value={formState.condition}
+                  onChange={(e) =>
+                    handleFormChange("condition", e.target.value)
+                  }
                   className="border p-2 w-full"
                 >
                   <option value="">Select Condition</option>
@@ -152,11 +210,15 @@ const ScheduleAppointments = ({ patientId }) => {
                 </select>
               </div>
               <div className="mb-4">
-                <label htmlFor="description" className="block mb-2">Description</label>
+                <label htmlFor="description" className="block mb-2">
+                  Description
+                </label>
                 <textarea
                   id="description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  value={formState.description}
+                  onChange={(e) =>
+                    handleFormChange("description", e.target.value)
+                  }
                   className="border p-2 w-full"
                   rows="4"
                 />
@@ -172,7 +234,7 @@ const ScheduleAppointments = ({ patientId }) => {
                 <button
                   type="submit"
                   className="bg-yellow-500 text-white px-4 py-2 rounded-lg"
-                  disabled={isLoading} // Disable button when loading
+                  disabled={isLoading}
                 >
                   {isLoading ? "Confirming..." : "Confirm Appointment"}
                 </button>
@@ -182,7 +244,6 @@ const ScheduleAppointments = ({ patientId }) => {
         </div>
       )}
 
-      {/* Footer */}
       <footer className="bg-yellow-800 text-white py-4 text-center">
         <p>&copy; 2024 DiagnoSoftAI. All Rights Reserved.</p>
       </footer>
