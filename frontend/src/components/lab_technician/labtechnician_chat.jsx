@@ -8,7 +8,7 @@ const LabTechnicianChat = () => {
   const handleChatSelection = (option) => {
     setChatOption(option);
     setMessages([
-      { sender: "System", text: `You are now chatting with a ${option}` },
+      { sender: "System", text: `You are now chatting with a ${option}.` },
     ]); // Initialize chat messages with a system message
   };
 
@@ -26,24 +26,26 @@ const LabTechnicianChat = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gray-50">
       {/* Header */}
-      <header className="bg-yellow-800 text-white py-4 px-6">
-        <h1 className="text-3xl font-bold">Lab Technician Dashboard</h1>
+      <header className="bg-gradient-to-r from-indigo-400 to-purple-400 text-white py-4 px-6 shadow-md">
+        <h1 className="text-3xl font-bold tracking-wide text-center">Lab Technician Dashboard</h1>
       </header>
 
       {/* Main Content */}
       <main className="flex-grow bg-gray-100 p-6">
         {/* Chat Option Selector */}
-        <div className="bg-white p-6 shadow-md rounded-lg mx-auto w-3/4 md:w-1/2 mb-4">
-          <h2 className="text-2xl font-semibold mb-4 text-center">
+        <div className="bg-white p-6 shadow-lg rounded-lg mx-auto w-3/4 md:w-1/2 mb-6">
+          <h2 className="text-2xl font-semibold mb-6 text-center">
             Chat with a Doctor or Patient
           </h2>
           <div className="flex justify-around">
             <button
               onClick={() => handleChatSelection("Doctor")}
-              className={`bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-400 ${
-                chatOption === "Doctor" ? "opacity-50" : ""
+              className={`px-6 py-3 rounded-lg transition-all text-white font-medium shadow-md ${
+                chatOption === "Doctor"
+                  ? "bg-indigo-500 opacity-75"
+                  : "bg-indigo-500 hover:bg-indigo-400"
               }`}
               disabled={chatOption === "Doctor"}
             >
@@ -51,8 +53,10 @@ const LabTechnicianChat = () => {
             </button>
             <button
               onClick={() => handleChatSelection("Patient")}
-              className={`bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-400 ${
-                chatOption === "Patient" ? "opacity-50" : ""
+              className={`px-6 py-3 rounded-lg transition-all text-white font-medium shadow-md ${
+                chatOption === "Patient"
+                  ? "bg-green-500 opacity-75"
+                  : "bg-green-500 hover:bg-green-400"
               }`}
               disabled={chatOption === "Patient"}
             >
@@ -63,7 +67,7 @@ const LabTechnicianChat = () => {
 
         {/* Chat Block */}
         {chatOption && (
-          <div className="bg-white p-6 shadow-md rounded-lg mx-auto w-3/4 md:w-1/2">
+          <div className="bg-white p-6 shadow-lg rounded-lg mx-auto w-3/4 md:w-1/2">
             <h3 className="text-xl font-semibold mb-4 text-center">
               Chat with {chatOption}
             </h3>
@@ -87,11 +91,11 @@ const LabTechnicianChat = () => {
                 placeholder="Type a message..."
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
-                className="flex-grow border border-gray-300 rounded-lg px-4 py-2 mr-2"
+                className="flex-grow border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
               />
               <button
                 onClick={handleSendMessage}
-                className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-400"
+                className="ml-2 px-6 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-400 transition"
               >
                 Send
               </button>
@@ -101,7 +105,7 @@ const LabTechnicianChat = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-yellow-800 text-white py-4 text-center">
+      <footer className="bg-gray-200 text-gray-600 text-center py-4">
         <p>&copy; 2024 DiagnoSoftAI. All Rights Reserved.</p>
       </footer>
     </div>

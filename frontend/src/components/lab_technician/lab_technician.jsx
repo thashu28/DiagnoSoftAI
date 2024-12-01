@@ -9,22 +9,22 @@ const LabTechnicianDashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gray-100">
       {/* Header */}
-      <header className="bg-yellow-800 text-white p-4">
-        <h1 className="text-3xl font-bold">Lab Technician Dashboard</h1>
+      <header className="bg-gradient-to-r from-indigo-400 to-purple-400 text-white p-6 shadow-md">
+        <h1 className="text-3xl font-bold tracking-wide">Lab Technician Dashboard</h1>
       </header>
 
       {/* Main Content */}
-      <div className="flex flex-grow bg-gray-100">
+      <div className="flex flex-grow">
         {/* Sidebar (1/4 Section) */}
-        <aside className="w-1/4 bg-yellow-800 text-white p-6">
+        <aside className="w-1/4 bg-gray-200 p-6 shadow-md">
           <nav>
-            <ul className="space-y-6">
+            <ul className="space-y-4">
               <li>
                 <Link
                   to="/lab_technician/upload_scans" // Redirect to Upload Scans Page
-                  className="w-full text-left px-4 py-2 bg-yellow-700 rounded-lg hover:bg-yellow-600 hover:scale-105 transform transition shadow-md"
+                  className="block w-full text-left px-4 py-3 bg-white rounded-lg shadow hover:bg-gray-300 transition"
                 >
                   Upload Scans
                 </Link>
@@ -32,7 +32,7 @@ const LabTechnicianDashboard = () => {
               <li>
                 <Link
                   to="/lab_technician/emergency_scans" // Redirect to Emergency Scans Page
-                  className="w-full text-left px-4 py-2 bg-yellow-700 rounded-lg hover:bg-yellow-600 hover:scale-105 transform transition shadow-md"
+                  className="block w-full text-left px-4 py-3 bg-white rounded-lg shadow hover:bg-gray-300 transition"
                 >
                   Emergency Scans
                 </Link>
@@ -40,7 +40,7 @@ const LabTechnicianDashboard = () => {
               <li>
                 <Link
                   to="/lab_technician/labtechnician_chat" // Redirect to Lab Technician Chat Page
-                  className="w-full text-left px-4 py-2 bg-yellow-700 rounded-lg hover:bg-yellow-600 hover:scale-105 transform transition shadow-md"
+                  className="block w-full text-left px-4 py-3 bg-white rounded-lg shadow hover:bg-gray-300 transition"
                 >
                   Chat
                 </Link>
@@ -53,30 +53,39 @@ const LabTechnicianDashboard = () => {
         <main className="w-3/4 p-6">
           {/* Welcome Section */}
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">Welcome, Lab Technician!</h2>
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+              Welcome, Lab Technician!
+            </h2>
             <div className="bg-white p-6 shadow-md rounded-lg">
-              <p className="text-gray-700">
-                "Effortlessly upload, and manage scans, while empowering fast, AI-driven care for patients in need."
+              <p className="text-gray-700 text-lg">
+                "Effortlessly upload, and manage scans, while empowering fast, AI-driven care
+                for patients in need."
               </p>
             </div>
           </section>
 
           {/* Pending Scans Section */}
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">Pending Scans</h2>
-            <div className="bg-white p-4 shadow-md rounded-lg">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Pending Scans</h2>
+            <div className="bg-white p-6 shadow-md rounded-lg">
               <ul>
                 {pendingScans.map((scan, index) => (
                   <li
                     key={index}
-                    className="flex justify-between items-center border-b pb-2 mb-2"
+                    className="flex justify-between items-center border-b pb-3 mb-3 last:border-b-0 last:pb-0 last:mb-0"
                   >
                     <div>
-                      <p className="font-semibold">{scan.patient}</p>
-                      <p className="text-sm text-gray-600">
+                      <p className="font-semibold text-gray-800">{scan.patient}</p>
+                      <p className="text-sm text-gray-500">
                         {scan.scanType} - {scan.date} at {scan.time}
                       </p>
                     </div>
+                    <Link
+                      to="/lab_technician/upload_scans"
+                      className="text-purple-500 font-medium hover:underline"
+                    >
+                      View Details
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -86,7 +95,7 @@ const LabTechnicianDashboard = () => {
       </div>
 
       {/* Footer */}
-      <footer className="bg-yellow-800 text-white text-center p-4">
+      <footer className="bg-gray-200 text-gray-600 text-center p-4 mt-auto border-t">
         <p>&copy; 2024 Diagnosoft AI. All rights reserved.</p>
       </footer>
     </div>
