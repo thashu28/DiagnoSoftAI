@@ -16,7 +16,6 @@ const PatientViewScans = () => {
       try {
         if (user?.id) {
           const response = await getPatientById(user.id);
-          console.log("Scans Response:", response.data.mriScans);
           setScans(response.data.mriScans || []);
         }
       } catch (error) {
@@ -34,21 +33,23 @@ const PatientViewScans = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Header */}
-      <header className="bg-yellow-800 text-white p-4">
-        <h1 className="text-3xl font-bold">Patient Dashboard</h1>
+      <header className="bg-gradient-to-r from-gray-800 to-gray-700 text-white p-4 shadow-md">
+        <h1 className="text-3xl font-bold text-center">Patient Dashboard</h1>
       </header>
 
       {/* Main Content */}
       <main className="flex-grow p-6">
-        <h2 className="text-xl font-semibold mb-4">View Your Medical Scans</h2>
+        <h2 className="text-2xl font-semibold mb-6 text-gray-800">
+          View Your Medical Scans
+        </h2>
 
         {/* Search Bar */}
         <div className="mb-6">
           <input
             type="text"
-            className="w-full p-3 border rounded-lg"
+            className="w-full p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
             placeholder="Search by scan type or description..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -61,11 +62,13 @@ const PatientViewScans = () => {
             {filteredScans.map((scan) => (
               <div
                 key={scan.id}
-                className="bg-white p-4 shadow-md rounded-lg flex flex-col"
+                className="bg-white p-4 shadow-md rounded-lg transition-transform transform hover:scale-105"
               >
                 {/* Scan Header */}
                 <div className="flex justify-between items-center">
-                  <h3 className="text-lg font-semibold">{scan.scanType}</h3>
+                  <h3 className="text-lg font-semibold text-gray-800">
+                    {scan.scanType}
+                  </h3>
                   <span
                     className={`px-3 py-1 rounded-full text-sm font-semibold ${
                       scan.status === "Completed"
@@ -76,10 +79,12 @@ const PatientViewScans = () => {
                     {scan.status}
                   </span>
                 </div>
-                <p className="text-sm text-gray-600 mt-2">{scan.description}</p>
+                <p className="text-sm text-gray-600 mt-2">
+                  {scan.description}
+                </p>
 
                 {/* Additional Details */}
-                <div className="mt-4">
+                <div className="mt-4 space-y-2">
                   <p className="text-sm text-gray-600">
                     <strong>Requested By:</strong> {scan.requestedBy}
                   </p>
@@ -99,7 +104,7 @@ const PatientViewScans = () => {
                       to={scan.fileUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="block bg-green-500 text-white text-center py-2 px-4 rounded-lg hover:bg-green-400"
+                      className="block bg-blue-500 text-white text-center py-2 px-4 rounded-lg hover:bg-blue-400 transition"
                     >
                       View Full Scan
                     </Link>
@@ -123,7 +128,7 @@ const PatientViewScans = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-yellow-800 text-white text-center p-4">
+      <footer className="bg-gray-800 text-white text-center py-4">
         <p>&copy; 2024 DiagnoSoftAI. All Rights Reserved.</p>
       </footer>
     </div>

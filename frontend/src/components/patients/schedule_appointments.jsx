@@ -9,11 +9,8 @@ const ScheduleAppointments = () => {
   const location = useLocation();
   const { user } = location.state || {};
 
-  // State for managing doctors and modal visibility
   const [doctors, setDoctors] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // Consolidated state for form inputs
   const [formState, setFormState] = useState({
     selectedDoctor: null,
     appointmentDate: null,
@@ -21,11 +18,9 @@ const ScheduleAppointments = () => {
     condition: "",
     description: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const [isLoading, setIsLoading] = useState(false); // Loading state for API call
-  const [error, setError] = useState(null); // Error state for validation or API errors
-
-  // Fetch the doctors' data when the component mounts
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
@@ -72,7 +67,7 @@ const ScheduleAppointments = () => {
     const { appointmentDate, appointmentTime, condition, description, selectedDoctor } =
       formState;
 
-    if (!appointmentDate || !appointmentTime || !condition ) {
+    if (!appointmentDate || !appointmentTime || !condition) {
       setError("Please fill in all fields.");
       return;
     }
@@ -87,86 +82,77 @@ const ScheduleAppointments = () => {
         condition,
         description,
       };
-      console.log('appoint',appointmentData)
       const response = await addAppointment(user.id, appointmentData);
       console.log("Appointment scheduled:", response);
       setIsModalOpen(false);
     } catch (error) {
       console.error("Error scheduling appointment:", error);
-      setError(
-        error.message || "Failed to schedule appointment. Please try again."
-      );
+      setError(error.message || "Failed to schedule appointment. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="bg-yellow-800 text-white py-4 px-6">
-        <h1 className="text-3xl font-bold">Patient Dashboard</h1>
+    <div className="min-h-screen flex flex-col bg-gray-100">
+      <header className="bg-gradient-to-r from-gray-700 to-gray-900 text-white py-4 px-6 shadow-md">
+        <h1 className="text-3xl font-bold text-center">Patient Dashboard</h1>
       </header>
 
       <main className="flex-grow p-6">
         <h2 className="text-2xl font-semibold mb-4">Available Appointments</h2>
         <div className="bg-white p-6 shadow-md rounded-lg">
-          <ul>
-            {doctors.length > 0 ? (
-              doctors.map((doctor, index) => (
+          {doctors.length > 0 ? (
+            <ul className="space-y-4">
+              {doctors.map((doctor, index) => (
                 <li
                   key={index}
                   className="flex justify-between items-center border-b pb-2 mb-2"
                 >
-                  <div>
-                    <p className="font-semibold">{doctor.name}</p>
-                  </div>
+                  <p className="font-semibold text-gray-800">{doctor.name}</p>
                   <button
-                    className="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-yellow-400"
+                    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-400 transition"
                     onClick={() => handleScheduleClick(doctor)}
                   >
                     Schedule
                   </button>
                 </li>
-              ))
-            ) : (
-              <p>No doctors available</p>
-            )}
-          </ul>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-gray-600">No doctors available</p>
+          )}
         </div>
       </main>
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg w-1/3">
-            <h3 className="text-2xl mb-4">
+          <div className="bg-white p-6 rounded-lg shadow-xl w-1/3">
+            <h3 className="text-2xl font-semibold mb-4 text-center">
               Schedule Appointment with {formState.selectedDoctor.name}
             </h3>
             <form onSubmit={handleSubmit}>
-              {error && (
-                <div className="text-red-500 mb-4">{error}</div>
-              )}
+              {error && <div className="text-red-500 mb-4">{error}</div>}
               <div className="mb-4">
-                <label htmlFor="appointmentDate" className="block mb-2">
+                <label htmlFor="appointmentDate" className="block text-gray-700 font-semibold mb-2">
                   Select Date
                 </label>
                 <ReactDatePicker
                   selected={formState.appointmentDate}
                   onChange={(date) => handleFormChange("appointmentDate", date)}
                   dateFormat="yyyy-MM-dd"
-                  className="border p-2 w-full"
+                  className="border p-2 w-full rounded-lg"
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="appointmentTime" className="block mb-2">
+                <label htmlFor="appointmentTime" className="block text-gray-700 font-semibold mb-2">
                   Select Time
                 </label>
                 <select
                   id="appointmentTime"
                   value={formState.appointmentTime}
-                  onChange={(e) =>
-                    handleFormChange("appointmentTime", e.target.value)
-                  }
-                  className="border p-2 w-full"
+                  onChange={(e) => handleFormChange("appointmentTime", e.target.value)}
+                  className="border p-2 w-full rounded-lg"
                 >
                   <option value="">Select Time</option>
                   <option value="9:00 AM">9:00 AM</option>
@@ -178,16 +164,14 @@ const ScheduleAppointments = () => {
                 </select>
               </div>
               <div className="mb-4">
-                <label htmlFor="condition" className="block mb-2">
+                <label htmlFor="condition" className="block text-gray-700 font-semibold mb-2">
                   Condition
                 </label>
                 <select
                   id="condition"
                   value={formState.condition}
-                  onChange={(e) =>
-                    handleFormChange("condition", e.target.value)
-                  }
-                  className="border p-2 w-full"
+                  onChange={(e) => handleFormChange("condition", e.target.value)}
+                  className="border p-2 w-full rounded-lg"
                 >
                   <option value="">Select Condition</option>
                   <option value="Critical">Critical</option>
@@ -196,16 +180,14 @@ const ScheduleAppointments = () => {
                 </select>
               </div>
               <div className="mb-4">
-                <label htmlFor="description" className="block mb-2">
+                <label htmlFor="description" className="block text-gray-700 font-semibold mb-2">
                   Description
                 </label>
                 <textarea
                   id="description"
                   value={formState.description}
-                  onChange={(e) =>
-                    handleFormChange("description", e.target.value)
-                  }
-                  className="border p-2 w-full"
+                  onChange={(e) => handleFormChange("description", e.target.value)}
+                  className="border p-2 w-full rounded-lg"
                   rows="4"
                 />
               </div>
@@ -213,13 +195,13 @@ const ScheduleAppointments = () => {
                 <button
                   type="button"
                   onClick={handleModalClose}
-                  className="bg-gray-500 text-white px-4 py-2 rounded-lg"
+                  className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-400 transition"
                 >
                   Close
                 </button>
                 <button
                   type="submit"
-                  className="bg-yellow-500 text-white px-4 py-2 rounded-lg"
+                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-400 transition"
                   disabled={isLoading}
                 >
                   {isLoading ? "Confirming..." : "Confirm Appointment"}
@@ -230,7 +212,7 @@ const ScheduleAppointments = () => {
         </div>
       )}
 
-      <footer className="bg-yellow-800 text-white py-4 text-center">
+      <footer className="bg-gray-900 text-white text-center py-4">
         <p>&copy; 2024 DiagnoSoftAI. All Rights Reserved.</p>
       </footer>
     </div>
