@@ -10,6 +10,7 @@ import userRoute from "./routes/user.js";
 import doctorRoute from "./routes/doctor.js";
 import patientRoute from "./routes/patient.js";
 import labtechRoute from "./routes/labtech.js";
+import chatbotRoute from "./routes/chatbot.js";
 
 // Config
 dotenv.config();
@@ -30,6 +31,7 @@ app.use("/api/users", userRoute);
 app.use("/api/doctors", doctorRoute);
 app.use("/api/patients",patientRoute);
 app.use("/api/labtech",labtechRoute);
+app.use("/api/chatbot", chatbotRoute);
 
 // Database connection
 mongoose.set("strictQuery", false);
