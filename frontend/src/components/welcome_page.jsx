@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 const WelcomePage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [activeButton, setActiveButton] = useState(null); // To track which button is loading
   const [activeSection, setActiveSection] = useState("home");
-
   // Function to handle smooth scrolling to sections
   const scrollToSection = (id) => {
     setActiveSection(id);
@@ -14,16 +13,16 @@ const WelcomePage = () => {
       element.scrollIntoView({ behavior: "smooth" });
     }
   };
-
   // Simulate loading state for buttons
-  const handleClick = (path) => {
+  const handleClick = (path, buttonType) => {
     setLoading(true);
+    setActiveButton(buttonType);
     setTimeout(() => {
       navigate(path);
       setLoading(false);
+      setActiveButton(null); // Reset after navigation
     }, 1000); // Simulate delay
   };
-
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col font-poppins">
       {/* Header Section */}
@@ -40,7 +39,6 @@ const WelcomePage = () => {
               DiagnosoftAI
             </h1>
           </div>
-
           {/* Navigation */}
           <nav className="flex space-x-6">
             {["home", "about", "services", "what users say"].map((section) => (
@@ -59,7 +57,6 @@ const WelcomePage = () => {
           </nav>
         </div>
       </header>
-
       {/* Hero Section */}
       <section
         id="home"
@@ -73,24 +70,24 @@ const WelcomePage = () => {
           Our AI-driven platform assists healthcare professionals in providing
           faster, more accurate diagnosis, improving patient outcomes.
         </p>
-
         {/* Buttons for Login and Signup */}
         <div className="flex space-x-6">
           <button
-            onClick={() => handleClick("/login")}
+            onClick={() => handleClick("/login", "login")}
             className="bg-blue-600 text-white py-3 px-8 rounded-lg text-lg shadow hover:bg-blue-500 transition ease-in-out duration-300"
+            disabled={loading && activeButton === "login"} // Disable button while loading
           >
-            {loading ? "Loading..." : "Login"}
+            {loading && activeButton === "login" ? "Loading..." : "Login"}
           </button>
           <button
-            onClick={() => handleClick("/signup")}
+            onClick={() => handleClick("/signup", "signup")}
             className="bg-yellow-500 text-white py-3 px-8 rounded-lg text-lg shadow hover:bg-yellow-400 transition ease-in-out duration-300"
+            disabled={loading && activeButton === "signup"} // Disable button while loading
           >
-            {loading ? "Loading..." : "Sign Up"}
+            {loading && activeButton === "signup" ? "Loading..." : "Sign Up"}
           </button>
         </div>
       </section>
-
       {/* About Section */}
       <section
         id="about"
@@ -106,7 +103,6 @@ const WelcomePage = () => {
           and save lives.
         </p>
       </section>
-
       {/* Services Section */}
       <section
         id="services"
@@ -134,7 +130,6 @@ const WelcomePage = () => {
           ))}
         </div>
       </section>
-
       {/* Testimonials Section */}
       <section
         id="what users say"
@@ -168,7 +163,6 @@ const WelcomePage = () => {
           ))}
         </div>
       </section>
-
       {/* Footer Section */}
       <footer className="bg-blue-800 text-white py-6 w-full">
         <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
@@ -189,5 +183,7 @@ const WelcomePage = () => {
     </div>
   );
 };
-
 export default WelcomePage;
+
+
+
