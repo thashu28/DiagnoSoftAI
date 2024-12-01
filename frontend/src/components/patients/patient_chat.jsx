@@ -26,24 +26,24 @@ const PatientChat = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gray-100">
       {/* Header */}
-      <header className="bg-yellow-800 text-white py-4 px-6">
-        <h1 className="text-3xl font-bold">Patient Dashboard</h1>
+      <header className="bg-gradient-to-r from-gray-700 to-gray-900 text-white p-4 shadow-lg">
+        <h1 className="text-3xl font-bold text-center">Patient Dashboard</h1>
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow bg-gray-100 p-6">
+      <main className="flex-grow p-8">
         {/* Chat Option Selector */}
-        <div className="bg-white p-6 shadow-md rounded-lg mx-auto w-3/4 md:w-1/2 mb-4">
-          <h2 className="text-2xl font-semibold mb-4 text-center">
+        <div className="bg-white p-8 shadow-lg rounded-lg mx-auto w-full md:w-1/2 mb-6">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
             Chat with a Doctor or Lab Technician
           </h2>
           <div className="flex justify-around">
             <button
               onClick={() => handleChatSelection("Doctor")}
-              className={`bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-400 ${
-                chatOption === "Doctor" ? "opacity-50" : ""
+              className={`bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-400 transition ${
+                chatOption === "Doctor" ? "opacity-50 cursor-not-allowed" : ""
               }`}
               disabled={chatOption === "Doctor"}
             >
@@ -51,8 +51,10 @@ const PatientChat = () => {
             </button>
             <button
               onClick={() => handleChatSelection("Lab Technician")}
-              className={`bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-400 ${
-                chatOption === "Lab Technician" ? "opacity-50" : ""
+              className={`bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-400 transition ${
+                chatOption === "Lab Technician"
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
               }`}
               disabled={chatOption === "Lab Technician"}
             >
@@ -63,8 +65,8 @@ const PatientChat = () => {
 
         {/* Chat Block */}
         {chatOption && (
-          <div className="bg-white p-6 shadow-md rounded-lg mx-auto w-3/4 md:w-1/2">
-            <h3 className="text-xl font-semibold mb-4 text-center">
+          <div className="bg-white p-8 shadow-lg rounded-lg mx-auto w-full md:w-1/2">
+            <h3 className="text-xl font-semibold text-gray-800 mb-6 text-center">
               Chat with {chatOption}
             </h3>
             <div className="border rounded-lg p-4 h-64 overflow-y-auto bg-gray-50">
@@ -87,11 +89,11 @@ const PatientChat = () => {
                 placeholder="Type a message..."
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
-                className="flex-grow border border-gray-300 rounded-lg px-4 py-2 mr-2"
+                className="flex-grow border border-gray-300 rounded-lg px-4 py-2 mr-2 focus:ring-2 focus:ring-blue-500"
               />
               <button
                 onClick={handleSendMessage}
-                className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-400"
+                className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-400 transition"
               >
                 Send
               </button>
@@ -101,8 +103,8 @@ const PatientChat = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-yellow-800 text-white py-4 text-center">
-        <p>&copy; 2024 DiagnoSoftAI. All Rights Reserved.</p>
+      <footer className="bg-gray-800 text-white py-4 text-center">
+        <p>&copy; 2024 Diagnosoft AI. All Rights Reserved.</p>
       </footer>
     </div>
   );
