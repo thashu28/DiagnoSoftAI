@@ -10,7 +10,7 @@ import PatientDashboard from '../components/patients/patients_dashboard';
 
 
 // Importing the new pages for Doctor's Dashboard features
-import Appointments from '../components/doctors/appointments';
+import AppointmentSystem from '../components/doctors/appointments';
 import ViewScans from '../components/doctors/view_scans';
 import PatientResults from '../components/doctors/patients_results';
 import ChatSystem from '../components/doctors/chatbot';
@@ -43,7 +43,7 @@ const Layout = () => {
           <Route path="/patients_dashboard" element={<PatientDashboard />} />
 
           {/* Doctor Dashboard Feature Routes */}
-          <Route path="/doctor_dashboard/appointments" element={<Appointments />} />
+          <Route path="/doctor_dashboard/appointments" element={<AppointmentSystem />} />
           <Route path="/doctor_dashboard/view_scans" element={<ViewScans />} />
           <Route path="/doctor_dashboard/patients_results" element={<PatientResults />} />
           <Route path="/doctor_dashboard/chatbot" element={<ChatSystem />} />
