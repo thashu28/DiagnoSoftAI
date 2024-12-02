@@ -25,7 +25,7 @@ import PatientChat from '../components/patients/patient_Chat';
 import LabTechnicianChat from '../components/lab_technician/labtechnician_chat';
 import UploadScans from '../components/lab_technician/upload_scans';
 import EmergencyScans from '../components/lab_technician/emergency_scans';
-
+import LabTechniciansTestReports from '../components/lab_technician/test_reports';
 
 const Layout = () => {
   return (
@@ -59,7 +59,7 @@ const Layout = () => {
           <Route path="/lab_technician/upload_scans" element={<UploadScans />} />
           <Route path="/lab_technician/labtechnician_chat" element={<LabTechnicianChat />} />
           <Route path="/lab_technician/emergency_scans" element={<EmergencyScans />} />
-    
+          <Route path="/lab_technician/test_reports" element={<LabTechniciansTestReports />} />
         </Routes>
       </main>
     </>
