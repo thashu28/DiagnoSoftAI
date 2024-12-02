@@ -1,4 +1,4 @@
-import openai from '../openai.js';
+// import openai from '../openai.js';
 
 export const generateResponse = async (req, res) => {
   try {

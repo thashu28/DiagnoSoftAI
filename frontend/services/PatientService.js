@@ -65,7 +65,7 @@ export const addAppointment = async (patientId, appointmentData) => {
 // Delete an appointment
 export const deleteAppointment = async (patientId, appointmentId) => {
   try {
-    const response = await httpCommon.delete(`/patients/${patientId}/appointments/${appointmentId}`);
+    const response = await httpCommon.delete(`api/patients/${patientId}/appointments/${appointmentId}`);
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : error.message;
@@ -75,7 +75,7 @@ export const deleteAppointment = async (patientId, appointmentId) => {
 // Add a test report to the patient
 export const addTestReport = async (patientId, testReportData) => {
   try {
-    const response = await httpCommon.post(`/patients/${patientId}/test-reports`, testReportData);
+    const response = await httpCommon.post(`api/patients/${patientId}/testReports`, testReportData);
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : error.message;
@@ -85,7 +85,7 @@ export const addTestReport = async (patientId, testReportData) => {
 // Delete a test report
 export const deleteTestReport = async (patientId, testReportId) => {
   try {
-    const response = await httpCommon.delete(`/patients/${patientId}/test-reports/${testReportId}`);
+    const response = await httpCommon.delete(`api/patients/${patientId}/testReports/${testReportId}`);
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : error.message;
@@ -95,7 +95,7 @@ export const deleteTestReport = async (patientId, testReportId) => {
 // Add an MRI scan to the patient
 export const addMRIScan = async (patientId, mriScanData) => {
   try {
-    const response = await httpCommon.post(`/patients/${patientId}/mriScans`, mriScanData);
+    const response = await httpCommon.post(`api/patients/${patientId}/mriScans`, mriScanData);
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : error.message;
@@ -105,9 +105,12 @@ export const addMRIScan = async (patientId, mriScanData) => {
 // Delete an MRI scan
 export const deleteMRIScan = async (patientId, mriScanId) => {
   try {
-    const response = await httpCommon.delete(`/patients/${patientId}/mri-scans/${mriScanId}`);
+    const response = await httpCommon.delete(`api/patients/${patientId}/mriScans/${mriScanId}`);
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : error.message;
   }
 };
+
+
+

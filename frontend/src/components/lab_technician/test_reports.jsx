@@ -1,21 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { getAllPatients } from "../../../services/PatientService";
-import { addMRIScan } from "../../../services/PatientService";
-
-const LabTechnicianUploadScans = () => {
-
+import { addTestReport } from "../../../services/PatientService";
+const LabTechniciansTestReports = () => {
   const [patients, setPatients] = useState([]);
   const [formData, setFormData] = useState({
     patientId: "",
-    scanType: "",
+    testType: "",
     date: "",
     fileUrl: "",
     description: "",
     comments: "",
+    priority: "normal", // default value
   });
 
   const [message, setMessage] = useState(""); // To show success or error messages
-  const scanTypes = ["Brain", "Spine", "Abdomen", "Pelvis", "Other"]; // Updated scan types
+  const testTypes = [
+    "Blood Test",
+    "Cholesterol Test",
+    "Urine Test",
+    "Glucose Test",
+    "Other",
+  ]; // Test types from the schema
 
   // Fetch patients when the component mounts
   useEffect(() => {
@@ -38,29 +43,32 @@ const LabTechnicianUploadScans = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const mriScanData = {
-        scanType: formData.scanType,
+      const testReportData = {
+        testType: formData.testType,
         fileUrl: formData.fileUrl,
         description: formData.description,
         requestedBy: formData.patientId, // Assuming the patient ID is used for `requestedBy`
-        uploadDate: new Date().toISOString(), // Set uploadDate as the current timestamp in milliseconds
-        status: "Completed",
+        uploadDate: new Date().toISOString(), // Set uploadDate as the current timestamp
+        priority: formData.priority,
+        status: "Completed", // Default status is pending when uploaded
         comments: formData.comments,
       };
-      console.log(mriScanData)
-      await addMRIScan(formData.patientId, mriScanData); // Call API
-      setMessage("Scan uploaded successfully!");
+
+      console.log(testReportData);
+      await addTestReport(formData.patientId, testReportData); // Call API to upload report
+      setMessage("Test report uploaded successfully!");
       setFormData({
         patientId: "",
-        scanType: "",
+        testType: "",
         date: "",
         fileUrl: "",
         description: "",
         comments: "",
+        priority: "normal", // reset to default
       }); // Reset form
     } catch (error) {
-      setMessage(error.message || "Failed to upload scan.");
-      console.error("Error uploading scan:", error);
+      setMessage(error.message || "Failed to upload test report.");
+      console.error("Error uploading test report:", error);
     }
   };
 
@@ -73,9 +81,9 @@ const LabTechnicianUploadScans = () => {
 
       {/* Main Content */}
       <div className="flex flex-grow p-6">
-        {/* Upload Scan Form */}
+        {/* Upload Test Report Form */}
         <section className="w-2/3 bg-white p-6 rounded-lg shadow-md mr-6">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Upload a New Scan</h2>
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Upload a New Test Report</h2>
           {message && (
             <div className="p-3 mb-4 text-white bg-green-500 rounded">
               {message}
@@ -98,24 +106,26 @@ const LabTechnicianUploadScans = () => {
                 ))}
               </select>
             </div>
+
             <div>
-              <label className="block text-gray-700 font-medium mb-2">Scan Type</label>
+              <label className="block text-gray-700 font-medium mb-2">Test Type</label>
               <select
-                name="scanType"
-                value={formData.scanType}
+                name="testType"
+                value={formData.testType}
                 onChange={handleInputChange}
                 className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
               >
-                <option value="">Select a scan type</option>
-                {scanTypes.map((type, index) => (
+                <option value="">Select a test type</option>
+                {testTypes.map((type, index) => (
                   <option key={index} value={type}>
                     {type}
                   </option>
                 ))}
               </select>
             </div>
+
             <div>
-              <label className="block text-gray-700 font-medium mb-2">Upload Scan File URL</label>
+              <label className="block text-gray-700 font-medium mb-2">Upload Test Report File URL</label>
               <input
                 type="url"
                 name="fileUrl"
@@ -125,16 +135,18 @@ const LabTechnicianUploadScans = () => {
                 className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
               />
             </div>
+
             <div>
               <label className="block text-gray-700 font-medium mb-2">Description</label>
               <textarea
                 name="description"
                 value={formData.description}
                 onChange={handleInputChange}
-                placeholder="Enter scan description"
+                placeholder="Enter test report description"
                 className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
               ></textarea>
             </div>
+
             <div>
               <label className="block text-gray-700 font-medium mb-2">Comments</label>
               <textarea
@@ -145,42 +157,56 @@ const LabTechnicianUploadScans = () => {
                 className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
               ></textarea>
             </div>
+
+            <div>
+              <label className="block text-gray-700 font-medium mb-2">Priority</label>
+              <select
+                name="priority"
+                value={formData.priority}
+                onChange={handleInputChange}
+                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              >
+                <option value="normal">Normal</option>
+                <option value="High">High</option>
+              </select>
+            </div>
+
             <button
               type="submit"
               className="w-full bg-indigo-500 text-white py-3 rounded-lg hover:bg-indigo-600 transition"
             >
-              Upload Scan
+              Upload Test Report
             </button>
           </form>
         </section>
 
-        {/* Uploaded Scans Section */}
+        {/* Uploaded Test Reports Section */}
+        {/* Uploaded Test Reports Section */}
         <section className="w-1/3 bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Uploaded Scans</h2>
-          <ul className="space-y-3">
-            {patients.map((scan, index) => {
-              // Filter only completed scans
-              const completedScans = scan.mriScans.filter(scan => scan.status === "Completed");
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4">Uploaded Test Reports</h2>
+        <ul className="space-y-3">
+            {patients.map((patient, index) => {
+            // Filter only completed test reports
+            const completedReports = patient.testReports.filter(report => report.status === "Completed");
 
-              return completedScans.length > 0 ? (
-                completedScans.map((completedScan, subIndex) => (
-                  <li key={`${index}-${subIndex}`} className="p-3 border rounded-lg bg-gray-50 shadow-sm">
-                    <p className="font-medium text-gray-700">{scan.patient}</p>
-                    <p className="text-sm text-gray-600">{completedScan.scanType}</p>
+            return completedReports.length > 0 ? (
+                completedReports.map((completedReport, subIndex) => (
+                <li key={`${index}-${subIndex}`} className="p-3 border rounded-lg bg-gray-50 shadow-sm">
+                    <p className="font-medium text-gray-700">{patient.name}</p>
+                    <p className="text-sm text-gray-600">{completedReport.testType}</p>
                     <p className="text-sm text-gray-500">
-                      {new Date(completedScan.uploadDate).toLocaleString()}
+                    {new Date(completedReport.uploadDate).toLocaleString()}
                     </p>
-                    <a href={completedScan.fileUrl} target="_blank" rel="noopener noreferrer" className="text-indigo-500">
-                      View File
+                    <a href={completedReport.fileUrl} target="_blank" rel="noopener noreferrer" className="text-indigo-500">
+                    View Report
                     </a>
-                  </li>
+                </li>
                 ))
-              ) : null; // If no completed scans, return nothing for this patient
+            ) : null; // If no completed reports, return nothing for this patient
             })}
-          </ul>
+        </ul>
         </section>
 
-        
       </div>
 
       {/* Footer */}
@@ -191,4 +217,5 @@ const LabTechnicianUploadScans = () => {
   );
 };
 
-export default LabTechnicianUploadScans;
+export default LabTechniciansTestReports;
+
