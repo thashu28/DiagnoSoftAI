@@ -1,39 +1,37 @@
-import React, { useState } from "react";
-
-// Static data for demo purposes
-const appointments = [
-  {
-    id: 1,
-    patientName: "John Doe",
-    date: "2024-11-25",
-    time: "10:00 AM",
-    condition: "Critical",
-    chatAvailable: true,
-  },
-  {
-    id: 2,
-    patientName: "Jane Smith",
-    date: "2024-11-26",
-    time: "02:00 PM",
-    condition: "Stable",
-    chatAvailable: true,
-  },
-  {
-    id: 3,
-    patientName: "Alice Johnson",
-    date: "2024-11-27",
-    time: "11:00 AM",
-    condition: "Critical",
-    chatAvailable: false,
-  },
-];
+import React, { useState, useEffect } from "react";
+import { getAllPatients } from "../../../services/PatientService";
+import { useLocation } from "react-router-dom";
 
 const AppointmentSystem = () => {
-  const [selectedAppointment, setSelectedAppointment] = useState(appointments[0]);
+  const location = useLocation();
+  const { user } = location.state || {}; // user object containing doctor's details
+
+  const [patients, setPatients] = useState([]);
+  const [appointments, setAppointments] = useState([]); // Store appointments
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [rescheduledDate, setRescheduledDate] = useState("");
   const [rescheduledTime, setRescheduledTime] = useState("");
   const [chatMessage, setChatMessage] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
+
+  // Fetch patients when the component mounts
+  useEffect(() => {
+    const fetchPatients = async () => {
+      try {
+        const response = await getAllPatients();
+        setPatients(response.data);
+        console.log('response',response.data)
+        // Filter appointments for the logged-in doctor (user.id)
+        const doctorAppointments = response.data.flatMap(patient => 
+          patient.appointments.filter(appointment => appointment.doctor === user.id)
+        );
+        setAppointments(doctorAppointments); // Only appointments assigned to the logged-in doctor
+      } catch (error) {
+        console.error("Error fetching patients:", error);
+      }
+    };
+    fetchPatients();
+  }, [user.id]);
 
   const handleReschedule = () => {
     if (rescheduledDate && rescheduledTime) {
@@ -69,10 +67,10 @@ const AppointmentSystem = () => {
       <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {appointments.map((appointment) => (
           <div
-            key={appointment.id}
+            key={appointment._id}
             onClick={() => setSelectedAppointment(appointment)}
             className={`p-6 shadow-md rounded-lg cursor-pointer hover:shadow-lg transition-transform transform ${
-              selectedAppointment.id === appointment.id
+              selectedAppointment?._id === appointment._id
                 ? "border-2 border-blue-300 bg-blue-50"
                 : "bg-white"
             }`}
@@ -96,24 +94,24 @@ const AppointmentSystem = () => {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <p className="text-lg text-gray-700">
-              <strong>Patient:</strong> {selectedAppointment.patientName}
+              <strong>Patient:</strong> {selectedAppointment?.patientName}
             </p>
             <p className="text-lg text-gray-700 mt-2">
-              <strong>Date:</strong> {selectedAppointment.date}
+              <strong>Date:</strong> {selectedAppointment?.date}
             </p>
             <p className="text-lg text-gray-700 mt-2">
-              <strong>Time:</strong> {selectedAppointment.time}
+              <strong>Time:</strong> {selectedAppointment?.time}
             </p>
             <p className="text-lg text-gray-700 mt-2">
               <strong>Condition:</strong>{" "}
               <span
                 className={`${
-                  selectedAppointment.condition === "Critical"
+                  selectedAppointment?.condition === "Critical"
                     ? "text-red-500 font-semibold"
                     : "text-green-500 font-semibold"
                 }`}
               >
-                {selectedAppointment.condition}
+                {selectedAppointment?.condition}
               </span>
             </p>
           </div>

@@ -10,7 +10,7 @@ import PatientDashboard from '../components/patients/patients_dashboard';
 
 
 // Importing the new pages for Doctor's Dashboard features
-import Appointments from '../components/doctors/appointments';
+import AppointmentSystem from '../components/doctors/appointments';
 import ViewScans from '../components/doctors/view_scans';
 import PatientResults from '../components/doctors/patients_results';
 import ChatSystem from '../components/doctors/chatbot';
@@ -25,10 +25,10 @@ import PatientChat from '../components/patients/patient_Chat';
 import LabTechnicianChat from '../components/lab_technician/labtechnician_chat';
 import UploadScans from '../components/lab_technician/upload_scans';
 import EmergencyScans from '../components/lab_technician/emergency_scans';
-
 // Importing the new page for Doctor's AI Assistant
 import DoctorAIAssistant from '../components/doctors/DoctorAIAssistant';
 
+import LabTechniciansTestReports from '../components/lab_technician/test_reports';
 
 const Layout = () => {
   return (
@@ -46,7 +46,7 @@ const Layout = () => {
           <Route path="/patients_dashboard" element={<PatientDashboard />} />
 
           {/* Doctor Dashboard Feature Routes */}
-          <Route path="/doctor_dashboard/appointments" element={<Appointments />} />
+          <Route path="/doctor_dashboard/appointments" element={<AppointmentSystem />} />
           <Route path="/doctor_dashboard/view_scans" element={<ViewScans />} />
           <Route path="/doctor_dashboard/patients_results" element={<PatientResults />} />
           <Route path="/doctor_dashboard/chatbot" element={<ChatSystem />} />
@@ -63,7 +63,7 @@ const Layout = () => {
           <Route path="/lab_technician/upload_scans" element={<UploadScans />} />
           <Route path="/lab_technician/labtechnician_chat" element={<LabTechnicianChat />} />
           <Route path="/lab_technician/emergency_scans" element={<EmergencyScans />} />
-    
+          <Route path="/lab_technician/test_reports" element={<LabTechniciansTestReports />} />
         </Routes>
       </main>
     </>

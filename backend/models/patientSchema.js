@@ -48,6 +48,11 @@ const TestReportSchema = new mongoose.Schema({
     type: Date, 
     default: Date.now 
   },
+  priority: { 
+    type: String, 
+    enum: ["normal", "High"], 
+    default: "normal" 
+  },
   status: { 
     type: String, 
     enum: ["Pending", "Completed"], 
@@ -76,7 +81,7 @@ const MRIScanSchema = new mongoose.Schema({
   requestedBy: { 
     type: mongoose.Types.ObjectId, 
     ref: "Doctor", 
-    required: true // Reference to the doctor who requested the scan
+    // required: true // Reference to the doctor who requested the scan
   },
   uploadDate: { 
     type: Date, 
@@ -86,6 +91,11 @@ const MRIScanSchema = new mongoose.Schema({
     type: String, 
     enum: ["Pending", "Completed"], 
     default: "Pending" 
+  },
+  priority: { 
+    type: String, 
+    enum: ["normal", "High"], 
+    default: "normal" 
   },
   comments: { 
     type: String, 

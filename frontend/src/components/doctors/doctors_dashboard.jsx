@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const DoctorsDashboard = () => {
+  const location = useLocation();
+  const { user } = location.state || {};
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   const toggleChat = () => {
@@ -20,22 +23,25 @@ const DoctorsDashboard = () => {
             <li>
               <Link
                 to="/doctor_dashboard/patients_results"
+                state={{ user }}
                 className="flex items-center px-4 py-2 text-gray-600 hover:bg-blue-100 hover:text-blue-500 rounded-md"
               >
                 <i className="fas fa-user mr-3"></i> Patients
               </Link>
             </li>
             <li>
-              <Link
+            <Link
                 to="/doctor_dashboard/appointments"
+                state={{ user }}
                 className="flex items-center px-4 py-2 text-gray-600 hover:bg-blue-100 hover:text-blue-500 rounded-md"
               >
-                <i className="fas fa-calendar-alt mr-3"></i> Appointments
+                <i className="fas fa-user mr-3"></i> Appointments
               </Link>
             </li>
             <li>
               <Link
                 to="/doctor_dashboard/chatbot"
+                state={{ user }}
                 className="flex items-center px-4 py-2 text-gray-600 hover:bg-blue-100 hover:text-blue-500 rounded-md"
               >
                 <i className="fas fa-envelope mr-3"></i> Messages
@@ -44,6 +50,7 @@ const DoctorsDashboard = () => {
             <li>
               <Link
                 to="/doctor_dashboard/view_scans"
+                state={{ user }}
                 className="flex items-center px-4 py-2 text-gray-600 hover:bg-blue-100 hover:text-blue-500 rounded-md"
               >
                 <i className="fas fa-file-medical-alt mr-3"></i> View Scan Reports
