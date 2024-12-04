@@ -28,6 +28,7 @@ const LoginPage = () => {
         
         // Store the token in localStorage (or sessionStorage)
         localStorage.setItem('authToken', token);
+        localStorage.setItem('userId',user.id)
         
         // Redirect to the appropriate dashboard based on the user's role
         if (user.role === 'doctor') {
