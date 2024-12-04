@@ -56,6 +56,14 @@ const DoctorsDashboard = () => {
                 <i className="fas fa-file-medical-alt mr-3"></i> View Scan Reports
               </Link>
             </li>
+            <li>
+              <Link
+                to="/doctor_dashboard/ai_assistant"
+                className="flex items-center px-4 py-2 text-gray-600 hover:bg-blue-100 hover:text-blue-500 rounded-md"
+              >
+                <i className="fas fa-robot mr-3"></i> AI Assistant
+              </Link>
+            </li>
           </ul>
         </nav>
       </aside>

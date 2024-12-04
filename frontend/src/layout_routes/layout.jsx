@@ -25,6 +25,9 @@ import PatientChat from '../components/patients/patient_Chat';
 import LabTechnicianChat from '../components/lab_technician/labtechnician_chat';
 import UploadScans from '../components/lab_technician/upload_scans';
 import EmergencyScans from '../components/lab_technician/emergency_scans';
+// Importing the new page for Doctor's AI Assistant
+import DoctorAIAssistant from '../components/doctors/DoctorAIAssistant';
+
 import LabTechniciansTestReports from '../components/lab_technician/test_reports';
 
 const Layout = () => {
@@ -47,6 +50,7 @@ const Layout = () => {
           <Route path="/doctor_dashboard/view_scans" element={<ViewScans />} />
           <Route path="/doctor_dashboard/patients_results" element={<PatientResults />} />
           <Route path="/doctor_dashboard/chatbot" element={<ChatSystem />} />
+          <Route path="/doctor_dashboard/ai_assistant" element={<DoctorAIAssistant />} />
 
 
           {/* Patient Dashboard Feature Routes */}
