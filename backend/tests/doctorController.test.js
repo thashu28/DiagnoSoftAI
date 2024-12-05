@@ -7,10 +7,13 @@ import {
   getDoctorById,
   updateDoctor,
   deleteDoctor,
+  getAppointmentsByDoctorId,
 } from '../Controllers/doctorController.js';
 import Doctor from '../models/DoctorSchema.js';
+import Patient from '../models/patientSchema.js';
 
 jest.mock('../models/DoctorSchema.js');
+jest.mock('../models/patientSchema.js');
 
 describe('Doctor Controller', () => {
   afterEach(() => {
@@ -142,7 +145,7 @@ describe('Doctor Controller', () => {
     it('should return a doctor by ID', async () => {
       const req = {
         params: {
-          id: 'doctorId1',
+          _id: 'doctorId1',
         },
       };
       const res = {
@@ -171,7 +174,7 @@ describe('Doctor Controller', () => {
     it('should return 404 if doctor not found', async () => {
       const req = {
         params: {
-          id: 'nonexistentId',
+          _id: 'nonexistentId',
         },
       };
       const res = {
@@ -194,7 +197,7 @@ describe('Doctor Controller', () => {
     it('should handle errors during fetching doctor by ID', async () => {
       const req = {
         params: {
-          id: 'doctorId1',
+          _id: 'doctorId1',
         },
       };
       const res = {
@@ -372,6 +375,113 @@ describe('Doctor Controller', () => {
       await deleteDoctor(req, res);
 
       expect(Doctor.findByIdAndDelete).toHaveBeenCalledWith('doctorId1');
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith({
+        success: false,
+        message: 'Database error',
+      });
+    });
+  });
+
+  describe('getAppointmentsByDoctorId', () => {
+    it('should return appointments for a specific doctor', async () => {
+      const req = {
+        params: {
+          doctorId: 'doctorId1',
+        },
+      };
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+
+      const mockPatients = [
+        {
+          name: 'Patient One',
+          email: 'patient1@example.com',
+          appointments: [
+            {
+              doctor: {
+                toString: () => 'doctorId1',
+                name: 'Dr. Smith',
+                email: 'dr.smith@example.com',
+                specialization: 'Cardiology',
+              },
+              date: '2024-03-20',
+              time: '10:00 AM',
+            },
+          ],
+        },
+      ];
+
+      Patient.find.mockReturnValue({
+        populate: jest.fn().mockReturnValue({
+          exec: jest.fn().mockResolvedValue(mockPatients),
+        }),
+      });
+
+      await getAppointmentsByDoctorId(req, res);
+
+      expect(Patient.find).toHaveBeenCalledWith({
+        'appointments.doctor': 'doctorId1',
+      });
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({
+        success: true,
+        data: expect.arrayContaining([
+          expect.objectContaining({
+            patientName: 'Patient One',
+            patientEmail: 'patient1@example.com',
+          }),
+        ]),
+      });
+    });
+
+    it('should return 404 if no appointments found', async () => {
+      const req = {
+        params: {
+          doctorId: 'doctorId1',
+        },
+      };
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+
+      Patient.find.mockReturnValue({
+        populate: jest.fn().mockReturnValue({
+          exec: jest.fn().mockResolvedValue([]),
+        }),
+      });
+
+      await getAppointmentsByDoctorId(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.json).toHaveBeenCalledWith({
+        success: false,
+        message: 'No appointments found for this doctor',
+      });
+    });
+
+    it('should handle errors', async () => {
+      const req = {
+        params: {
+          doctorId: 'doctorId1',
+        },
+      };
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+
+      Patient.find.mockReturnValue({
+        populate: jest.fn().mockReturnValue({
+          exec: jest.fn().mockRejectedValue(new Error('Database error')),
+        }),
+      });
+
+      await getAppointmentsByDoctorId(req, res);
+
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.json).toHaveBeenCalledWith({
         success: false,
