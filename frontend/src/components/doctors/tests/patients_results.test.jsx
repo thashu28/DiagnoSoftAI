@@ -2,6 +2,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import PatientResults from "../patients_results";
 
 describe("PatientResults", () => {
+  // Test case to verify that the initial results list is rendered correctly
   it("renders the results list", () => {
     render(<PatientResults />);
     expect(screen.getByText(/All Patient Results/i)).toBeInTheDocument();
@@ -9,6 +10,7 @@ describe("PatientResults", () => {
     expect(screen.getByText(/View Details/i)).toBeInTheDocument();
   });
 
+  // Test case to ensure detailed results are displayed when a patient is selected
   it("displays detailed results when a patient is selected", () => {
     render(<PatientResults />);
     fireEvent.click(screen.getByText(/View Details/i));

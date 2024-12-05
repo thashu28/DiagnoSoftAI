@@ -66,5 +66,5 @@ const DoctorSchema = new mongoose.Schema({
     // required: true,
   },
 });
-
+// Export the Doctor model for use in other parts of the application
 export default mongoose.model("Doctor", DoctorSchema);
