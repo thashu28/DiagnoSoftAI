@@ -18,6 +18,7 @@ describe('SignupPage', () => {
     localStorage.clear();
   });
 
+  // Utility function to render the SignupPage within a BrowserRouter
   const renderSignupPage = () => {
     render(
       <BrowserRouter>
@@ -25,7 +26,7 @@ describe('SignupPage', () => {
       </BrowserRouter>
     );
   };
-
+  // Test case: Handles a successful signup as a patient
   it('handles successful patient signup', async () => {
     const mockResponse = {
       success: true,
@@ -70,6 +71,7 @@ describe('SignupPage', () => {
     expect(screen.getByText('Signup successful!')).toBeInTheDocument();
   });
 
+  // Test case: Validates that all required fields are filled before submission
   it('validates required fields', async () => {
     renderSignupPage();
     
@@ -82,7 +84,7 @@ describe('SignupPage', () => {
       });
     });
   });
-
+  // Test case: Checks if input changes are properly reflected in the form
   it('handles input changes', () => {
     renderSignupPage();
     
@@ -116,7 +118,7 @@ describe('SignupPage', () => {
     expect(genderSelect).toHaveValue('male');
     expect(bloodTypeSelect).toHaveValue('A+');
   });
-
+  // Test case: Renders the signup form with all required fields
   it('renders signup form with all fields', () => {
     renderSignupPage();
     
@@ -131,7 +133,7 @@ describe('SignupPage', () => {
     expect(screen.getByLabelText(/blood type/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /sign up/i })).toBeInTheDocument();
   });
-
+  // Test case: Handles a failed signup attempt
   it('handles signup failure', async () => {
     const errorMessage = 'Email already exists';
     signup.mockRejectedValueOnce(new Error(errorMessage));
@@ -153,7 +155,7 @@ describe('SignupPage', () => {
       expect(screen.getByText('Signup failed! Ensure all fields are correct.')).toBeInTheDocument();
     });
   });
-
+  // Test case: Handles successful signup for a doctor
   it('handles successful doctor signup', async () => {
     const mockResponse = {
       success: true,
