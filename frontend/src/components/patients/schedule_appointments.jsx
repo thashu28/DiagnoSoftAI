@@ -95,8 +95,15 @@ const ScheduleAppointments = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
-      <header className="bg-gradient-to-r from-gray-700 to-gray-900 text-white py-4 px-6 shadow-md">
-        <h1 className="text-3xl font-bold text-center">Patient Dashboard</h1>
+
+       {/* Header */}
+      <header className="bg-gradient-to-r from-gray-700 to-gray-900 text-white p-4 shadow-lg flex items-center justify-between">
+        {/* Website Name */}
+        <div className="font-serif italic text-blue-500 text-2xl tracking-wide">
+          DiagnoSoftAI
+        </div>
+        {/* Patient Dashboard Title */}
+        <h1 className="text-2xl font-bold" style={{ marginRight: "30rem" }}>Patient Dashboard</h1>
       </header>
 
       <main className="flex-grow p-6">

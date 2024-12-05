@@ -31,11 +31,11 @@ const WelcomePage = () => {
           {/* Logo and Title */}
           <div className="flex items-center">
             <img
-              src="/diagnosoftai-logo.png"
+              src="assets/diagnosoftailogo.png"
               alt="DiagnosoftAI Logo"
-              className="h-10"
+              className="h-11"
             />
-            <h1 className="ml-4 text-xl md:text-2xl font-semibold tracking-wide">
+            <h1 className="ml-4 text-xl md:text-3xl font-serif italic  tracking-wide shadow-md">
               DiagnosoftAI
             </h1>
           </div>
