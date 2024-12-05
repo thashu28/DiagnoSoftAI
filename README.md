@@ -42,6 +42,7 @@ DiagnoSoftAI is a sophisticated healthcare platform designed to revolutionize me
      ```
      cd frontend
      npm install
+     ```
 
 3. **Set Up Environment File**
    - For the backend:
@@ -53,6 +54,7 @@ DiagnoSoftAI is a sophisticated healthcare platform designed to revolutionize me
       DB_URL =
       JWT_SECRET_KEY = 
       OPENAI_API_KEY = 
+     ```
 
 4. **Starting the Application**
    - To run the backend:
@@ -60,10 +62,12 @@ DiagnoSoftAI is a sophisticated healthcare platform designed to revolutionize me
      cd backend
      npm start
      ```
+
    - To run the frontend:
      ```
      cd frontend
      npm run dev
+     ```
 
 5. **Note**: the app will be serve on http://localhost:5173/
 
