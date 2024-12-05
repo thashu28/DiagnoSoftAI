@@ -13,6 +13,7 @@ export const generateResponse = async (req, res) => {
     - Never provide specific medical diagnosis or treatment recommendations
     - Always remind users that this is general information and they should consult healthcare professionals for specific medical advice`;
 
+    // Send a request to OpenAI's GPT-4 API for a chat completion
     const completion = await openai.chat.completions.create({
       model: "gpt-4",
       messages: [
@@ -23,8 +24,9 @@ export const generateResponse = async (req, res) => {
       max_tokens: 500,
     });
 
+    // Extract the AI-generated response from the API's output
     const aiResponse = completion.choices[0].message.content;
-
+    // Send a successful response back to the client
     res.status(200).json({
       success: true,
       message: aiResponse,
@@ -33,6 +35,8 @@ export const generateResponse = async (req, res) => {
 
   } catch (error) {
     console.error('Chatbot Error:', error);
+
+    // Send an error response back to the client if something goes wrong
     res.status(500).json({
       success: false,
       message: "Error generating response",

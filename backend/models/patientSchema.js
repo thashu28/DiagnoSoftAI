@@ -175,5 +175,5 @@ const PatientSchema = new mongoose.Schema({
   mriScans: [MRIScanSchema], // Embedded MRI schema
   testReports: [TestReportSchema], // Embedded Lab Request schema
 });
-
+// Export the patient model for use in other parts of the application
 export default mongoose.model("Patient", PatientSchema);

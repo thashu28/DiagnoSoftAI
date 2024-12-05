@@ -57,5 +57,5 @@ const LabTechSchema = new mongoose.Schema({
    }],
    bloodType: { type: String }
 });
-
+// Export the labtechnician model for use in other parts of the application
 export default mongoose.model("LabTech", LabTechSchema);
