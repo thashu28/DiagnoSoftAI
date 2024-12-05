@@ -73,9 +73,10 @@ const DoctorAIAssistant = () => {
 
       const botResponse = {
         sender: 'bot',
-        text: response.data.message,
-        timestamp: new Date(response.data.timestamp).toLocaleTimeString()
+        text: response.data.response, 
+        timestamp: new Date().toLocaleTimeString()  
       };
+      
 
       setConversations(prev => prev.map(conv => 
         conv.id === currentConversationId 
