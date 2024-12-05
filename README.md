@@ -30,7 +30,7 @@ DiagnoSoftAI is a sophisticated healthcare platform designed to revolutionize me
    ```
    git clone https://github.com/thashu28/DiagnoSoftAI.git
    cd DiagnoSoftAI
-
+   ```
 2. **Install Dependencies**
    - For the backend (Node.js & Express):
      ```
