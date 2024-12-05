@@ -142,7 +142,7 @@ describe('Doctor Controller', () => {
     it('should return a doctor by ID', async () => {
       const req = {
         params: {
-          id: 'doctorId1',
+          _id: 'doctorId1',
         },
       };
       const res = {
@@ -171,7 +171,7 @@ describe('Doctor Controller', () => {
     it('should return 404 if doctor not found', async () => {
       const req = {
         params: {
-          id: 'nonexistentId',
+          _id: 'nonexistentId',
         },
       };
       const res = {
@@ -194,7 +194,7 @@ describe('Doctor Controller', () => {
     it('should handle errors during fetching doctor by ID', async () => {
       const req = {
         params: {
-          id: 'doctorId1',
+          _id: 'doctorId1',
         },
       };
       const res = {
