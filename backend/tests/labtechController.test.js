@@ -7,10 +7,13 @@ import {
   getLabTechById,
   updateLabTech,
   deleteLabTech,
+  getPendingTestReports,
 } from '../Controllers/labtechController.js';
 import LabTech from '../models/LabTechSchema.js';
+import Patient from '../models/patientSchema.js';
 
 jest.mock('../models/LabTechSchema.js');
+jest.mock('../models/patientSchema.js');
 
 describe('LabTech Controller', () => {
   afterEach(() => {
@@ -371,6 +374,104 @@ describe('LabTech Controller', () => {
       await deleteLabTech(req, res);
 
       expect(LabTech.findByIdAndDelete).toHaveBeenCalledWith('labTechId1');
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith({
+        success: false,
+        message: 'Database error',
+      });
+    });
+  });
+
+  describe('getPendingTestReports', () => {
+    it('should return all pending test reports', async () => {
+      const req = {};
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+
+      const mockPatients = [
+        {
+          name: 'Patient One',
+          email: 'patient1@example.com',
+          phone: '123-456-7890',
+          testReports: [
+            {
+              testType: 'Blood Test',
+              status: 'Pending',
+              requestedBy: {
+                name: 'Dr. Smith',
+              },
+            },
+          ],
+        },
+      ];
+
+      Patient.find.mockReturnValue({
+        populate: jest.fn().mockReturnThis(),
+        exec: jest.fn().mockResolvedValue(mockPatients),
+      });
+
+      await getPendingTestReports(req, res);
+
+      expect(Patient.find).toHaveBeenCalledWith({
+        'testReports.status': 'Pending',
+      });
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({
+        success: true,
+        data: expect.arrayContaining([
+          expect.objectContaining({
+            patientName: 'Patient One',
+            patientEmail: 'patient1@example.com',
+            patientPhone: '123-456-7890',
+            testReports: expect.arrayContaining([
+              expect.objectContaining({
+                testType: 'Blood Test',
+                status: 'Pending',
+              }),
+            ]),
+          }),
+        ]),
+      });
+    });
+
+    it('should return 404 if no pending test reports found', async () => {
+      const req = {};
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+
+      // Mock empty array response from database
+      Patient.find.mockReturnValue({
+        populate: jest.fn().mockReturnThis(),
+        exec: jest.fn().mockResolvedValue([]),
+      });
+
+      await getPendingTestReports(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.json).toHaveBeenCalledWith({
+        success: false,
+        message: 'No pending test reports found',
+      });
+    });
+
+    it('should handle database errors', async () => {
+      const req = {};
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+
+      Patient.find.mockReturnValue({
+        populate: jest.fn().mockReturnThis(),
+        exec: jest.fn().mockRejectedValue(new Error('Database error')),
+      });
+
+      await getPendingTestReports(req, res);
+
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.json).toHaveBeenCalledWith({
         success: false,
