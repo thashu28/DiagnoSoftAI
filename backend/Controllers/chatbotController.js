@@ -1,8 +1,12 @@
-// import openai from '../openai.js';
+import openai from '../openai.js';
 
 export const generateResponse = async (req, res) => {
   try {
-    const { message } = req.body;
+    const { message } = req.body; // Assuming the message is sent in the request body
+
+    if (!message) {
+      return res.status(400).json({ error: 'Message is required' });
+    }
 
     const systemMessage = `You are an AI medical assistant for DiagnosoftAI. 
     Your role is to:
@@ -30,7 +34,7 @@ export const generateResponse = async (req, res) => {
     res.status(200).json({
       success: true,
       message: aiResponse,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
 
   } catch (error) {
@@ -40,7 +44,7 @@ export const generateResponse = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Error generating response",
-      error: error.message
+      error: error.message,
     });
   }
-}; 
+};
