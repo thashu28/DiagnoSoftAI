@@ -1,14 +1,20 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { FaUserCircle } from "react-icons/fa";
 
 const DoctorsDashboard = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { user } = location.state || {};
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   const toggleChat = () => {
     setIsChatOpen((prev) => !prev);
+  };
+
+  const handleProfileClick = () => {
+    navigate("/doctor_dashboard/profile", { state: { user } });
   };
 
   return (
@@ -30,7 +36,7 @@ const DoctorsDashboard = () => {
               </Link>
             </li>
             <li>
-            <Link
+              <Link
                 to="/doctor_dashboard/appointments"
                 state={{ user }}
                 className="flex items-center px-4 py-2 text-gray-600 hover:bg-blue-100 hover:text-blue-500 rounded-md"
@@ -73,15 +79,20 @@ const DoctorsDashboard = () => {
         {/* Top Navigation */}
         <header className="h-16 flex items-center justify-between bg-white px-6 shadow-sm">
           <div className="text-xl font-semibold text-gray-800">Welcome, Doctor!</div>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-6">
             <button className="text-gray-500 hover:text-blue-500">
               <i className="fas fa-bell text-lg"></i>
             </button>
-            <img
-              src="https://via.placeholder.com/40"
-              alt="Profile"
-              className="w-10 h-10 rounded-full border"
-            />
+            {/* Profile Button */}
+            <div
+              className="flex items-center cursor-pointer"
+              onClick={handleProfileClick}
+            >
+              <FaUserCircle className="text-3xl text-gray-800 mr-2" />
+              <span className="hidden sm:block text-gray-700 font-medium">
+                Profile
+              </span>
+            </div>
           </div>
         </header>
 

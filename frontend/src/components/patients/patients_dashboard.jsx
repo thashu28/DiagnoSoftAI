@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { getPatientById } from "../../../services/PatientService";
+import { FaUserCircle } from "react-icons/fa"; // Import the desired icon
 
 const PatientDashboard = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { user } = location.state || {};
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
 
@@ -22,11 +24,25 @@ const PatientDashboard = () => {
     fetchAppointmentDetails();
   }, [user]);
 
+  const handleProfileClick = () => {
+    navigate("/patients_dashboard/profile", { state: { user } });
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="bg-gradient-to-r from-gray-700 to-gray-900 text-white p-4 shadow-lg">
+      <header className="bg-gradient-to-r from-gray-700 to-gray-900 text-white p-4 shadow-lg flex items-center justify-between">
         <h1 className="text-3xl font-bold">Patient Dashboard</h1>
+        {/* Profile Icon */}
+        <div
+          className="flex items-center cursor-pointer"
+          onClick={handleProfileClick}
+        >
+          <FaUserCircle className="text-4xl text-white mr-2" /> {/* Icon added */}
+          <span className="hidden sm:block text-white text-sm font-semibold">
+            Profile
+          </span>
+        </div>
       </header>
 
       {/* Main Content */}
