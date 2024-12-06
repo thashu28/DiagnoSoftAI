@@ -33,7 +33,7 @@ const PatientDashboard = () => {
       {/* Header */}
       <header className="bg-gradient-to-r from-gray-700 to-gray-900 text-white p-4 shadow-lg flex items-center justify-between">
         <h1 className="text-3xl font-bold">Patient Dashboard</h1>
-        {/* Profile Icon */}
+        {/* Profile Icon for logging In*/}
         <div
           className="flex items-center cursor-pointer"
           onClick={handleProfileClick}
@@ -43,6 +43,7 @@ const PatientDashboard = () => {
             Profile
           </span>
         </div>
+
       </header>
 
       {/* Main Content */}

@@ -29,7 +29,7 @@ const LabTechnicianDashboard = () => {
       {/* Header */}
       <header className="bg-gradient-to-r from-indigo-400 to-purple-400 text-white p-6 shadow-md flex items-center justify-between">
         <h1 className="text-3xl font-bold tracking-wide">Lab Technician Dashboard</h1>
-        {/* Profile Icon */}
+        {/* Profile Icon for the lab tech*/}
         <div
           className="flex items-center cursor-pointer"
           onClick={handleProfileClick}
