@@ -18,7 +18,7 @@ describe('LoginPage', () => {
     // Clear all mocks before each test
     jest.clearAllMocks();
   });
-
+  // Helper function to render the LoginPage component with routing context
   const renderLoginPage = () => {
     render(
       <BrowserRouter>
@@ -26,7 +26,7 @@ describe('LoginPage', () => {
       </BrowserRouter>
     );
   };
-
+  // Test case: Verifies input field changes
   it('handles input changes', () => {
     renderLoginPage();
     
@@ -39,7 +39,7 @@ describe('LoginPage', () => {
     expect(emailInput.value).toBe('test@example.com');
     expect(passwordInput.value).toBe('password123');
   });
-
+  // Test case: Handles successful login for a doctor
   it('handles successful doctor login', async () => {
     const mockResponse = {
       success: true,
@@ -74,7 +74,8 @@ describe('LoginPage', () => {
       expect(localStorage.getItem('authToken')).toBe('mock-token');
     });
   });
-
+  
+  // Test case: Handles successful login for a patient
   it('handles successful patient login', async () => {
     const mockResponse = {
       success: true,

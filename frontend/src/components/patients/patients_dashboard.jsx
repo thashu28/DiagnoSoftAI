@@ -30,19 +30,17 @@ const PatientDashboard = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+
       {/* Header */}
-      <header className="bg-gradient-to-r from-gray-700 to-gray-900 text-white p-4 shadow-lg flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Patient Dashboard</h1>
-        {/* Profile Icon */}
-        <div
-          className="flex items-center cursor-pointer"
-          onClick={handleProfileClick}
-        >
-          <FaUserCircle className="text-4xl text-white mr-2" /> {/* Icon added */}
-          <span className="hidden sm:block text-white text-sm font-semibold">
-            Profile
-          </span>
+
+      <header className="bg-gradient-to-r from-gray-700 to-gray-800 text-white p-4 shadow-lg flex items-center justify-between">
+        {/* Website Name */}
+        <div className="font-serif italic text-blue-500 text-2xl tracking-wide">
+          DiagnoSoftAI
         </div>
+        {/* Patient Dashboard Title */}
+        <h1 className="text-2xl font-bold" style={{ marginRight: "30rem" }}>Patient Dashboard</h1>
+
       </header>
 
       {/* Main Content */}
@@ -83,7 +81,7 @@ const PatientDashboard = () => {
                   to="/patients_dashboard/patient_chat"
                   className="block px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 hover:scale-105 transform transition"
                 >
-                  Chat
+                  AI Chat assistant
                 </Link>
               </li>
             </ul>

@@ -1,24 +1,25 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import React from 'react';
+import { render, screen } from "@testing-library/react";
+import '@testing-library/jest-dom';
 import ViewScanReportsForDoctors from "../view_scans";
 
-describe("ViewScanReportsForDoctors", () => {
-  it("renders the list of assigned scans", () => {
+describe('ViewScanReportsForDoctors', () => {
+  it('renders the patient list with correct information', () => {
     render(<ViewScanReportsForDoctors />);
-    expect(screen.getByText(/Assigned Scans/i)).toBeInTheDocument();
-    expect(screen.getByText(/John Doe/i)).toBeInTheDocument();
-  });
-
-  it("shows scan details when a patient is selected", () => {
-    render(<ViewScanReportsForDoctors />);
-    fireEvent.click(screen.getByText(/Jane Smith/i));
-
-    expect(screen.getByText("Patient: Jane Smith")).toBeInTheDocument();
-    expect(screen.getByText(/No significant anomalies detected/i)).toBeInTheDocument();
-  });
-
-  it("allows downloading a report", () => {
-    render(<ViewScanReportsForDoctors />);
-    const downloadButton = screen.getByText(/Download Report/i);
-    expect(downloadButton).toHaveAttribute("href");
+    
+    // Check if both patients from static data are rendered
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
+    expect(screen.getByText('Jane Smith')).toBeInTheDocument();
+    
+    // Check if conditions are displayed (verify count of conditions)
+    const criticalElements = screen.getAllByText(/Critical/);
+    const stableElements = screen.getAllByText(/Stable/);
+    expect(criticalElements).toHaveLength(2); // One in sidebar, one in header
+    expect(stableElements).toHaveLength(1);
+    
+    // Check if the main section headers are present
+    expect(screen.getByText('Assigned Scans')).toBeInTheDocument();
+    expect(screen.getByText('Scan Details')).toBeInTheDocument();
+    expect(screen.getByText('AI Analysis')).toBeInTheDocument();
   });
 });

@@ -29,8 +29,13 @@ const ViewReports = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Header */}
-      <header className="bg-gradient-to-r from-gray-800 to-gray-700 text-white p-4 shadow-md">
-        <h1 className="text-4xl font-extrabold text-center">Patient Dashboard</h1>
+      <header className="bg-gradient-to-r from-gray-700 to-gray-900 text-white p-4 shadow-lg flex items-center justify-between">
+        {/* Website Name */}
+        <div className="font-serif italic text-blue-500 text-2xl tracking-wide">
+          DiagnoSoftAI
+        </div>
+        {/* Patient Dashboard Title */}
+        <h1 className="text-2xl font-bold" style={{ marginRight: "30rem" }}>Patient Dashboard</h1>
       </header>
 
       {/* Main Content */}

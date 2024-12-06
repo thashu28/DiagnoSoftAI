@@ -26,19 +26,17 @@ const LabTechnicianDashboard = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
+
       {/* Header */}
-      <header className="bg-gradient-to-r from-indigo-400 to-purple-400 text-white p-6 shadow-md flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-wide">Lab Technician Dashboard</h1>
-        {/* Profile Icon */}
-        <div
-          className="flex items-center cursor-pointer"
-          onClick={handleProfileClick}
-        >
-          <FaUserCircle className="text-4xl text-white mr-2" />
-          <span className="hidden sm:block text-white text-sm font-semibold">
-            Profile
-          </span>
+
+      <header className="bg-gradient-to-r from-gray-700 to-gray-800 text-white p-4 shadow-lg flex items-center justify-between">
+        {/* Website Name */}
+        <div className="font-serif italic text-blue-500 text-2xl tracking-wide">
+          DiagnoSoftAI
         </div>
+        {/* Lab Technician Dashboard Title */}
+        <h1 className="text-2xl font-bold" style={{ marginRight: "30rem" }}>Lab Technician Dashboard</h1>
+
       </header>
 
       {/* Main Content */}

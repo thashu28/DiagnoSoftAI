@@ -20,8 +20,8 @@ const DoctorsDashboard = () => {
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar (Fixed) */}
-      <aside className="w-64 bg-white shadow-lg fixed h-full">
-        <div className="h-16 flex items-center justify-center font-bold text-blue-500 text-xl border-b">
+      <aside className="w-64 bg-blue-100 shadow-lg fixed h-full">
+        <div className="h-16 flex items-center justify-center font-serif italic text-blue-500 text-2xl tracking-wide border-b">
           DiagnoSoftAI
         </div>
         <nav className="mt-4">
@@ -30,7 +30,7 @@ const DoctorsDashboard = () => {
               <Link
                 to="/doctor_dashboard/patients_results"
                 state={{ user }}
-                className="flex items-center px-4 py-2 text-gray-600 hover:bg-blue-100 hover:text-blue-500 rounded-md"
+                className="block px-4 py-2 bg-blue-200 text-black font-semibold rounded-lg hover:bg-blue-200 hover:scale-105 transform transition"
               >
                 <i className="fas fa-user mr-3"></i> Patients
               </Link>
@@ -39,7 +39,7 @@ const DoctorsDashboard = () => {
               <Link
                 to="/doctor_dashboard/appointments"
                 state={{ user }}
-                className="flex items-center px-4 py-2 text-gray-600 hover:bg-blue-100 hover:text-blue-500 rounded-md"
+                className="block px-4 py-2 bg-blue-200 text-black font-semibold rounded-lg hover:bg-blue-200 hover:scale-105 transform transition"
               >
                 <i className="fas fa-user mr-3"></i> Appointments
               </Link>
@@ -48,7 +48,7 @@ const DoctorsDashboard = () => {
               <Link
                 to="/doctor_dashboard/chatbot"
                 state={{ user }}
-                className="flex items-center px-4 py-2 text-gray-600 hover:bg-blue-100 hover:text-blue-500 rounded-md"
+                className="block px-4 py-2 bg-blue-200 text-black font-semibold rounded-lg hover:bg-blue-200 hover:scale-105 transform transition"
               >
                 <i className="fas fa-envelope mr-3"></i> Messages
               </Link>
@@ -57,7 +57,7 @@ const DoctorsDashboard = () => {
               <Link
                 to="/doctor_dashboard/view_scans"
                 state={{ user }}
-                className="flex items-center px-4 py-2 text-gray-600 hover:bg-blue-100 hover:text-blue-500 rounded-md"
+                className="block px-4 py-2 bg-blue-200 text-black font-semibold rounded-lg hover:bg-blue-200 hover:scale-105 transform transition"
               >
                 <i className="fas fa-file-medical-alt mr-3"></i> View Scan Reports
               </Link>
@@ -65,9 +65,9 @@ const DoctorsDashboard = () => {
             <li>
               <Link
                 to="/doctor_dashboard/ai_assistant"
-                className="flex items-center px-4 py-2 text-gray-600 hover:bg-blue-100 hover:text-blue-500 rounded-md"
+                className="block px-4 py-2 bg-blue-200 text-black font-semibold rounded-lg hover:bg-blue-200 hover:scale-105 transform transition"
               >
-                <i className="fas fa-robot mr-3"></i> AI Assistant
+                <i className="fas fa-robot mr-3"></i> AI chat assistant
               </Link>
             </li>
           </ul>
@@ -77,7 +77,7 @@ const DoctorsDashboard = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col ml-64">
         {/* Top Navigation */}
-        <header className="h-16 flex items-center justify-between bg-white px-6 shadow-sm">
+        <header className="h-16 flex items-center justify-between bg-gradient-to-r from-blue-100 to-blue-300 px-6 shadow-sm">
           <div className="text-xl font-semibold text-gray-800">Welcome, Doctor!</div>
           <div className="flex items-center space-x-6">
             <button className="text-gray-500 hover:text-blue-500">
