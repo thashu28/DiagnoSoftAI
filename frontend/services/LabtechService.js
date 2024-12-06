@@ -25,7 +25,7 @@ const LabTechService = {
   // Get a lab technician by ID
   getLabTechById: async (id) => {
     try {
-      const response = await HTTPCommon.get(`/labtech/${id}`);
+      const response = await HTTPCommon.get(`/api/labtech/${id}`);
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.message || "Failed to fetch lab technician");
@@ -74,3 +74,5 @@ const LabTechService = {
 };
 
 export default LabTechService;
+
+

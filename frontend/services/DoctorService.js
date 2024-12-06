@@ -23,7 +23,7 @@ export const getAllDoctors = async () => {
 // Get a doctor by ID
 export const getDoctorById = async (doctorId) => {
   try {
-    const response = await HTTPCommon.get(`/doctors/${doctorId}`);
+    const response = await HTTPCommon.get(`/api/doctors/${doctorId}`);
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : error.message;
