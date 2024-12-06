@@ -34,6 +34,8 @@ const ViewScanReportsForDoctors = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
+     
+        
       {/* Sidebar */}
       <aside className="w-1/4 bg-blue-50 p-4 shadow-lg">
         <h2 className="text-lg font-bold text-black flex items-center gap-2">

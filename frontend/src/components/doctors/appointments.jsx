@@ -58,9 +58,14 @@ const AppointmentSystem = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
-      {/* Appointment Header */}
-      <header className="bg-gradient-to-r from-blue-100 to-white text-gray-800 p-4 rounded shadow-md">
-        <h1 className="text-3xl font-semibold">Appointments</h1>
+      
+        {/* Header */}
+        <header className=" bg-gradient-to-r from-blue-200 via-blue-100 to-gray-100 text-gray-800 p-4 rounded-md shadow-md flex items-center justify-between">
+        {/* Website Name */}
+        <div className="font-serif italic text-blue-500 text-2xl tracking-wide">
+          DiagnoSoftAI
+        </div>
+        <h1 className="text-3xl font-bold" style={{ marginRight: "30rem" }}>Appointments</h1>
       </header>
 
       {/* Appointments List */}
