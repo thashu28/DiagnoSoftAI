@@ -116,9 +116,13 @@ const DoctorAIAssistant = () => {
   };
 
   return (
+ 
     <div className="flex h-full bg-gray-50">
       {/* Sidebar with Chat History */}
       <div className="w-80 bg-white border-r border-gray-200 shadow-sm">
+        <div className="h-16 flex items-center justify-center bg-gradient-to-r from-blue-200 via-blue-100 to-gray-100 font-serif italic text-blue-500 text-2xl tracking-wide border-b">
+          DiagnoSoftAI
+        </div>
         <div className="p-4 border-b border-gray-200">
           <button
             onClick={createNewConversation}
@@ -164,9 +168,14 @@ const DoctorAIAssistant = () => {
 
       {/* Chat Area */}
       <div className="flex-1 flex flex-col bg-white">
+
+      {/* Header */}
+      <header className=" bg-gradient-to-r from-blue-100 via-blue-100 to-gray-100 text-gray-800 p-3.5 rounded-md shadow-md flex items-center justify-between">
+        <h1 className="text-3xl font-bold" style={{ marginRight: "30rem" }}>Doctor AI Assistant</h1>
+      </header>
+
         {/* Chat Header */}
         <div className="p-4 border-b border-gray-200 bg-white">
-          <h2 className="text-lg font-semibold text-gray-800">Doctor AI Assistant</h2>
           <p className="text-sm text-gray-500">Ask me anything about medical diagnoses and treatments...</p>
         </div>
 
@@ -245,6 +254,7 @@ const DoctorAIAssistant = () => {
         </div>
       </div>
     </div>
+   
   );
 };
 

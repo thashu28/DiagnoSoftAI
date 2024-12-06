@@ -32,9 +32,14 @@ const ChatSystem = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
+
       {/* Header */}
-      <header className="text-center py-6 bg-gradient-to-r from-blue-200 via-blue-100 to-gray-100 text-gray-800 rounded-md shadow-md">
-        <h1 className="text-3xl font-bold">Messages</h1>
+      <header className=" bg-gradient-to-r from-blue-200 via-blue-100 to-gray-100 text-gray-800 p-4 rounded-md shadow-md flex items-center justify-between">
+        {/* Website Name */}
+        <div className="font-serif italic text-blue-500 text-2xl tracking-wide">
+          DiagnoSoftAI
+        </div>
+        <h1 className="text-3xl font-bold" style={{ marginRight: "35rem" }}>Messages</h1>
       </header>
 
       {/* Role Selection */}
