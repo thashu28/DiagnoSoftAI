@@ -113,14 +113,7 @@ const PatientDashboard = () => {
                   View Reports
                 </Link>
               </li>
-              <li>
-                <Link
-                  to="/patients_dashboard/patient_chat"
-                  className="block px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 hover:scale-105 transform transition"
-                >
-                  AI Chat assistant
-                </Link>
-              </li>
+              
             </ul>
           </nav>
         </aside>
