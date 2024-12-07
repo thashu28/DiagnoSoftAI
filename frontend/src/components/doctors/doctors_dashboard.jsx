@@ -94,6 +94,15 @@ const DoctorsDashboard = () => {
             </li>
             <li>
               <Link
+                to="/doctor_dashboard/medical_image_analysis"
+                state={{ user }}
+                className="block px-4 py-2 bg-blue-200 text-black font-semibold rounded-lg hover:bg-blue-200 hover:scale-105 transform transition"
+              >
+                <i className="fas fa-file-medical-alt mr-3"></i> Medical Image Analysis
+              </Link>
+            </li>
+            <li>
+              <Link
                 to="/doctor_dashboard/ai_assistant"
                 className="block px-4 py-2 bg-blue-200 text-black font-semibold rounded-lg hover:bg-blue-200 hover:scale-105 transform transition"
               >
