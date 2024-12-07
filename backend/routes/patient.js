@@ -11,7 +11,8 @@ import {
   deleteAppointment,
   deleteTestReport,
   deleteMRIScan,
-  rescheduleAppointment
+  rescheduleAppointment,
+  addDiagnosisReport
 } from "../Controllers/patientController.js";
 
 const router = express.Router();
@@ -30,6 +31,9 @@ router.post("/:patientId/mriScans", addMRIScan);
 
 // reschedule the appointment
 router.post('/:patientId/appointments/:appointmentId/reschedule', rescheduleAppointment);
+
+// Add/update diagnosis and report for an MRI scan
+router.post("/:patientId/mriScans/:mriScanId/diagnosisReport", addDiagnosisReport);
 
 // Delete routes
 router.delete("/:patientId/appointments/:appointmentId", deleteAppointment);
