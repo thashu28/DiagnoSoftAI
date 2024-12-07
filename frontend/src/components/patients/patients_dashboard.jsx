@@ -40,6 +40,16 @@ const PatientDashboard = () => {
         </div>
         {/* Patient Dashboard Title */}
         <h1 className="text-2xl font-bold" style={{ marginRight: "30rem" }}>Patient Dashboard</h1>
+        {/* Profile Icon */}
+        <div
+          className="flex items-center cursor-pointer"
+          onClick={handleProfileClick}
+        >
+          <FaUserCircle className="text-4xl text-white mr-2" /> {/* Icon added */}
+          <span className="hidden sm:block text-white text-sm font-semibold">
+            Profile
+          </span>
+        </div>
 
       </header>
 
