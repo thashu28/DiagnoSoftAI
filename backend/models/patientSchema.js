@@ -100,6 +100,14 @@ const MRIScanSchema = new mongoose.Schema({
   comments: { 
     type: String, 
     default: "" // Comments from the lab technician
+  },
+  diagnosis: { 
+    type: String, 
+    default: "", // Initially empty; will be assigned either automatically or by the doctor
+  },
+  report: { 
+    type: String, 
+    default: "", // This can store a detailed report of the scan interpretation
   }
 });
 
