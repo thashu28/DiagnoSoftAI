@@ -26,10 +26,11 @@ const LabTechnicianDashboard = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
+
       {/* Header */}
       <header className="bg-gradient-to-r from-indigo-400 to-purple-400 text-white p-6 shadow-md flex items-center justify-between">
         <h1 className="text-3xl font-bold tracking-wide">Lab Technician Dashboard</h1>
-        {/* Profile Icon for the lab tech*/}
+        {/* Profile Icon */}
         <div
           className="flex items-center cursor-pointer"
           onClick={handleProfileClick}
@@ -39,6 +40,9 @@ const LabTechnicianDashboard = () => {
             Profile
           </span>
         </div>
+        {/* Lab Technician Dashboard Title */}
+        <h1 className="text-2xl font-bold" style={{ marginRight: "30rem" }}>Lab Technician Dashboard</h1>
+
       </header>
 
       {/* Main Content */}

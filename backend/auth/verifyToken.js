@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import Doctor from "../models/DoctorSchema.js";
 import User from "../models/UserSchema.js";
 
+// Middleware to authenticate a user by verifying their JWT token
 export const authenticate = async (req, res, next) => {
   const authToken = req.headers.authorization;
 
@@ -28,6 +29,7 @@ export const authenticate = async (req, res, next) => {
   }
 };
 
+// Middleware to restrict access based on user roles
 export const restrict = (roles) => async (req, res, next) => {
   const userId = req.userId;
 
@@ -37,6 +39,7 @@ export const restrict = (roles) => async (req, res, next) => {
 
   const doctor = await Doctor.findById(userId);
 
+  // Assign the appropriate user object (Patient or Doctor)
   if (patient) {
     user = patient;
   }
@@ -44,6 +47,7 @@ export const restrict = (roles) => async (req, res, next) => {
     user = doctor;
   }
 
+  // If the user's role is not in the allowed roles, deny access
   if (!roles.includes(user.role)) {
     return res
       .status(401)

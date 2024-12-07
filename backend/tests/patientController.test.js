@@ -547,5 +547,352 @@ describe('Patient Controller', () => {
     });
   });
 
-  // Similar tests for addTestReport, deleteTestReport, addMRIScan, deleteMRIScan
+  describe('addTestReport', () => {
+    it('should add a new test report to the patient', async () => {
+      const req = {
+        params: {
+          patientId: 'patientId1',
+        },
+        body: {
+          testType: 'Blood Test',
+          fileUrl: 'http://example.com/test.pdf',
+          description: 'Routine blood work',
+          requestedBy: 'doctorId1',
+          status: 'pending',
+          comments: 'Fasting required',
+        },
+      };
+
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+
+      const patient = {
+        _id: 'patientId1',
+        testReports: [],
+        save: jest.fn().mockResolvedValue(true),
+      };
+
+      Patient.findById.mockResolvedValue(patient);
+
+      await addTestReport(req, res);
+
+      expect(Patient.findById).toHaveBeenCalledWith('patientId1');
+      expect(patient.testReports.length).toBe(1);
+      expect(patient.save).toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(201);
+      expect(res.json).toHaveBeenCalledWith({
+        success: true,
+        message: 'Test report added',
+        data: expect.objectContaining(req.body),
+      });
+    });
+
+    it('should return 404 if patient not found', async () => {
+      const req = {
+        params: {
+          patientId: 'nonexistentId',
+        },
+        body: {},
+      };
+
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+
+      Patient.findById.mockResolvedValue(null);
+
+      await addTestReport(req, res);
+
+      expect(Patient.findById).toHaveBeenCalledWith('nonexistentId');
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.json).toHaveBeenCalledWith({
+        success: false,
+        message: 'Patient not found',
+      });
+    });
+
+    it('should handle errors', async () => {
+      const req = {
+        params: {
+          patientId: 'patientId1',
+        },
+        body: {},
+      };
+
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+
+      Patient.findById.mockRejectedValue(new Error('Database error'));
+
+      await addTestReport(req, res);
+
+      expect(Patient.findById).toHaveBeenCalledWith('patientId1');
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith({
+        success: false,
+        message: 'Database error',
+      });
+    });
+  });
+
+  describe('deleteTestReport', () => {
+    it('should delete a test report from the patient', async () => {
+      const req = {
+        params: {
+          patientId: 'patientId1',
+          testReportId: 'testReportId1',
+        },
+      };
+
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+
+      const patient = {
+        _id: 'patientId1',
+        testReports: [
+          {
+            _id: 'testReportId1',
+            testType: 'Blood Test',
+            fileUrl: 'http://example.com/test.pdf',
+            toString: () => 'testReportId1',
+          },
+        ],
+        save: jest.fn().mockResolvedValue(true),
+      };
+
+      Patient.findById.mockResolvedValue(patient);
+
+      await deleteTestReport(req, res);
+
+      expect(Patient.findById).toHaveBeenCalledWith('patientId1');
+      expect(patient.testReports.length).toBe(0);
+      expect(patient.save).toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({
+        success: true,
+        message: 'Test report deleted',
+      });
+    });
+
+    it('should return 404 if test report not found', async () => {
+      const req = {
+        params: {
+          patientId: 'patientId1',
+          testReportId: 'nonexistentReportId',
+        },
+      };
+
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+
+      const patient = {
+        _id: 'patientId1',
+        testReports: [],
+      };
+
+      Patient.findById.mockResolvedValue(patient);
+
+      await deleteTestReport(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.json).toHaveBeenCalledWith({
+        success: false,
+        message: 'Test report not found',
+      });
+    });
+
+    it('should return 404 if patient not found', async () => {
+      const req = {
+        params: {
+          patientId: 'nonexistentId',
+          testReportId: 'testReportId1',
+        },
+      };
+
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+
+      Patient.findById.mockResolvedValue(null);
+
+      await deleteTestReport(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.json).toHaveBeenCalledWith({
+        success: false,
+        message: 'Patient not found',
+      });
+    });
+  });
+
+  describe('addMRIScan', () => {
+    it('should add a new MRI scan to the patient', async () => {
+      const req = {
+        params: {
+          patientId: 'patientId1',
+        },
+        body: {
+          scanType: 'Brain MRI',
+          fileUrl: 'http://example.com/mri.pdf',
+          description: 'Brain scan',
+          requestedBy: 'doctorId1',
+          status: 'pending',
+          comments: 'Routine scan',
+        },
+      };
+
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+
+      const patient = {
+        _id: 'patientId1',
+        mriScans: [],
+        save: jest.fn().mockResolvedValue(true),
+      };
+
+      Patient.findById.mockResolvedValue(patient);
+
+      await addMRIScan(req, res);
+
+      expect(Patient.findById).toHaveBeenCalledWith('patientId1');
+      expect(patient.mriScans.length).toBe(1);
+      expect(patient.save).toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(201);
+      expect(res.json).toHaveBeenCalledWith({
+        success: true,
+        message: 'MRI scan added',
+        data: expect.objectContaining(req.body),
+      });
+    });
+
+    it('should return 404 if patient not found', async () => {
+      const req = {
+        params: {
+          patientId: 'nonexistentId',
+        },
+        body: {},
+      };
+
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+
+      Patient.findById.mockResolvedValue(null);
+
+      await addMRIScan(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.json).toHaveBeenCalledWith({
+        success: false,
+        message: 'Patient not found',
+      });
+    });
+  });
+
+  describe('deleteMRIScan', () => {
+    it('should delete an MRI scan from the patient', async () => {
+      const req = {
+        params: {
+          patientId: 'patientId1',
+          mriScanId: 'mriScanId1',
+        },
+      };
+
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+
+      const patient = {
+        _id: 'patientId1',
+        mriScans: [
+          {
+            _id: 'mriScanId1',
+            scanType: 'Brain MRI',
+            toString: () => 'mriScanId1',
+          },
+        ],
+        save: jest.fn().mockResolvedValue(true),
+      };
+
+      Patient.findById.mockResolvedValue(patient);
+
+      await deleteMRIScan(req, res);
+
+      expect(Patient.findById).toHaveBeenCalledWith('patientId1');
+      expect(patient.mriScans.length).toBe(0);
+      expect(patient.save).toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({
+        success: true,
+        message: 'MRI scan deleted',
+      });
+    });
+
+    it('should return 404 if MRI scan not found', async () => {
+      const req = {
+        params: {
+          patientId: 'patientId1',
+          mriScanId: 'nonexistentScanId',
+        },
+      };
+
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+
+      const patient = {
+        _id: 'patientId1',
+        mriScans: [],
+      };
+
+      Patient.findById.mockResolvedValue(patient);
+
+      await deleteMRIScan(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.json).toHaveBeenCalledWith({
+        success: false,
+        message: 'MRI scan not found',
+      });
+    });
+
+    it('should return 404 if patient not found', async () => {
+      const req = {
+        params: {
+          patientId: 'nonexistentId',
+          mriScanId: 'mriScanId1',
+        },
+      };
+
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+
+      Patient.findById.mockResolvedValue(null);
+
+      await deleteMRIScan(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.json).toHaveBeenCalledWith({
+        success: false,
+        message: 'Patient not found',
+      });
+    });
+  });
 });

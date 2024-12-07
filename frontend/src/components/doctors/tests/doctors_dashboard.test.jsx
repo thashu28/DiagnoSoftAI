@@ -1,17 +1,40 @@
+import React from 'react';
 import { render, screen } from "@testing-library/react";
-import DoctorDashboard from "../doctors_dashboard";
+import { BrowserRouter } from "react-router-dom";
+import DoctorsDashboard from "../doctors_dashboard";
+import '@testing-library/jest-dom';
 
-describe("DoctorDashboard", () => {
-  it("renders overview cards", () => {
-    render(<DoctorDashboard />);
-    expect(screen.getByText(/Emergency Cases/i)).toBeInTheDocument();
-    expect(screen.getByText(/Pending Reports/i)).toBeInTheDocument();
-  });
+// Mock useLocation hook
+const mockLocation = {
+  state: {
+    user: {
+      id: "doctor123",
+      name: "Dr. Smith"
+    }
+  }
+};
 
-  it("shows assigned scans table", () => {
-    render(<DoctorDashboard />);
-    expect(screen.getByText(/Assigned Scans/i)).toBeInTheDocument();
-    expect(screen.getByText(/John Doe/i)).toBeInTheDocument();
-    expect(screen.getByText(/CT Scan/i)).toBeInTheDocument();
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useLocation: () => mockLocation
+}));
+
+describe("DoctorsDashboard", () => {
+  it("renders all navigation links in the sidebar", () => {
+    render(
+      <BrowserRouter>
+        <DoctorsDashboard />
+      </BrowserRouter>
+    );
+
+    // Check if all sidebar navigation links are present
+    expect(screen.getByText('Patients')).toBeInTheDocument();
+    expect(screen.getByText('Appointments')).toBeInTheDocument();
+    expect(screen.getByText('Messages')).toBeInTheDocument();
+    expect(screen.getByText('View Scan Reports')).toBeInTheDocument();
+    expect(screen.getByText('AI Assistant')).toBeInTheDocument();
+    
+    // Check if the welcome message is present
+    expect(screen.getByText('Welcome, Doctor!')).toBeInTheDocument();
   });
 });
