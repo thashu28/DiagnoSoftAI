@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { getPatientById } from "../../../services/PatientService";
 import { FaUserCircle } from "react-icons/fa"; // Import the desired icon
+import { getDoctorById } from "../../../services/DoctorService";
 
 const PatientDashboard = () => {
   const location = useLocation();
@@ -27,6 +28,32 @@ const PatientDashboard = () => {
   const handleProfileClick = () => {
     navigate("/patients_dashboard/profile", { state: { user } });
   };
+
+  const [doctorNames, setDoctorNames] = useState({}); // Store doctor names by ID
+
+  // Function to fetch doctor name
+  const fetchDoctorNames = async () => {
+    const names = {};
+    for (const appointment of upcomingAppointments) {
+      if (!doctorNames[appointment.doctor]) {
+        try {
+          const doctor = await getDoctorById(appointment.doctor);
+          names[appointment.doctor] = doctor.data.name;
+        } catch (error) {
+          console.error(`Error fetching doctor with ID ${appointment.doctor}:`, error);
+          names[appointment.doctor] = "Unknown Doctor"; // Fallback
+        }
+      }
+    }
+    setDoctorNames((prev) => ({ ...prev, ...names }));
+  };
+
+  // Fetch doctor names when appointments change
+  useEffect(() => {
+    if (upcomingAppointments.length > 0) {
+      fetchDoctorNames();
+    }
+  }, [upcomingAppointments]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -54,7 +81,16 @@ const PatientDashboard = () => {
         </div>
         {/* Patient Dashboard Title */}
         <h1 className="text-2xl font-bold" style={{ marginRight: "30rem" }}>Patient Dashboard</h1>
->>>>>>> b9e6b6a4e3188451053c29a8a112fb97ac7adf69
+        {/* Profile Icon */}
+        <div
+          className="flex items-center cursor-pointer"
+          onClick={handleProfileClick}
+        >
+          <FaUserCircle className="text-4xl text-white mr-2" /> {/* Icon added */}
+          <span className="hidden sm:block text-white text-sm font-semibold">
+            Profile
+          </span>
+        </div>
 
       </header>
 
@@ -91,14 +127,7 @@ const PatientDashboard = () => {
                   View Reports
                 </Link>
               </li>
-              <li>
-                <Link
-                  to="/patients_dashboard/patient_chat"
-                  className="block px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 hover:scale-105 transform transition"
-                >
-                  AI Chat assistant
-                </Link>
-              </li>
+              
             </ul>
           </nav>
         </aside>
@@ -130,7 +159,7 @@ const PatientDashboard = () => {
                       className="p-4 border rounded-lg shadow hover:shadow-lg transition"
                     >
                       <p className="text-lg font-semibold text-gray-800 mb-2">
-                        Doctor: {appointment.doctor}
+                        Doctor: {doctorNames[appointment.doctor] || "Loading..."}
                       </p>
                       <p className="text-gray-600 mb-1">
                         <strong>Date:</strong>{" "}
@@ -159,9 +188,7 @@ const PatientDashboard = () => {
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-600 text-center">
-                  No upcoming appointments.
-                </p>
+                <p className="text-gray-600 text-center">No upcoming appointments.</p>
               )}
             </div>
           </section>

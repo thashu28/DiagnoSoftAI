@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaUserCircle } from "react-icons/fa"; // Import the profile icon
+import { FaUserCircle } from "react-icons/fa";
+import { useLocation } from "react-router-dom";
 import { getAllPatients } from "../../../services/PatientService";
 
 const LabTechnicianDashboard = () => {
+  const location = useLocation();
   const [patients, setPatients] = useState([]);
   const navigate = useNavigate();
-  const user = location.state?.user;
+  const { user } = location.state || {};
 
   useEffect(() => {
     const fetchPatients = async () => {
@@ -42,6 +44,16 @@ const LabTechnicianDashboard = () => {
         </div>
         {/* Lab Technician Dashboard Title */}
         <h1 className="text-2xl font-bold" style={{ marginRight: "30rem" }}>Lab Technician Dashboard</h1>
+        {/* Profile Icon */}
+        <div
+          className="flex items-center cursor-pointer"
+          onClick={handleProfileClick}
+        >
+          <FaUserCircle className="text-4xl text-white mr-2" /> {/* Icon added */}
+          <span className="hidden sm:block text-white text-sm font-semibold">
+            Profile
+          </span>
+        </div>
 
       </header>
 

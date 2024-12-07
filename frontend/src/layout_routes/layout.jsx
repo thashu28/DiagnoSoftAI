@@ -8,8 +8,6 @@ import LabTechnicianDashboard from '../components/lab_technician/lab_technician'
 import PatientDashboard from '../components/patients/patients_dashboard';
 import PatientProfile from '../components/patients/patient_profile'
 
-
-
 // Importing the new pages for Doctor's Dashboard features
 import AppointmentSystem from '../components/doctors/appointments';
 import ViewScans from '../components/doctors/view_scans';
@@ -21,7 +19,7 @@ import DoctorProfile from '../components/doctors/doctor_profile'
 import ScheduleAppointments from '../components/patients/schedule_appointments';
 import PatientViewScans from '../components/patients/view_scans'; // New import
 import ViewReports from '../components/patients/view_reports'; // New import 
-import PatientChat from '../components/patients/patient_Chat';
+
 
 // Importing the new page in the Lab technician Dashboard
 import LabTechnicianChat from '../components/lab_technician/labtechnician_chat';
@@ -29,7 +27,7 @@ import UploadScans from '../components/lab_technician/upload_scans';
 import EmergencyScans from '../components/lab_technician/emergency_scans';
 // Importing the new page for Doctor's AI Assistant
 import DoctorAIAssistant from '../components/doctors/DoctorAIAssistant';
-
+import MedicalImageAnalysis from '../components/doctors/medical_image_analysis';
 import LabTechniciansTestReports from '../components/lab_technician/test_reports';
 import LabTechProfile from '../components/lab_technician/labtech_profile'
 
@@ -55,12 +53,13 @@ const Layout = () => {
           <Route path="/doctor_dashboard/chatbot" element={<ChatSystem />} />
           <Route path="/doctor_dashboard/ai_assistant" element={<DoctorAIAssistant />} />
           <Route path="/doctor_dashboard/profile" element={<DoctorProfile/>}/>
+          <Route path="/doctor_dashboard/medical_image_analysis" element={<MedicalImageAnalysis/>}/>
 
           {/* Patient Dashboard Feature Routes */}
           <Route path="/patients_dashboard/schedule_appointments" element={<ScheduleAppointments />} />
           <Route path="/patients_dashboard/view_scans" element={<PatientViewScans />} /> {/* New route */}
           <Route path="/patients_dashboard/view_reports" element={<ViewReports />} />
-          <Route path="/patients_dashboard/patient_chat" element={<PatientChat />} />
+          
           <Route path="/patients_dashboard/profile" element={<PatientProfile/>}/>
 
           {/* Lab Technician Dashboard Feature Routes */}
