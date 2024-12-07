@@ -82,6 +82,34 @@ export const addAppointment = async (req, res) => {
   }
 };
 
+// Reschedule an appointment
+// Reschedule an existing appointment for the patient
+export const rescheduleAppointment = async (req, res) => {
+  try {
+    const { patientId, appointmentId } = req.params;
+    const { date, time } = req.body;  // Only need date and time for rescheduling
+    
+    // Find the patient by ID
+    const patient = await Patient.findById(patientId);
+    if (!patient) return res.status(404).json({ success: false, message: "Patient not found" });
+    
+    // Find the appointment to reschedule
+    const appointment = patient.appointments.id(appointmentId);
+    if (!appointment) return res.status(404).json({ success: false, message: "Appointment not found" });
+
+    // Update the appointment date and time
+    appointment.date = date || appointment.date;  // If date is provided, update it, else keep the existing date
+    appointment.time = time || appointment.time;  // If time is provided, update it, else keep the existing time
+
+    // Save the patient with the updated appointment
+    await patient.save();
+    
+    res.status(200).json({ success: true, message: "Appointment rescheduled", data: appointment });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 
 // Delete an appointment
 // Delete an appointment for the patient

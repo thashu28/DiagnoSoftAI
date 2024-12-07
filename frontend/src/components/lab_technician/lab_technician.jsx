@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaUserCircle } from "react-icons/fa"; // Import the profile icon
+import { FaUserCircle } from "react-icons/fa";
+import { useLocation } from "react-router-dom";
 import { getAllPatients } from "../../../services/PatientService";
 
 const LabTechnicianDashboard = () => {
+  const location = useLocation();
   const [patients, setPatients] = useState([]);
   const navigate = useNavigate();
-  const user = location.state?.user;
+  const { user } = location.state || {};
 
   useEffect(() => {
     const fetchPatients = async () => {
