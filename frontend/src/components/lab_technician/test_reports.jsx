@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { getAllPatients } from "../../../services/PatientService";
 import { addTestReport } from "../../../services/PatientService";
+import { getAllDoctors } from "../../../services/DoctorService";
+
 const LabTechniciansTestReports = () => {
   const [patients, setPatients] = useState([]);
+  const [doctors, setDoctors] =  useState([]);
   const [formData, setFormData] = useState({
     patientId: "",
     testType: "",
@@ -10,6 +13,7 @@ const LabTechniciansTestReports = () => {
     fileUrl: "",
     description: "",
     comments: "",
+    requestedBy:"",
     priority: "normal", // default value
   });
 
@@ -35,6 +39,19 @@ const LabTechniciansTestReports = () => {
     fetchPatients();
   }, []);
 
+  useEffect(()=>{
+    const fetchDoctors = async ()=> {
+      try{
+        const response = await getAllDoctors();
+        setDoctors(response.data)
+      }
+      catch(error){
+        console.error("Error fetching requested doctor details.")
+      }
+    }
+    fetchDoctors();
+  },[])
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -47,7 +64,7 @@ const LabTechniciansTestReports = () => {
         testType: formData.testType,
         fileUrl: formData.fileUrl,
         description: formData.description,
-        requestedBy: formData.patientId, // Assuming the patient ID is used for `requestedBy`
+        requestedBy: formData.doctorId, // Assuming the patient ID is used for `requestedBy`
         uploadDate: new Date().toISOString(), // Set uploadDate as the current timestamp
         priority: formData.priority,
         status: "Completed", // Default status is pending when uploaded
@@ -65,6 +82,7 @@ const LabTechniciansTestReports = () => {
         description: "",
         comments: "",
         priority: "normal", // reset to default
+        requestedBy:""
       }); // Reset form
     } catch (error) {
       setMessage(error.message || "Failed to upload test report.");
@@ -124,6 +142,23 @@ const LabTechniciansTestReports = () => {
                 {testTypes.map((type, index) => (
                   <option key={index} value={type}>
                     {type}
+                  </option>
+                ))}
+              </select>
+            </div>
+            
+            <div>
+              <label className="block text-gray-700 font-medium mb-2">Patient</label>
+              <select
+                name="doctorId"
+                value={formData.doctorId}
+                onChange={handleInputChange}
+                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              >
+                <option value="">Select a doctor</option>
+                {doctors.map((doctor) => (
+                  <option key={doctor._id} value={doctor._id}>
+                    {doctor.name}
                   </option>
                 ))}
               </select>

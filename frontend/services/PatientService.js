@@ -61,6 +61,15 @@ export const addAppointment = async (patientId, appointmentData) => {
   }
 };
 
+// Reschedule an appointment
+export const rescheduleAppointment = async (patientId, appointmentId, rescheduleData) => {
+  try {
+    const response = await httpCommon.post(`/api/patients/${patientId}/appointments/${appointmentId}/reschedule`, rescheduleData);
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : error.message;
+  }
+};
 
 // Delete an appointment
 export const deleteAppointment = async (patientId, appointmentId) => {

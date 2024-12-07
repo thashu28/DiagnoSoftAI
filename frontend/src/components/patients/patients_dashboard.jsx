@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { getPatientById } from "../../../services/PatientService";
 import { FaUserCircle } from "react-icons/fa"; // Import the desired icon
+import { getDoctorById } from "../../../services/DoctorService";
 
 const PatientDashboard = () => {
   const location = useLocation();
@@ -27,6 +28,32 @@ const PatientDashboard = () => {
   const handleProfileClick = () => {
     navigate("/patients_dashboard/profile", { state: { user } });
   };
+
+  const [doctorNames, setDoctorNames] = useState({}); // Store doctor names by ID
+
+  // Function to fetch doctor name
+  const fetchDoctorNames = async () => {
+    const names = {};
+    for (const appointment of upcomingAppointments) {
+      if (!doctorNames[appointment.doctor]) {
+        try {
+          const doctor = await getDoctorById(appointment.doctor);
+          names[appointment.doctor] = doctor.data.name;
+        } catch (error) {
+          console.error(`Error fetching doctor with ID ${appointment.doctor}:`, error);
+          names[appointment.doctor] = "Unknown Doctor"; // Fallback
+        }
+      }
+    }
+    setDoctorNames((prev) => ({ ...prev, ...names }));
+  };
+
+  // Fetch doctor names when appointments change
+  useEffect(() => {
+    if (upcomingAppointments.length > 0) {
+      fetchDoctorNames();
+    }
+  }, [upcomingAppointments]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -118,7 +145,7 @@ const PatientDashboard = () => {
                       className="p-4 border rounded-lg shadow hover:shadow-lg transition"
                     >
                       <p className="text-lg font-semibold text-gray-800 mb-2">
-                        Doctor: {appointment.doctor}
+                        Doctor: {doctorNames[appointment.doctor] || "Loading..."}
                       </p>
                       <p className="text-gray-600 mb-1">
                         <strong>Date:</strong>{" "}
@@ -147,9 +174,7 @@ const PatientDashboard = () => {
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-600 text-center">
-                  No upcoming appointments.
-                </p>
+                <p className="text-gray-600 text-center">No upcoming appointments.</p>
               )}
             </div>
           </section>
