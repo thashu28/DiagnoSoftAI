@@ -21,7 +21,7 @@ import DoctorProfile from '../components/doctors/doctor_profile'
 import ScheduleAppointments from '../components/patients/schedule_appointments';
 import PatientViewScans from '../components/patients/view_scans'; // New import
 import ViewReports from '../components/patients/view_reports'; // New import 
-import PatientChat from '../components/patients/patient_Chat';
+
 
 // Importing the new page in the Lab technician Dashboard
 import LabTechnicianChat from '../components/lab_technician/labtechnician_chat';
@@ -60,7 +60,7 @@ const Layout = () => {
           <Route path="/patients_dashboard/schedule_appointments" element={<ScheduleAppointments />} />
           <Route path="/patients_dashboard/view_scans" element={<PatientViewScans />} /> {/* New route */}
           <Route path="/patients_dashboard/view_reports" element={<ViewReports />} />
-          <Route path="/patients_dashboard/patient_chat" element={<PatientChat />} />
+          
           <Route path="/patients_dashboard/profile" element={<PatientProfile/>}/>
 
           {/* Lab Technician Dashboard Feature Routes */}
