@@ -43,7 +43,6 @@ const ViewScanReportsForDoctors = () => {
           .filter((patient) => patient.assignedScans.length > 0); // Only include patients with scans to display
       
         setPatients(completedScans); // Update the state with filtered patient data
-        console.log('completed',completedScans)
         if (completedScans.length > 0) {
           setSelectedPatient(completedScans[0]); // Select the first patient in the list
           setSelectedScan(completedScans[0].assignedScans[0]); // Select the first scan for the selected patient
