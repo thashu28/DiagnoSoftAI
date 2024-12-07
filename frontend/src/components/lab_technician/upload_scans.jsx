@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { getAllPatients } from "../../../services/PatientService";
 import { addMRIScan } from "../../../services/PatientService";
+import { getAllDoctors } from "../../../services/DoctorService";
 
 const LabTechnicianUploadScans = () => {
 
   const [patients, setPatients] = useState([]);
+  const [doctors, setDoctors] =  useState([]);
   const [formData, setFormData] = useState({
     patientId: "",
     scanType: "",
@@ -12,6 +14,7 @@ const LabTechnicianUploadScans = () => {
     fileUrl: "",
     description: "",
     comments: "",
+    requestedBy:"",
   });
 
   const [message, setMessage] = useState(""); // To show success or error messages
@@ -30,6 +33,19 @@ const LabTechnicianUploadScans = () => {
     fetchPatients();
   }, []);
 
+  useEffect(()=>{
+    const fetchDoctors = async ()=> {
+      try{
+        const response = await getAllDoctors();
+        setDoctors(response.data)
+      }
+      catch(error){
+        console.error("Error fetching requested doctor details.")
+      }
+    }
+    fetchDoctors();
+  },[])
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -42,7 +58,7 @@ const LabTechnicianUploadScans = () => {
         scanType: formData.scanType,
         fileUrl: formData.fileUrl,
         description: formData.description,
-        requestedBy: formData.patientId, // Assuming the patient ID is used for `requestedBy`
+        requestedBy: formData.doctorId, 
         uploadDate: new Date().toISOString(), // Set uploadDate as the current timestamp in milliseconds
         status: "Completed",
         comments: formData.comments,
@@ -57,6 +73,7 @@ const LabTechnicianUploadScans = () => {
         fileUrl: "",
         description: "",
         comments: "",
+        requestedBy:""
       }); // Reset form
     } catch (error) {
       setMessage(error.message || "Failed to upload scan.");
@@ -116,6 +133,22 @@ const LabTechnicianUploadScans = () => {
                 {scanTypes.map((type, index) => (
                   <option key={index} value={type}>
                     {type}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-gray-700 font-medium mb-2">Request by Doctor</label>
+              <select
+                name="doctorId"
+                value={formData.requestedBy}
+                onChange={handleInputChange}
+                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              >
+                <option value="">Select a doctor</option>
+                {doctors.map((doctor) => (
+                  <option key={doctor._id} value={doctor._id}>
+                    {doctor.name}
                   </option>
                 ))}
               </select>
