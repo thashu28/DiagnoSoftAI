@@ -22,13 +22,12 @@ import ViewReports from '../components/patients/view_reports'; // New import
 
 
 // Importing the new page in the Lab technician Dashboard
-import LabTechnicianChat from '../components/lab_technician/labtechnician_chat';
 import UploadScans from '../components/lab_technician/upload_scans';
-import EmergencyScans from '../components/lab_technician/emergency_scans';
+import LabTechniciansTestReports from '../components/lab_technician/test_reports';
+
 // Importing the new page for Doctor's AI Assistant
 import DoctorAIAssistant from '../components/doctors/DoctorAIAssistant';
 import MedicalImageAnalysis from '../components/doctors/medical_image_analysis';
-import LabTechniciansTestReports from '../components/lab_technician/test_reports';
 import LabTechProfile from '../components/lab_technician/labtech_profile'
 
 const Layout = () => {
@@ -64,8 +63,7 @@ const Layout = () => {
 
           {/* Lab Technician Dashboard Feature Routes */}
           <Route path="/lab_technician/upload_scans" element={<UploadScans />} />
-          <Route path="/lab_technician/labtechnician_chat" element={<LabTechnicianChat />} />
-          <Route path="/lab_technician/emergency_scans" element={<EmergencyScans />} />
+        
           <Route path="/lab_technician/test_reports" element={<LabTechniciansTestReports />} />
           <Route path="/lab_technician/profile" element={<LabTechProfile/>}/>
         </Routes>

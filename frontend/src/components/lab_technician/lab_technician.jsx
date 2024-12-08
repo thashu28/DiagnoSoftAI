@@ -37,11 +37,12 @@ const LabTechnicianDashboard = () => {
           DiagnoSoftAI
         </div>
         {/* Lab Technician Dashboard Title */}
-        <h1 className="text-2xl font-bold" style={{ marginRight: "30rem" }}>Lab Technician Dashboard</h1>
+        <h1 className="text-2xl font-bold" style={{ marginRight: "10rem" }}>Lab Technician Dashboard</h1>
         {/* Profile Icon */}
         <div
           className="flex items-center cursor-pointer"
           onClick={handleProfileClick}
+          state = {user}
         >
           <FaUserCircle className="text-4xl text-white mr-2" /> {/* Icon added */}
           <span className="hidden sm:block text-white text-sm font-semibold">
@@ -57,14 +58,7 @@ const LabTechnicianDashboard = () => {
         <aside className="w-1/4 bg-gray-200 p-6 shadow-md">
           <nav>
             <ul className="space-y-4">
-              <li>
-                <Link
-                  to="/lab_technician/emergency_scans"
-                  className="block w-full text-left px-4 py-3 bg-white rounded-lg shadow hover:bg-gray-300 transition"
-                >
-                  Emergency Scans
-                </Link>
-              </li>
+              
               <li>
                 <Link
                   to="/lab_technician/upload_scans"
@@ -81,14 +75,7 @@ const LabTechnicianDashboard = () => {
                   Upload Test Reports
                 </Link>
               </li>
-              <li>
-                <Link
-                  to="/lab_technician/labtechnician_chat"
-                  className="block w-full text-left px-4 py-3 bg-white rounded-lg shadow hover:bg-gray-300 transition"
-                >
-                  Chat
-                </Link>
-              </li>
+              
             </ul>
           </nav>
         </aside>
@@ -96,11 +83,11 @@ const LabTechnicianDashboard = () => {
         {/* Main Content Area */}
         <main className="w-3/4 p-6">
           {/* Welcome Section */}
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+          <section className="w-full bg-white p-6 rounded-lg shadow-md overflow-y-auto max-h-screen mb-8">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-2">
               Welcome, Lab Technician!
             </h2>
-            <div className="bg-white p-6 shadow-md rounded-lg">
+            <div className="">
               <p className="text-gray-700 text-lg">
                 "Effortlessly upload and manage scans, while empowering fast, AI-driven care for patients in need."
               </p>
@@ -108,8 +95,8 @@ const LabTechnicianDashboard = () => {
           </section>
 
           {/* Pending Scans Section */}
-          <section className="w-full bg-white p-6 rounded-lg shadow-md overflow-y-auto max-h-screen">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Uploaded Scans</h2>
+          <section className="w-full bg-white p-6 rounded-lg shadow-md overflow-y-auto max-h-screen mb-8">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Pending Scans</h2>
             <ul className="space-y-3">
               {patients.map((patient, index) => {
                 const pendingScans = patient.mriScans.filter(scan => scan.status === "Pending");

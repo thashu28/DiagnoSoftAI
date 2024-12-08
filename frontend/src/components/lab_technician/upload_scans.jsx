@@ -138,10 +138,10 @@ const LabTechnicianUploadScans = () => {
               </select>
             </div>
             <div>
-              <label className="block text-gray-700 font-medium mb-2">Request by Doctor</label>
+              <label className="block text-gray-700 font-medium mb-2">Doctor</label>
               <select
                 name="doctorId"
-                value={formData.requestedBy}
+                value={formData.doctorId}
                 onChange={handleInputChange}
                 className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
               >

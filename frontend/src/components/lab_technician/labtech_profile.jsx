@@ -1,18 +1,47 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { getLabTechById } from "../../../services/LabtechService";
 
 const LabTechnicianProfile = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = location.state || {}; // Access user object from location state
+  const [labTechProfile, setLabTechProfile] = useState(null); // State to store lab technician data
+  const [loading, setLoading] = useState(true); // State for loading status
+  const [error, setError] = useState(null); // State for error handling
 
   const handleLogout = () => {
     localStorage.clear(); // Clear all local storage
     navigate("/"); // Redirect to the home page
   };
 
-  if (!user) {
-    return <p className="text-red-500">No user data available.</p>;
+  useEffect(() => {
+    const fetchLabTechProfile = async () => {
+      if (!user?.id) return; // Ensure the user ID exists
+      try {
+        setLoading(true);
+        const response = await getLabTechById(user.id);
+        setLabTechProfile(response.data); // Set the profile data
+      } catch (err) {
+        setError(err.message || "Failed to fetch lab technician details");
+      } finally {
+        setLoading(false); // Set loading to false after fetching
+      }
+    };
+
+    fetchLabTechProfile();
+  }, [user]);
+
+  if (loading) {
+    return <p className="text-blue-500">Loading...</p>;
+  }
+
+  if (error) {
+    return <p className="text-red-500">{error}</p>;
+  }
+
+  if (!labTechProfile) {
+    return <p className="text-red-500">No lab technician data available.</p>;
   }
 
   return (
@@ -31,33 +60,18 @@ const LabTechnicianProfile = () => {
       {/* Main Content */}
       <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
         <div className="space-y-4">
-          <h2 className="text-2xl font-semibold text-gray-800">{user.name}</h2>
+          <h2 className="text-2xl font-semibold text-gray-800">{labTechProfile.name}</h2>
+          
           <p>
-            <strong>Employee ID:</strong> {user.employeeId || "N/A"}
+            <strong>Email:</strong> {labTechProfile.email || "N/A"}
           </p>
           <p>
-            <strong>Email:</strong> {user.email || "N/A"}
+            <strong>Phone:</strong> {labTechProfile.phone || "N/A"}
           </p>
           <p>
-            <strong>Phone:</strong> {user.phone || "N/A"}
+            <strong>Specialization:</strong> {labTechProfile.specializedIn?.join(", ") || "N/A"}
           </p>
-          <p>
-            <strong>Specialization:</strong> {user.specialization || "N/A"}
-          </p>
-          <p>
-            <strong>Years of Experience:</strong> {user.experience || "N/A"}
-          </p>
-          <p>
-            <strong>Laboratory:</strong> {user.laboratory || "N/A"}
-          </p>
-          <p>
-            <strong>Certifications:</strong>{" "}
-            {user.certifications?.length > 0 ? user.certifications.join(", ") : "None"}
-          </p>
-          <p>
-            <strong>Availability:</strong>{" "}
-            {user.availability || "No availability information"}
-          </p>
+          
         </div>
       </div>
     </div>
