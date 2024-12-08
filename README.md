@@ -16,7 +16,7 @@ DiagnoSoftAI is a sophisticated healthcare platform designed to revolutionize me
 - **Frontend**: React.js with Tailwind CSS
 - **Backend**: Node.js, Express.js
 - **Database**: MongoDB
-- **AI Integration**: OpenAI API
+- **AI Integration**: OpenAI API, Brain tumour Segmentation using Attention Enhanced U-NET Model
 
 ## Installation
 
