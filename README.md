@@ -4,13 +4,15 @@
 DiagnoSoftAI is a sophisticated healthcare platform designed to revolutionize medical diagnosis through advanced image analysis and seamless doctor-patient communication. The system leverages cutting-edge AI technology to enhance diagnostic accuracy while providing a comprehensive solution for managing patient records, appointments, and medical imaging.
 
 ## Key Features
-- AI-Assisted Medical Image Analysis
-- Real-time Doctor-Patient Communication
-- Comprehensive Patient Management
-- Appointment Scheduling System
-- Medical Records Management
-- Test Report & MRI Scan Management
+- Signup, Login & Logout
 - Multi-role Access (Doctors, Patients, Lab Technicians)
+- AI Medical Image Analysis  - Brain tumour Segmentation using Attention Enhanced U-NET Model
+- AI Chat Bot
+- Comprehensive Medical Management - search patients/doctors and view details/reports.
+- Appointment Scheduling System - schedule, reschedule & cancel appointments
+- Tests & Scans Management - upload & download scans and reports
+- Diagnosis Reports - Notes Functionality for the doctor to make disease predictions.
+
 
 ## Technical Stack (MERN)
 - **Frontend**: React.js with Tailwind CSS
@@ -273,7 +275,7 @@ DiagnoSoftAI is a sophisticated healthcare platform designed to revolutionize me
   - `message`: User's message to the chatbot
 
 ## Data Set and AI Model 
-This study leverages the BraTS 2020 dataset,(The BraTS dataset (Brain Tumor Segmentation) is a widely used benchmark dataset for the segmentation of brain tumors in MRI images, featuring multimodal scans and ground truth annotations for gliomas, categorized into high-grade (HGG) and low-grade (LGG) gliomas.)  comprising multimodal MRI scans (T1, T1ce, T2, FLAIR), to develop an attention-based U-Net model. The architecture incorporates attention gates to focus on tumor regions, improving segmentation accuracy. Evaluation metrics show competitive results, and the model demonstrates significant improvements over the baseline U-Net. While training w ehave saved the model weights, here we have imported the saved loaded weights for the prediction of the segmentation of brain tumours.
+This study leverages the BraTS 2020 dataset,(The BraTS dataset (Brain Tumor Segmentation) is a widely used benchmark dataset for the segmentation of brain tumors in MRI images, featuring multimodal scans and ground truth annotations for gliomas, categorized into high-grade (HGG) and low-grade (LGG) gliomas.)  comprising multimodal MRI scans (T1, T1ce, T2, FLAIR), to develop an attention-based U-Net model. The architecture incorporates attention gates to focus on tumor regions, improving segmentation accuracy. Evaluation metrics show competitive results, and the model demonstrates significant improvements over the baseline U-Net. While training we have saved the model weights, here we have imported the saved loaded weights for the prediction of the segmentation of brain tumours.
 
 ## Contributing
 Contributions to this project are welcome! If you encounter any issues or have suggestions for improvements, please open an issue or submit a pull request. For major changes, please discuss them first in the project's issue tracker.
