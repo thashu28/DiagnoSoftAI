@@ -38,6 +38,7 @@ DiagnoSoftAI is a sophisticated healthcare platform designed to revolutionize me
      npm install -g nodemon
      npm install
      ```
+ 
    - For the frontend (React):
      ```
      cd frontend
@@ -55,6 +56,7 @@ DiagnoSoftAI is a sophisticated healthcare platform designed to revolutionize me
       JWT_SECRET_KEY = 0c3be53199e03242b9f1e2ffdfadf93b213f0b8b100a7
       OPENAI_API_KEY = 
      ```
+     
 
 4. **Starting the Application**
    - To run the backend:
@@ -62,6 +64,12 @@ DiagnoSoftAI is a sophisticated healthcare platform designed to revolutionize me
      cd backend
      npm start
      ```
+    - Flask API set up
+      ```
+      python -m venv venv
+      .\venv\scripts\Activate
+      python app.py
+      ```
 
    - To run the frontend:
      ```
@@ -70,6 +78,9 @@ DiagnoSoftAI is a sophisticated healthcare platform designed to revolutionize me
      ```
 
 5. **Note**: the app will be serve on http://localhost:5173/
+
+   ![image](https://github.com/user-attachments/assets/b55901cc-6888-49d3-aca3-8f4b7ca59621)
+
 
 ## API Documentation
 
@@ -260,6 +271,9 @@ DiagnoSoftAI is a sophisticated healthcare platform designed to revolutionize me
 - **Description:** Generate a response from the AI chatbot.
 - **Request Body:**
   - `message`: User's message to the chatbot
+
+## Data Set and AI Model 
+This study leverages the BraTS 2020 dataset,(The BraTS dataset (Brain Tumor Segmentation) is a widely used benchmark dataset for the segmentation of brain tumors in MRI images, featuring multimodal scans and ground truth annotations for gliomas, categorized into high-grade (HGG) and low-grade (LGG) gliomas.)  comprising multimodal MRI scans (T1, T1ce, T2, FLAIR), to develop an attention-based U-Net model. The architecture incorporates attention gates to focus on tumor regions, improving segmentation accuracy. Evaluation metrics show competitive results, and the model demonstrates significant improvements over the baseline U-Net. While training w ehave saved the model weights, here we have imported the saved loaded weights for the prediction of the segmentation of brain tumours.
 
 ## Contributing
 Contributions to this project are welcome! If you encounter any issues or have suggestions for improvements, please open an issue or submit a pull request. For major changes, please discuss them first in the project's issue tracker.
