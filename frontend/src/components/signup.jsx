@@ -56,8 +56,9 @@ const SignupPage = () => {
     }
   
     try {
+      console.log('format data',formData)
       const response = await signup(formData); // Call the signup function from authService
-
+      console.log('response',response)
       if (response && response.success) {
         setMessage("Signup successful!");
         navigate('/login'); // Redirect to the login page after successful signup

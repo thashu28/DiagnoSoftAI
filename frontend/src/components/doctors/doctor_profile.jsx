@@ -65,11 +65,9 @@ const DoctorProfile = () => {
             <h2 className="text-2xl font-semibold text-gray-800">
               {doctorData.name}
             </h2>
+           
             <p>
-              <strong>Specialization:</strong> {doctorData.specialization || "N/A"}
-            </p>
-            <p>
-              <strong>Experience:</strong> {doctorData.experience || "N/A"} years
+              <strong>Experience:</strong> {doctorData.experience || "N/A"} 
             </p>
             <p>
               <strong>Email:</strong> {doctorData.email || "N/A"}
@@ -83,19 +81,7 @@ const DoctorProfile = () => {
                 ? doctorData.qualifications.join(", ")
                 : "N/A"}
             </p>
-            <p>
-              <strong>Clinic Address:</strong>{" "}
-              {doctorData.clinicAddress || "N/A"}
-            </p>
-            <p>
-              <strong>Patients Treated:</strong> {doctorData.patientsTreated || 0}
-            </p>
-            <p>
-              <strong>Availability:</strong>{" "}
-              {doctorData.availability
-                ? `${doctorData.availability.start} - ${doctorData.availability.end}`
-                : "Not specified"}
-            </p>
+            
           </div>
         ) : (
           <p className="text-gray-500">No doctor data available.</p>

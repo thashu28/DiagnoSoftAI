@@ -85,6 +85,13 @@ const ScheduleAppointments = () => {
       const response = await addAppointment(user.id, appointmentData);
       console.log("Appointment scheduled:", response);
       setIsModalOpen(false);
+      setFormState({
+        selectedDoctor: null,
+        appointmentDate: null,
+        appointmentTime: "",
+        condition: "",
+        description: "",
+      });
     } catch (error) {
       console.error("Error scheduling appointment:", error);
       setError(error.message || "Failed to schedule appointment. Please try again.");
@@ -116,7 +123,7 @@ const ScheduleAppointments = () => {
                   key={index}
                   className="flex justify-between items-center border-b pb-2 mb-2"
                 >
-                  <p className="font-semibold text-gray-800">{doctor.name}</p>
+                  <p className="font-semibold text-gray-800">Dr. {doctor.name}</p>
                   <button
                     className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-400 transition"
                     onClick={() => handleScheduleClick(doctor)}
@@ -168,6 +175,11 @@ const ScheduleAppointments = () => {
                   <option value="1:00 PM">1:00 PM</option>
                   <option value="2:00 PM">2:00 PM</option>
                   <option value="3:00 PM">3:00 PM</option>
+                  <option value="3:00 PM">4:00 PM</option>
+                  <option value="3:00 PM">5:00 PM</option>
+                  <option value="3:00 PM">6:00 PM</option>
+                  <option value="3:00 PM">7:00 PM</option>
+                  <option value="3:00 PM">8:00 PM</option>
                 </select>
               </div>
               <div className="mb-4">

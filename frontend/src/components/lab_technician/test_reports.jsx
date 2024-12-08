@@ -148,7 +148,7 @@ const LabTechniciansTestReports = () => {
             </div>
             
             <div>
-              <label className="block text-gray-700 font-medium mb-2">Patient</label>
+              <label className="block text-gray-700 font-medium mb-2">Doctor</label>
               <select
                 name="doctorId"
                 value={formData.doctorId}

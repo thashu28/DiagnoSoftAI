@@ -44,9 +44,9 @@ const DoctorsDashboard = () => {
     fetchPatients();
   }, [user]);
 
-  if (patients.length === 0) {
-    return <p>No assigned scans available...</p>;
-  }
+  // if (patients.length === 0) {
+  //   return <p>No assigned scans available...</p>;
+  // }
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return new Intl.DateTimeFormat("en-US", {

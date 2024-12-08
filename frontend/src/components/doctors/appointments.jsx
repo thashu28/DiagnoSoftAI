@@ -116,7 +116,7 @@ const AppointmentSystem = () => {
                 <div
                   key={appointment._id}
                   onClick={() => setSelectedAppointment(appointment)}
-                  className={`p-4 shadow-md rounded-lg cursor-pointer hover:shadow-lg transition-transform transform ${
+                  className={`p-4 mb-4 shadow-md rounded-lg cursor-pointer hover:shadow-lg transition-transform transform ${
                     selectedAppointment?._id === appointment._id
                       ? "border-2 border-blue-300 bg-blue-50"
                       : "bg-white"
@@ -130,7 +130,7 @@ const AppointmentSystem = () => {
                   </p>
                   <p className="text-sm text-gray-600 mt-1">
                     {new Date(appointment.date).toLocaleDateString()} at{" "}
-                    {formatTime12Hour(appointment.time)}
+                    {(appointment.time)}
                   </p>
                 </div>
               ))}
@@ -161,15 +161,15 @@ const AppointmentSystem = () => {
                   </p>
                   <p className="text-lg text-gray-700">
                     <strong>Medical History:</strong>{" "}
-                    {selectedAppointment.medicalHistory || "None"}
+                    {selectedAppointment.medicalHistory?.join(", ") || "None"}
                   </p>
                   <p className="text-lg text-gray-700">
                     <strong>Allergies:</strong>{" "}
-                    {selectedAppointment.allergies || "None"}
+                    {selectedAppointment.allergies?.join(", ")  || "None"}
                   </p>
                   <p className="text-lg text-gray-700">
                     <strong>Current Medication:</strong>{" "}
-                    {selectedAppointment.currentMedication || "None"}
+                    {selectedAppointment.currentMedication?.join(", ")  || "None"}
                   </p>
                   <p className="text-lg text-gray-700">
                     <strong>Date:</strong>{" "}
@@ -177,7 +177,7 @@ const AppointmentSystem = () => {
                   </p>
                   <p className="text-lg text-gray-700">
                     <strong>Time:</strong>{" "}
-                    {formatTime12Hour(selectedAppointment.time)}
+                    {(selectedAppointment.time)}
                   </p>
                   <p className="text-lg text-gray-700">
                     <strong>Condition:</strong>{" "}
