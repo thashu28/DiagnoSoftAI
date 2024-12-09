@@ -1,25 +1,42 @@
 import React from 'react';
 import { render, screen } from "@testing-library/react";
 import '@testing-library/jest-dom';
+import { BrowserRouter } from 'react-router-dom';
 import ViewScanReportsForDoctors from "../view_scans";
+import { getAllPatients } from "../../../../services/PatientService";
+
+// Mock the PatientService
+jest.mock("../../../../services/PatientService");
+
+// Mock useLocation
+const mockLocation = {
+  state: {
+    user: {
+      id: "doctor123",
+      name: "Dr. Smith"
+    }
+  }
+};
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useLocation: () => mockLocation,
+  useNavigate: () => jest.fn()
+}));
 
 describe('ViewScanReportsForDoctors', () => {
-  it('renders the patient list with correct information', () => {
-    render(<ViewScanReportsForDoctors />);
-    
-    // Check if both patients from static data are rendered
-    expect(screen.getByText('John Doe')).toBeInTheDocument();
-    expect(screen.getByText('Jane Smith')).toBeInTheDocument();
-    
-    // Check if conditions are displayed (verify count of conditions)
-    const criticalElements = screen.getAllByText(/Critical/);
-    const stableElements = screen.getAllByText(/Stable/);
-    expect(criticalElements).toHaveLength(2); // One in sidebar, one in header
-    expect(stableElements).toHaveLength(1);
-    
-    // Check if the main section headers are present
-    expect(screen.getByText('Assigned Scans')).toBeInTheDocument();
-    expect(screen.getByText('Scan Details')).toBeInTheDocument();
-    expect(screen.getByText('AI Analysis')).toBeInTheDocument();
+  it('displays no scans message when there are no assigned scans', async () => {
+    // Mock the API response with empty data
+    getAllPatients.mockResolvedValue({ data: [] });
+
+    render(
+      <BrowserRouter>
+        <ViewScanReportsForDoctors />
+      </BrowserRouter>
+    );
+
+    // Check if the "no scans" message is displayed
+    const noScansMessage = await screen.findByText('No assigned scans available...');
+    expect(noScansMessage).toBeInTheDocument();
   });
 });

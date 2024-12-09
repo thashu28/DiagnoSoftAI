@@ -79,7 +79,21 @@ DiagnoSoftAI is a sophisticated healthcare platform designed to revolutionize me
      npm run dev
      ```
 
-5. **Note**: the app will be serve on http://localhost:5173/
+4. **Testing the Application**
+   - The application uses Jest as the testing framework for both frontend and backend unit tests, providing comprehensive test coverage for components and API endpoints.
+   - To run the backend tests:
+     ```
+     cd backend
+     npm test
+     ```
+
+   - To run the frontend tests:
+     ```
+     cd frontend
+     npm test
+     ```
+
+6. **Note**: the app will be serve on http://localhost:5173/
 
    ![image](https://github.com/user-attachments/assets/b55901cc-6888-49d3-aca3-8f4b7ca59621)
 

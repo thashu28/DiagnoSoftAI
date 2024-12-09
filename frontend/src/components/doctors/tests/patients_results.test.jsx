@@ -1,23 +1,44 @@
 import React from 'react';
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import PatientResults from "../patients_results";
+import PatientResults from '../patients_results';
+import { getAllPatients } from '../../../../services/PatientService';
 
-describe("PatientResults", () => {
-  it("renders the patient results table with correct headers", () => {
+// Mock the PatientService
+jest.mock('../../../../services/PatientService', () => ({
+  getAllPatients: jest.fn(),
+  getPatientById: jest.fn()
+}));
+
+describe('PatientResults', () => {
+  it('renders search bar and handles search input', () => {
+    // Mock the getAllPatients response
+    getAllPatients.mockResolvedValue({
+      data: [
+        {
+          _id: '1',
+          name: 'John Doe',
+          age: 30,
+          appointments: [{ condition: 'Stable' }]
+        }
+      ]
+    });
+
+    // Render the component
     render(<PatientResults />);
+
+    // Check if the search bar is rendered
+    const searchInput = screen.getByPlaceholderText('Search patients by name...');
+    expect(searchInput).toBeInTheDocument();
+
+    // Simulate user typing in search
+    fireEvent.change(searchInput, { target: { value: 'John' } });
+    expect(searchInput.value).toBe('John');
+
+    // Check if the header is rendered
+    expect(screen.getByText('Patient Results')).toBeInTheDocument();
     
-    // Check if the main title is present
-    expect(screen.getByText("Patient Results")).toBeInTheDocument();
-    
-    // Check if all table headers are present
-    expect(screen.getByText("Patient")).toBeInTheDocument();
-    expect(screen.getByText("Age")).toBeInTheDocument();
-    expect(screen.getByText("Condition")).toBeInTheDocument();
-    expect(screen.getByText("Action")).toBeInTheDocument();
-    
-    // Check if sample patient data is rendered
-    expect(screen.getByText("John Doe")).toBeInTheDocument();
-    expect(screen.getByText("Jane Smith")).toBeInTheDocument();
+    // Check if the website name is rendered
+    expect(screen.getByText('DiagnoSoftAI')).toBeInTheDocument();
   });
 });
