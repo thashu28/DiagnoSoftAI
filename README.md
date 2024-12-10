@@ -95,6 +95,8 @@ DiagnoSoftAI is a sophisticated healthcare platform designed to revolutionize me
 
 6. **Note**: the app will be serve on http://localhost:5173/
 
+7. ## Control Flow Graph (CFG)
+
    ![image](https://github.com/user-attachments/assets/b55901cc-6888-49d3-aca3-8f4b7ca59621)
 
 
