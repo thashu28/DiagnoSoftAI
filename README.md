@@ -3,6 +3,12 @@
 ## Description
 DiagnoSoftAI is a sophisticated healthcare platform designed to revolutionize medical diagnosis through advanced image analysis and seamless doctor-patient communication. The system leverages cutting-edge AI technology to enhance diagnostic accuracy while providing a comprehensive solution for managing patient records, appointments, and medical imaging.
 
+## Assumptions made during Project
+Note:
+1. This is not a hosted application; it has been developed solely for academic project purposes.
+2. The project is designed to cater to a single hospital rather than multiple hospitals.
+3. In this system, a doctor is pre-assigned to each patient by the hospital. Therefore, the doctor retains access to the patient's scans even if an appointment is canceled.
+
 ## Key Features
 - Signup, Login & Logout
 - Multi-role Access (Doctors, Patients, Lab Technicians)
