@@ -60,7 +60,7 @@ DiagnoSoftAI is a sophisticated healthcare platform designed to revolutionize me
       Add the following environment variables to your file:
       PORT = 5000
       DB_URL = mongodb://localhost:27017/diagnosoftai
-      JWT_SECRET_KEY = 0c3be53199e03242b9f1e2ffdfadf93b213f0b8b100a7
+      JWT_SECRET_KEY = 
       OPENAI_API_KEY = 
      ```
      
