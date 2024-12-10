@@ -19,6 +19,7 @@ DiagnoSoftAI is a sophisticated healthcare platform designed to revolutionize me
 - **Backend**: Node.js, Express.js
 - **Database**: MongoDB
 - **AI Integration**: OpenAI API, Brain tumour Segmentation using Attention Enhanced U-NET Model
+- **AI Integration**: Flask API backend used for AI model Integration
 
 ## Installation
 
@@ -26,6 +27,10 @@ DiagnoSoftAI is a sophisticated healthcare platform designed to revolutionize me
 - Node.js (v14 or higher)
 - MongoDB
 - npm (Node Package Manager)
+- Express.js
+- Flask API
+- React.JS
+- Tailwind.css
 
 ### Setup
 1. **Clone the Repository**
@@ -95,7 +100,7 @@ DiagnoSoftAI is a sophisticated healthcare platform designed to revolutionize me
 
 6. **Note**: the app will be serve on http://localhost:5173/
 
-7. ## Control Flow Graph (CFG)
+## Control Flow Graph (CFG)
 
    ![image](https://github.com/user-attachments/assets/b55901cc-6888-49d3-aca3-8f4b7ca59621)
 
