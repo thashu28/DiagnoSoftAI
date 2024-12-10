@@ -5,7 +5,7 @@ This document outlines the contributions made by each team member during the dev
 ## Backend Development
 - **Node.js + Express.js + MongoDB**: 
   - Developed backend controllers, routes, and the core server logic.
-  - Contributors: *Thashmitha B S, Sreya Talasila, Tom, Justin*.
+  - Contributors: *Thashmitha B S, Sreya Talasila, Tom, Justin, Rishitha*.
 
 - **Flask API**: 
   - Built the backend interface for integrating the AI model.
